@@ -1,0 +1,27 @@
+{
+  "$schema": "../../manifest.schema.json",
+  "id": "sindri.cargo-test",
+  "name": "Cargo Test Adapter",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Cargo test runner adapter \u2014 discover, run, and display Rust test results inline.",
+  "categories": [
+    "Test & Task Adapter"
+  ],
+  "permissions": [
+    "sindri.workspace",
+    "sindri.terminal"
+  ],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
+  "contributes": {
+    "taskAdapters": [
+      {
+        "id": "cargo-test",
+        "languageId": "rust"
+      }
+    ]
+  },
+  "main": "dist/extension.js"
+}

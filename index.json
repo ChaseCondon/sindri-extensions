@@ -1,110 +1,14 @@
 [
   {
     "manifest": {
-      "$schema": "../manifest.schema.json",
-      "id": "sindri.aurora-theme",
-      "name": "Sindri Aurora",
-      "version": "0.1.0",
-      "publisher": "sindri",
-      "description": "A deep purple and teal dark theme for Sindri IDE.",
-      "categories": [
-        "Color Theme"
-      ],
-      "permissions": [],
-      "engines": {
-        "sindri": ">=0.1.0"
-      },
-      "contributes": {
-        "themes": [
-          {
-            "id": "sindri-aurora-dark",
-            "name": "Aurora Dark",
-            "kind": "dark",
-            "path": "aurora-dark.json"
-          }
-        ]
-      }
-    },
-    "tags": [
-      "v0.1.0"
-    ],
-    "readmeContent": "# Sindri Aurora\n\nA deep purple and teal dark theme for Sindri IDE \u2014 high contrast where it counts, muted chrome around it.\n\n## Palette\n\n| Role | Colour | Hex |\n| --- | --- | --- |\n| Background | Deep ink | `#0B0A18` |\n| Panel | Dark navy | `#0E0D1F` |\n| Accent | Violet | `#B06CFF` |\n| Keywords | Soft lavender | `#C490FF` |\n| Strings | Teal | `#00D4B4` |\n| Functions | Light purple | `#E0B0FF` |\n| Numbers | Sky blue | `#79B8FF` |\n| Comments | Muted blue-grey | `#3E3460` |\n| Danger | Coral | `#FF5A6E` |\n\n## Preview\n\n```typescript\n// Sindri Aurora \u2014 TypeScript example\nimport { createSignal } from \"solid-js\";\n\ninterface User {\n  id: string;\n  name: string;\n  role: \"admin\" | \"viewer\";\n}\n\nexport function useUser(id: string) {\n  const [user, setUser] = createSignal<User | null>(null);\n  const [loading, setLoading] = createSignal(true);\n\n  async function fetchUser(): Promise<void> {\n    const res = await fetch(`/api/users/${id}`);\n    if (!res.ok) throw new Error(`HTTP ${res.status}`);\n    setUser(await res.json());\n    setLoading(false);\n  }\n\n  return { user, loading, fetchUser };\n}\n```\n\n```rust\n// Sindri Aurora \u2014 Rust example\nuse std::collections::HashMap;\n\n#[derive(Debug, Clone)]\npub struct Registry<T> {\n    entries: HashMap<String, T>,\n}\n\nimpl<T: Clone> Registry<T> {\n    pub fn new() -> Self {\n        Self { entries: HashMap::new() }\n    }\n\n    pub fn register(&mut self, id: impl Into<String>, value: T) {\n        self.entries.insert(id.into(), value);\n    }\n\n    pub fn get(&self, id: &str) -> Option<&T> {\n        self.entries.get(id)\n    }\n}\n```\n\n## Installation\n\nInstall from Settings \u2192 Extensions \u2192 Marketplace, then switch to it under Settings \u2192 Appearance \u2192 Colour theme.",
-    "folderPath": "aurora-theme"
-  },
-  {
-    "manifest": {
-      "$schema": "../manifest.schema.json",
-      "id": "sindri.neon-icons",
-      "name": "Sindri Neon Icons",
-      "version": "0.1.0",
-      "publisher": "sindri",
-      "description": "Vibrant neon file icon theme \u2014 bold language-brand glyphs on dark backgrounds.",
-      "categories": [
-        "File Icon Theme"
-      ],
-      "permissions": [],
-      "engines": {
-        "sindri": ">=0.1.0"
-      },
-      "contributes": {
-        "iconThemes": [
-          {
-            "id": "sindri-neon-icons",
-            "name": "Neon Icons",
-            "kind": "color",
-            "path": "icons.json"
-          }
-        ]
-      }
-    },
-    "tags": [
-      "v0.1.0"
-    ],
-    "readmeContent": "# Sindri Neon Icons\n\nA vibrant neon file icon theme for Sindri IDE. Language icons use saturated language-brand colours on dark backgrounds \u2014 instantly recognisable in the file tree at any size.\n\n## Covered file types\n\n| Extensions | Icon style |\n| --- | --- |\n| `.js` `.mjs` `.cjs` | Yellow-on-dark JavaScript |\n| `.ts` `.mts` `.cts` | Blue TypeScript |\n| `.jsx` | Cyan React/JSX |\n| `.tsx` | Cyan TypeScript React |\n| `.py` | Blue + yellow Python |\n| `.rs` | Orange Rust |\n| `.go` | Teal Go |\n| `.json` | Green JSON braces |\n| `.toml` | Amber TOML |\n| `.yaml` `.yml` | Purple YAML |\n| `.md` | Sky blue Markdown |\n| `.css` | Blue CSS |\n| `.scss` | Pink SCSS |\n| `.html` `.htm` | Orange HTML |\n| `.svg` | Teal SVG |\n| `.sh` `.bash` | Green shell prompt |\n| `.lock` | Grey lock icon |\n| `.env` | Sage .env |\n| `.gitignore` etc. | Red git icon |\n\n## File structure\n\n```text\nneon-icons/\n\u251c\u2500\u2500 manifest.json      \u2190 extension manifest\n\u251c\u2500\u2500 icons.json         \u2190 IconThemeDef with path references\n\u2514\u2500\u2500 icons/\n    \u251c\u2500\u2500 file.svg       \u2190 default file fallback\n    \u251c\u2500\u2500 folder.svg\n    \u251c\u2500\u2500 folder-open.svg\n    \u251c\u2500\u2500 js.svg\n    \u251c\u2500\u2500 ts.svg\n    \u2514\u2500\u2500 ...            \u2190 one SVG per icon ID\n```\n\nEach icon is a standalone 16\u00d716 SVG file \u2014 the clean, maintainable approach for icon extension authors.\n\n## Installation\n\nInstall from Settings \u2192 Extensions \u2192 Marketplace, then switch to it under Settings \u2192 Appearance \u2192 File icon theme.",
-    "folderPath": "neon-icons"
-  },
-  {
-    "manifest": {
-      "$schema": "../manifest.schema.json",
-      "id": "sindri.sindri-ui-icons",
-      "name": "Sindri UI Icons",
-      "version": "0.1.0",
-      "publisher": "sindri",
-      "description": "The default Sindri activity bar and toolbar icon set, available as a standalone extension.",
-      "categories": [
-        "UI Icon Theme"
-      ],
-      "permissions": [],
-      "engines": {
-        "sindri": ">=0.1.0"
-      },
-      "contributes": {
-        "iconThemes": [
-          {
-            "id": "sindri-ui",
-            "name": "Sindri UI",
-            "kind": "mono",
-            "path": "ui-pack.json"
-          }
-        ]
-      }
-    },
-    "tags": [
-      "v0.1.0"
-    ],
-    "readmeContent": "# Sindri UI Icons\n\nThe default Sindri activity bar and toolbar icon set, published as a standalone extension. All icons are monochrome SVGs that adapt to the active colour theme's accent.\n\n## Included icons\n\n| Tool-window ID | Description |\n| --- | --- |\n| `explorer` | File explorer |\n| `search` | Search panel |\n| `git` | Source control |\n| `run` | Run / play |\n| `debug` | Debugger |\n| `test` | Test runner |\n| `extensions` | Extensions marketplace |\n| `terminal` | Integrated terminal |\n| `problems` | Problems panel |\n| `output` | Output panel |\n| `database` | Database browser |\n| `remote` | Remote connections |\n| `settings` | Settings |\n| `containers` | Container manager |\n| `snippets` | Snippets |\n| `bookmarks` | Bookmarks |\n\n## File structure\n\n```text\nsindri-ui-icons/\n\u251c\u2500\u2500 manifest.json\n\u251c\u2500\u2500 ui-pack.json       \u2190 UiIconPackDef with path references\n\u2514\u2500\u2500 icons/\n    \u251c\u2500\u2500 explorer.svg\n    \u251c\u2500\u2500 search.svg\n    \u2514\u2500\u2500 ...            \u2190 one SVG per tool-window ID\n```\n\n## Creating your own UI icon pack\n\nProvide a `ui-pack.json` that maps tool-window IDs to SVG file paths. Icons should be 16\u00d716 monochrome SVGs using `currentColor` so they follow the theme accent automatically.\n\n```json\n{\n  \"id\": \"yourname.my-ui-icons\",\n  \"name\": \"My UI Icons\",\n  \"kind\": \"mono\",\n  \"icons\": {\n    \"explorer\": { \"path\": \"icons/explorer.svg\" },\n    \"search\":   { \"path\": \"icons/search.svg\" }\n  }\n}\n```\n\n**Status:** Data-only \u2014 installs without the extension host.",
-    "folderPath": "sindri-ui-icons"
-  },
-  {
-    "manifest": {
-      "$schema": "../manifest.schema.json",
+      "$schema": "../../manifest.schema.json",
       "id": "sindri.rust-language-support",
       "name": "Rust Language Support",
       "version": "0.1.0",
       "publisher": "sindri",
       "description": "Rust language support \u2014 syntax highlighting, rust-analyzer LSP, and LLDB debugger.",
       "categories": [
-        "Language Support"
+        "Language"
       ],
       "permissions": [
         "sindri.workspace",
@@ -147,18 +51,18 @@
       "v0.1.0"
     ],
     "readmeContent": "# Rust Language Support\n\nFull Rust development support for Sindri IDE \u2014 syntax, intelligence, and debugging in one extension.\n\n## Features\n\n### Syntax highlighting\n\nTree-sitter grammar for Rust providing precise, incremental syntax highlighting.\n\n### Language Server \u2014 rust-analyzer\n\n- Hover documentation\n- Inline type hints\n- Go-to-definition and find-references\n- Code completions with documentation\n- Inline diagnostics (errors, warnings, clippy lints)\n- Code actions and quick fixes\n- Rename symbol\n\n### Debugger \u2014 LLDB\n\n- Breakpoints (line, conditional, logpoint)\n- Step in / step over / step out\n- Variable inspection and watch expressions\n- Call stack and thread views\n\n## Requirements\n\n- **rust-analyzer** on `PATH` \u2014 install via `rustup component add rust-analyzer`\n- **lldb-vscode** for debugging \u2014 `brew install llvm` on macOS, `apt install lldb` on Linux\n\n## Example\n\n```rust\nuse std::fmt;\n\n#[derive(Debug)]\npub enum ParseError {\n    UnexpectedToken { found: String, expected: &'static str },\n    UnexpectedEof,\n}\n\nimpl fmt::Display for ParseError {\n    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {\n        match self {\n            Self::UnexpectedToken { found, expected } => {\n                write!(f, \"expected {expected}, found `{found}`\")\n            }\n            Self::UnexpectedEof => write!(f, \"unexpected end of input\"),\n        }\n    }\n}\n```\n\n> **Status:** Scaffolded \u2014 requires the Sindri extension host (in development). The `dist/extension.js` entry point and grammar WASM file will be added once the host is ready.",
-    "folderPath": "rust-language-support"
+    "folderPath": "language/rust-language-support"
   },
   {
     "manifest": {
-      "$schema": "../manifest.schema.json",
+      "$schema": "../../manifest.schema.json",
       "id": "sindri.en-us",
       "name": "English (United States)",
       "version": "0.1.0",
       "publisher": "sindri",
       "description": "English (US) language pack \u2014 the canonical reference locale for Sindri IDE.",
       "categories": [
-        "Language Pack"
+        "Localisation"
       ],
       "permissions": [],
       "engines": {
@@ -170,11 +74,78 @@
       "v0.1.0"
     ],
     "readmeContent": "# English (United States)\n\nThe canonical reference locale for Sindri IDE \u2014 the default language and the authoritative source of UI string keys for translators creating other locale packs.\n\n## Purpose\n\nThis extension serves two roles:\n\n- **Default locale** \u2014 ships with Sindri and activates automatically for English-speaking users\n- **Translator reference** \u2014 every UI string key is defined here with its English value; translators fork this extension and replace values with their target language\n\n## Creating a translation\n\nFork this extension, rename the `id` to `yourname.lang-XX` (where `XX` is the BCP 47 language tag), update `name` and `description`, and replace the English string values in the translations file.\n\n```json\n{\n  \"$schema\": \"../manifest.schema.json\",\n  \"id\": \"yourname.lang-fr\",\n  \"name\": \"Fran\u00e7ais\",\n  \"version\": \"1.0.0\",\n  \"publisher\": \"yourname\",\n  \"description\": \"French localisation pack for Sindri IDE.\",\n  \"categories\": [\"Localisation\"],\n  \"permissions\": [],\n  \"engines\": { \"sindri\": \">=0.1.0\" },\n  \"main\": \"dist/extension.js\"\n}\n```\n\n## String key examples\n\n```json\n{\n  \"workbench.openFolder\": \"Open Folder\",\n  \"workbench.newFile\": \"New File\",\n  \"editor.save\": \"Save\",\n  \"editor.saveAll\": \"Save All\",\n  \"marketplace.install\": \"Install\",\n  \"marketplace.uninstall\": \"Uninstall\",\n  \"settings.title\": \"Settings\"\n}\n```\n\n> **Status:** Scaffolded \u2014 requires the Sindri extension host and localisation API (in development). The string key schema will be finalised before the first stable release.",
-    "folderPath": "en-us-language-pack"
+    "folderPath": "localisation/en-us"
   },
   {
     "manifest": {
-      "$schema": "../manifest.schema.json",
+      "$schema": "../../manifest.schema.json",
+      "id": "sindri.aurora-pack",
+      "name": "Aurora Pack",
+      "version": "0.1.0",
+      "publisher": "sindri",
+      "description": "The complete Aurora experience \u2014 colour theme, file icons, and UI icons in one click.",
+      "categories": [
+        "Extension Pack"
+      ],
+      "tags": [
+        "aurora",
+        "dark",
+        "violet",
+        "teal",
+        "bundle"
+      ],
+      "permissions": [],
+      "engines": {
+        "sindri": ">=0.1.0"
+      },
+      "contributes": {},
+      "extensionPack": [
+        "sindri.aurora-theme",
+        "sindri.aurora-file-icons",
+        "sindri.aurora-ui-icons"
+      ]
+    },
+    "tags": [
+      "v0.1.0"
+    ],
+    "readmeContent": "# Aurora Pack\n\nThe complete Aurora experience for Sindri IDE \u2014 install all three Aurora extensions in one click.\n\n## What's included\n\n| Extension | Type | Description |\n| --- | --- | --- |\n| Sindri Aurora | Colour Theme | Deep purple and teal dark theme |\n| Aurora File Icons | File Icon Theme | File tree icons in the Aurora palette |\n| Aurora UI Icons | UI Icon Theme | Activity bar icons tuned for the Aurora accent |\n\n## Installation\n\nClick **Install** to install all three extensions together. Switch to Aurora Dark under Settings \u2192 Appearance \u2192 Colour theme, then select Aurora File Icons and Aurora UI Icons in the icon dropdowns.\n\n## About extension packs\n\nExtension packs are a way to bundle related extensions that are better together. Installing a pack installs each member extension individually \u2014 you can manage, update, or uninstall them independently afterward.",
+    "folderPath": "packs/aurora"
+  },
+  {
+    "manifest": {
+      "$schema": "../../manifest.schema.json",
+      "id": "sindri.neon-icons",
+      "name": "Sindri Neon Icons",
+      "version": "0.1.0",
+      "publisher": "sindri",
+      "description": "Vibrant neon file icon theme \u2014 bold language-brand glyphs on dark backgrounds.",
+      "categories": [
+        "File Icon Theme"
+      ],
+      "permissions": [],
+      "engines": {
+        "sindri": ">=0.1.0"
+      },
+      "contributes": {
+        "iconThemes": [
+          {
+            "id": "sindri-neon-icons",
+            "name": "Neon Icons",
+            "kind": "color",
+            "path": "icons.json"
+          }
+        ]
+      }
+    },
+    "tags": [
+      "v0.1.0"
+    ],
+    "readmeContent": "# Sindri Neon Icons\n\nA vibrant neon file icon theme for Sindri IDE. Language icons use saturated language-brand colours on dark backgrounds \u2014 instantly recognisable in the file tree at any size.\n\n## Covered file types\n\n| Extensions | Icon style |\n| --- | --- |\n| `.js` `.mjs` `.cjs` | Yellow-on-dark JavaScript |\n| `.ts` `.mts` `.cts` | Blue TypeScript |\n| `.jsx` | Cyan React/JSX |\n| `.tsx` | Cyan TypeScript React |\n| `.py` | Blue + yellow Python |\n| `.rs` | Orange Rust |\n| `.go` | Teal Go |\n| `.json` | Green JSON braces |\n| `.toml` | Amber TOML |\n| `.yaml` `.yml` | Purple YAML |\n| `.md` | Sky blue Markdown |\n| `.css` | Blue CSS |\n| `.scss` | Pink SCSS |\n| `.html` `.htm` | Orange HTML |\n| `.svg` | Teal SVG |\n| `.sh` `.bash` | Green shell prompt |\n| `.lock` | Grey lock icon |\n| `.env` | Sage .env |\n| `.gitignore` etc. | Red git icon |\n\n## File structure\n\n```text\nneon-icons/\n\u251c\u2500\u2500 manifest.json      \u2190 extension manifest\n\u251c\u2500\u2500 icons.json         \u2190 IconThemeDef with path references\n\u2514\u2500\u2500 icons/\n    \u251c\u2500\u2500 file.svg       \u2190 default file fallback\n    \u251c\u2500\u2500 folder.svg\n    \u251c\u2500\u2500 folder-open.svg\n    \u251c\u2500\u2500 js.svg\n    \u251c\u2500\u2500 ts.svg\n    \u2514\u2500\u2500 ...            \u2190 one SVG per icon ID\n```\n\nEach icon is a standalone 16\u00d716 SVG file \u2014 the clean, maintainable approach for icon extension authors.\n\n## Installation\n\nInstall from Settings \u2192 Extensions \u2192 Marketplace, then switch to it under Settings \u2192 Appearance \u2192 File icon theme.",
+    "folderPath": "themes/neon-icons"
+  },
+  {
+    "manifest": {
+      "$schema": "../../manifest.schema.json",
       "id": "sindri.cargo-test",
       "name": "Cargo Test Adapter",
       "version": "0.1.0",
@@ -204,11 +175,11 @@
       "v0.1.0"
     ],
     "readmeContent": "# Cargo Test Adapter\n\nIntegrates `cargo test` into the Sindri test runner \u2014 discover, run, and see results inline without leaving the editor.\n\n## Features\n\n- **Test discovery** \u2014 runs `cargo test -- --list` to find all tests in the workspace\n- **Run individual tests** \u2014 click any test in the panel to run it in isolation\n- **Run full suite** \u2014 run all tests in the current package or workspace\n- **Streaming output** \u2014 live output streamed as tests execute\n- **Inline results** \u2014 pass/fail indicators shown in the gutter next to each `#[test]`\n- **Failure navigation** \u2014 click a failure to jump to the failing assertion\n\n## Example output\n\n```text\nrunning 4 tests\ntest parser::tests::parses_empty_input ... ok\ntest parser::tests::rejects_unclosed_bracket ... ok\ntest registry::tests::deduplicates_entries ... ok\ntest registry::tests::returns_none_for_missing ... FAILED\n\nfailures:\n\n---- registry::tests::returns_none_for_missing stdout ----\nthread 'registry::tests::returns_none_for_missing' panicked at 'assertion failed'\n```\n\n## Requirements\n\n- A Rust workspace with `cargo` on `PATH`\n- Tests using the standard `#[test]` attribute or `#[tokio::test]` for async tests\n\n> **Status:** Scaffolded \u2014 requires the Sindri extension host and Test & Task Adapter API (in development).",
-    "folderPath": "cargo-test-adapter"
+    "folderPath": "tools/cargo-test-adapter"
   },
   {
     "manifest": {
-      "$schema": "../manifest.schema.json",
+      "$schema": "../../manifest.schema.json",
       "id": "sindri.minimap",
       "name": "Sindri Minimap",
       "version": "0.1.0",
@@ -229,11 +200,49 @@
       "v0.1.0"
     ],
     "readmeContent": "# Sindri Minimap\n\nAdds a scaled-down code overview panel to the right edge of each editor pane \u2014 the classic minimap familiar from most modern editors.\n\n## Features\n\n- **Pixel-accurate rendering** \u2014 the minimap mirrors the editor's exact content at reduced scale\n- **Viewport highlight** \u2014 a shaded band shows the currently visible region of the file\n- **Click to jump** \u2014 click anywhere in the minimap to scroll the editor to that position\n- **Theme-aware** \u2014 background, text, and selection colours follow the active colour theme\n- **Per-pane** \u2014 each split pane has its own independent minimap\n\n## Configuration\n\n```json\n{\n  \"sindri.minimap.enabled\": true,\n  \"sindri.minimap.width\": 100,\n  \"sindri.minimap.renderCharacters\": true,\n  \"sindri.minimap.maxColumn\": 120\n}\n```\n\n| Setting | Default | Description |\n| --- | --- | --- |\n| `enabled` | `true` | Show or hide the minimap |\n| `width` | `100` | Width of the minimap panel in pixels |\n| `renderCharacters` | `true` | Render actual character glyphs vs. coloured blocks |\n| `maxColumn` | `120` | Columns beyond this are not rendered |\n\n> **Status:** Scaffolded \u2014 requires the Sindri extension host and UI Extension API (in development).",
-    "folderPath": "sindri-minimap"
+    "folderPath": "ui/sindri-minimap"
   },
   {
     "manifest": {
-      "$schema": "../../manifest.schema.json",
+      "$schema": "../../../manifest.schema.json",
+      "id": "sindri.aurora-file-icons",
+      "name": "Aurora File Icons",
+      "version": "0.1.0",
+      "publisher": "sindri",
+      "description": "File icon set matching the Sindri Aurora colour palette \u2014 violet, teal, and lavender on deep ink backgrounds.",
+      "categories": [
+        "File Icon Theme"
+      ],
+      "tags": [
+        "aurora",
+        "dark",
+        "violet",
+        "teal"
+      ],
+      "permissions": [],
+      "engines": {
+        "sindri": ">=0.1.0"
+      },
+      "contributes": {
+        "iconThemes": [
+          {
+            "id": "sindri-aurora-file-icons",
+            "name": "Aurora File Icons",
+            "kind": "color",
+            "path": "icons.json"
+          }
+        ]
+      }
+    },
+    "tags": [
+      "v0.1.0"
+    ],
+    "readmeContent": "# Aurora File Icons\n\nA file icon set designed to complement the Sindri Aurora colour theme. Violet, lavender, and teal on deep ink backgrounds \u2014 seamless with the Aurora palette.\n\n## Covered file types\n\n| Extensions | Colour |\n| --- | --- |\n| `.js` `.mjs` | Lavender `#C490FF` |\n| `.ts` `.mts` | Violet `#B06CFF` |\n| `.jsx` `.tsx` | Teal `#00D4B4` |\n| `.rs` | Light purple `#E0B0FF` |\n| `.py` | Teal `#00D4B4` |\n| `.go` | Sky blue `#79B8FF` |\n| `.json` | Violet `#B06CFF` |\n| `.md` | Lavender `#C490FF` |\n| `.git*` | Coral `#FF5A6E` |\n\n## Part of the Aurora Pack\n\nThis icon set is bundled together with the Aurora colour theme and Aurora UI Icons in the **Aurora Pack** extension pack.\n\nInstall all three together by searching for \"Aurora Pack\" in the marketplace.",
+    "folderPath": "packs/aurora/aurora-file-icons"
+  },
+  {
+    "manifest": {
+      "$schema": "../../../manifest.schema.json",
       "id": "sindri.aurora-theme",
       "name": "Sindri Aurora",
       "version": "0.1.0",
@@ -277,49 +286,11 @@
       "v0.1.0"
     ],
     "readmeContent": "# Sindri Aurora\n\nA deep purple and teal dark theme for Sindri IDE \u2014 high contrast where it counts, muted chrome around it.\n\n## Palette\n\n| Role | Colour | Hex |\n| --- | --- | --- |\n| Background | Deep ink | `#0B0A18` |\n| Panel | Dark navy | `#0E0D1F` |\n| Accent | Violet | `#B06CFF` |\n| Keywords | Soft lavender | `#C490FF` |\n| Strings | Teal | `#00D4B4` |\n| Functions | Light purple | `#E0B0FF` |\n| Numbers | Sky blue | `#79B8FF` |\n| Comments | Muted blue-grey | `#3E3460` |\n| Danger | Coral | `#FF5A6E` |\n\n## Preview\n\n```typescript\n// Sindri Aurora \u2014 TypeScript example\nimport { createSignal } from \"solid-js\";\n\ninterface User {\n  id: string;\n  name: string;\n  role: \"admin\" | \"viewer\";\n}\n\nexport function useUser(id: string) {\n  const [user, setUser] = createSignal<User | null>(null);\n  const [loading, setLoading] = createSignal(true);\n\n  async function fetchUser(): Promise<void> {\n    const res = await fetch(`/api/users/${id}`);\n    if (!res.ok) throw new Error(`HTTP ${res.status}`);\n    setUser(await res.json());\n    setLoading(false);\n  }\n\n  return { user, loading, fetchUser };\n}\n```\n\n```rust\n// Sindri Aurora \u2014 Rust example\nuse std::collections::HashMap;\n\n#[derive(Debug, Clone)]\npub struct Registry<T> {\n    entries: HashMap<String, T>,\n}\n\nimpl<T: Clone> Registry<T> {\n    pub fn new() -> Self {\n        Self { entries: HashMap::new() }\n    }\n\n    pub fn register(&mut self, id: impl Into<String>, value: T) {\n        self.entries.insert(id.into(), value);\n    }\n\n    pub fn get(&self, id: &str) -> Option<&T> {\n        self.entries.get(id)\n    }\n}\n```\n\n## Installation\n\nInstall from Settings \u2192 Extensions \u2192 Marketplace, then switch to it under Settings \u2192 Appearance \u2192 Colour theme.",
-    "folderPath": "aurora-pack/aurora-theme"
+    "folderPath": "packs/aurora/aurora-theme"
   },
   {
     "manifest": {
-      "$schema": "../../manifest.schema.json",
-      "id": "sindri.aurora-file-icons",
-      "name": "Aurora File Icons",
-      "version": "0.1.0",
-      "publisher": "sindri",
-      "description": "File icon set matching the Sindri Aurora colour palette \u2014 violet, teal, and lavender on deep ink backgrounds.",
-      "categories": [
-        "File Icon Theme"
-      ],
-      "tags": [
-        "aurora",
-        "dark",
-        "violet",
-        "teal"
-      ],
-      "permissions": [],
-      "engines": {
-        "sindri": ">=0.1.0"
-      },
-      "contributes": {
-        "iconThemes": [
-          {
-            "id": "sindri-aurora-file-icons",
-            "name": "Aurora File Icons",
-            "kind": "color",
-            "path": "icons.json"
-          }
-        ]
-      }
-    },
-    "tags": [
-      "v0.1.0"
-    ],
-    "readmeContent": "# Aurora File Icons\n\nA file icon set designed to complement the Sindri Aurora colour theme. Violet, lavender, and teal on deep ink backgrounds \u2014 seamless with the Aurora palette.\n\n## Covered file types\n\n| Extensions | Colour |\n| --- | --- |\n| `.js` `.mjs` | Lavender `#C490FF` |\n| `.ts` `.mts` | Violet `#B06CFF` |\n| `.jsx` `.tsx` | Teal `#00D4B4` |\n| `.rs` | Light purple `#E0B0FF` |\n| `.py` | Teal `#00D4B4` |\n| `.go` | Sky blue `#79B8FF` |\n| `.json` | Violet `#B06CFF` |\n| `.md` | Lavender `#C490FF` |\n| `.git*` | Coral `#FF5A6E` |\n\n## Part of the Aurora Pack\n\nThis icon set is bundled together with the Aurora colour theme and Aurora UI Icons in the **Aurora Pack** extension pack.\n\nInstall all three together by searching for \"Aurora Pack\" in the marketplace.",
-    "folderPath": "aurora-pack/aurora-file-icons"
-  },
-  {
-    "manifest": {
-      "$schema": "../../manifest.schema.json",
+      "$schema": "../../../manifest.schema.json",
       "id": "sindri.aurora-ui-icons",
       "name": "Aurora UI Icons",
       "version": "0.1.0",
@@ -352,41 +323,6 @@
       "v0.1.0"
     ],
     "readmeContent": "# Aurora UI Icons\n\nActivity bar and toolbar icons for the Sindri Aurora theme. Uses the same runic glyph set as the default Sindri UI icons \u2014 the aurora character comes from the theme's violet `#B06CFF` accent being applied to `currentColor` in these monochrome SVGs.\n\nInstall the **Aurora Pack** to get the Aurora theme, file icons, and these UI icons together.",
-    "folderPath": "aurora-pack/aurora-ui-icons"
-  },
-  {
-    "manifest": {
-      "$schema": "../../manifest.schema.json",
-      "id": "sindri.aurora-pack",
-      "name": "Aurora Pack",
-      "version": "0.1.0",
-      "publisher": "sindri",
-      "description": "The complete Aurora experience \u2014 colour theme, file icons, and UI icons in one click.",
-      "categories": [
-        "Extension Pack"
-      ],
-      "tags": [
-        "aurora",
-        "dark",
-        "violet",
-        "teal",
-        "bundle"
-      ],
-      "permissions": [],
-      "engines": {
-        "sindri": ">=0.1.0"
-      },
-      "contributes": {},
-      "extensionPack": [
-        "sindri.aurora-theme",
-        "sindri.aurora-file-icons",
-        "sindri.aurora-ui-icons"
-      ]
-    },
-    "tags": [
-      "v0.1.0"
-    ],
-    "readmeContent": "# Aurora Pack\n\nThe complete Aurora experience for Sindri IDE \u2014 install all three Aurora extensions in one click.\n\n## What's included\n\n| Extension | Type | Description |\n| --- | --- | --- |\n| Sindri Aurora | Colour Theme | Deep purple and teal dark theme |\n| Aurora File Icons | File Icon Theme | File tree icons in the Aurora palette |\n| Aurora UI Icons | UI Icon Theme | Activity bar icons tuned for the Aurora accent |\n\n## Installation\n\nClick **Install** to install all three extensions together. Switch to Aurora Dark under Settings \u2192 Appearance \u2192 Colour theme, then select Aurora File Icons and Aurora UI Icons in the icon dropdowns.\n\n## About extension packs\n\nExtension packs are a way to bundle related extensions that are better together. Installing a pack installs each member extension individually \u2014 you can manage, update, or uninstall them independently afterward.",
-    "folderPath": "aurora-pack"
+    "folderPath": "packs/aurora/aurora-ui-icons"
   }
 ]

@@ -1,0 +1,41 @@
+{
+  "$schema": "../../../manifest.schema.json",
+  "id": "sindri.aurora-theme",
+  "name": "Sindri Aurora",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "A deep purple and teal dark theme for Sindri IDE.",
+  "categories": [
+    "Color Theme"
+  ],
+  "tags": [
+    "dark",
+    "purple",
+    "violet",
+    "teal",
+    "aurora"
+  ],
+  "permissions": [],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
+  "contributes": {
+    "themes": [
+      {
+        "id": "sindri-aurora-dark",
+        "name": "Aurora Dark",
+        "kind": "dark",
+        "path": "aurora-dark.json",
+        "previews": {
+          "TypeScript": "interface User {\n  id: string;\n  name: string;\n  role: \"admin\" | \"viewer\";\n}\n\nasync function getUser(id: string): Promise<User> {\n  // Fetch user from API\n  const res = await fetch(`/api/users/${id}`);\n  if (!res.ok) throw new Error(`HTTP ${res.status}`);\n  return res.json() as Promise<User>;\n}",
+          "Rust": "use std::collections::HashMap;\n\n#[derive(Debug, Clone)]\npub struct Registry<T> {\n    entries: HashMap<String, T>,\n}\n\nimpl<T: Clone> Registry<T> {\n    pub fn new() -> Self {\n        Self { entries: HashMap::new() }\n    }\n\n    /// Register a value by ID.\n    pub fn register(&mut self, id: impl Into<String>, value: T) {\n        self.entries.insert(id.into(), value);\n    }\n\n    pub fn get(&self, id: &str) -> Option<&T> {\n        self.entries.get(id)\n    }\n}",
+          "Python": "from dataclasses import dataclass, field\nfrom typing import Optional\n\n@dataclass\nclass Extension:\n    id: str\n    name: str\n    version: str\n    installed: bool = False\n    tags: list[str] = field(default_factory=list)\n\n    def matches(self, query: str) -> bool:\n        \"\"\"Return True if query matches name or any tag.\"\"\"\n        q = query.lower()\n        return q in self.name.lower() or any(q in t for t in self.tags)\n\n    def install(self) -> None:\n        if self.installed:\n            raise ValueError(f\"{self.name!r} is already installed\")\n        self.installed = True",
+          "JavaScript": "const CACHE_TTL = 5 * 60 * 1000; // 5 minutes\n\nclass RegistryClient {\n  #cache = new Map();\n\n  async fetchIndex(repoUrl) {\n    const cached = this.#cache.get(repoUrl);\n    if (cached && Date.now() - cached.ts < CACHE_TTL) {\n      return cached.data;\n    }\n    const res = await fetch(`${toRawBase(repoUrl)}/index.json`);\n    if (!res.ok) return null;\n    const data = await res.json();\n    this.#cache.set(repoUrl, { data, ts: Date.now() });\n    return data;\n  }\n}",
+          "Java": "import java.util.HashMap;\nimport java.util.Map;\nimport java.util.Optional;\n\npublic class Registry<T> {\n    private final Map<String, T> entries = new HashMap<>();\n\n    public void register(String id, T value) {\n        if (entries.containsKey(id)) {\n            throw new IllegalStateException(\"Already registered: \" + id);\n        }\n        entries.put(id, value);\n    }\n\n    public Optional<T> get(String id) {\n        return Optional.ofNullable(entries.get(id));\n    }\n\n    public boolean isRegistered(String id) {\n        return entries.containsKey(id);\n    }\n}",
+          "JSON": "{\n  \"$schema\": \"../manifest.schema.json\",\n  \"id\": \"yourname.my-theme\",\n  \"name\": \"My Theme\",\n  \"version\": \"1.0.0\",\n  \"publisher\": \"yourname\",\n  \"categories\": [\"Color Theme\"],\n  \"permissions\": [],\n  \"engines\": { \"sindri\": \">=0.1.0\" },\n  \"contributes\": {\n    \"themes\": [\n      {\n        \"id\": \"my-theme-dark\",\n        \"name\": \"My Theme Dark\",\n        \"kind\": \"dark\",\n        \"path\": \"dark.json\"\n      }\n    ]\n  }\n}",
+          "XML": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\">\n  <modelVersion>4.0.0</modelVersion>\n  <groupId>com.example</groupId>\n  <artifactId>sindri-extension</artifactId>\n  <version>1.0.0</version>\n\n  <dependencies>\n    <dependency>\n      <groupId>org.junit.jupiter</groupId>\n      <artifactId>junit-jupiter</artifactId>\n      <version>5.10.0</version>\n      <scope>test</scope>\n    </dependency>\n  </dependencies>\n</project>"
+        }
+      }
+    ]
+  }
+}

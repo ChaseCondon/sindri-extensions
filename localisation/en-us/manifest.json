@@ -1,0 +1,16 @@
+{
+  "$schema": "../../manifest.schema.json",
+  "id": "sindri.en-us",
+  "name": "English (United States)",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "English (US) language pack \u2014 the canonical reference locale for Sindri IDE.",
+  "categories": [
+    "Localisation"
+  ],
+  "permissions": [],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
+  "main": "dist/extension.js"
+}
