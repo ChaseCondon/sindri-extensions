@@ -11,12 +11,7 @@
       "engines": { "sindri": ">=0.1.0" },
       "contributes": {
         "themes": [
-          {
-            "id": "sindri-aurora-dark",
-            "name": "Aurora Dark",
-            "kind": "dark",
-            "path": "aurora-dark.json"
-          }
+          { "id": "sindri-aurora-dark", "name": "Aurora Dark", "kind": "dark", "path": "aurora-dark.json" }
         ]
       }
     },
@@ -36,17 +31,112 @@
       "engines": { "sindri": ">=0.1.0" },
       "contributes": {
         "iconThemes": [
-          {
-            "id": "sindri-neon-icons",
-            "name": "Neon Icons",
-            "kind": "color",
-            "path": "icons.json"
-          }
+          { "id": "sindri-neon-icons", "name": "Neon Icons", "kind": "color", "path": "icons.json" }
         ]
       }
     },
     "tags": ["v0.1.0"],
     "readmeContent": "# Sindri Neon Icons\n\nA vibrant neon file icon theme for Sindri IDE.\n\nLanguage icons use bold label glyphs with saturated language-brand colours on dark backgrounds — easy to scan at a glance in the file tree.\n\n**Covers:** JS · TS · JSX · TSX · Python · Rust · Go · JSON · TOML · YAML · Markdown · CSS · SCSS · HTML · SVG · Shell · lock · .env · git",
     "folderPath": "neon-icons"
+  },
+  {
+    "manifest": {
+      "id": "sindri.sindri-ui-icons",
+      "name": "Sindri UI Icons",
+      "version": "0.1.0",
+      "publisher": "sindri",
+      "description": "The default Sindri activity bar and toolbar icon set, available as a standalone extension.",
+      "categories": ["UI Icon Theme"],
+      "permissions": [],
+      "engines": { "sindri": ">=0.1.0" },
+      "contributes": {
+        "iconThemes": [
+          { "id": "sindri-ui", "name": "Sindri UI", "kind": "mono", "path": "ui-pack.json" }
+        ]
+      }
+    },
+    "tags": ["v0.1.0"],
+    "readmeContent": "# Sindri UI Icons\n\nThe default Sindri activity bar and toolbar icon set, published as a standalone extension.\n\nSVG sources live in `icons/`. Icon IDs map to tool-window identifiers: `explorer`, `search`, `git`, `debug`, `extensions`, `terminal`, `problems`, `output`, `settings`, and more.\n\n**Status:** Data-only — installs without the extension host.",
+    "folderPath": "sindri-ui-icons"
+  },
+  {
+    "manifest": {
+      "id": "sindri.rust-language-support",
+      "name": "Rust Language Support",
+      "version": "0.1.0",
+      "publisher": "sindri",
+      "description": "Rust language support — syntax highlighting, rust-analyzer LSP, and LLDB debugger.",
+      "categories": ["Language"],
+      "permissions": ["sindri.workspace", "sindri.lsp", "sindri.dap"],
+      "engines": { "sindri": ">=0.1.0" },
+      "contributes": {
+        "grammars": [
+          { "languageId": "rust", "path": "grammars/tree-sitter-rust.wasm" }
+        ],
+        "lsp": [
+          { "id": "rust-analyzer", "languageId": "rust", "launch": { "command": "rust-analyzer" } }
+        ],
+        "dap": [
+          { "id": "lldb", "languageId": "rust", "launch": { "command": "lldb-vscode", "args": [] } }
+        ]
+      },
+      "main": "dist/extension.js"
+    },
+    "tags": ["v0.1.0"],
+    "readmeContent": "# Rust Language Support\n\nFull Rust development support for Sindri IDE.\n\n- **Syntax** — Tree-sitter grammar (`tree-sitter-rust`)\n- **LSP** — rust-analyzer (hover, completions, diagnostics, go-to-definition)\n- **DAP** — LLDB debugger integration\n\n> **Status:** Scaffolded — requires the Sindri extension host (in development).",
+    "folderPath": "rust-language-support"
+  },
+  {
+    "manifest": {
+      "id": "sindri.en-us-localisation",
+      "name": "English (United States)",
+      "version": "0.1.0",
+      "publisher": "sindri",
+      "description": "English (US) localisation pack — the canonical reference locale for Sindri IDE.",
+      "categories": ["Localisation"],
+      "permissions": [],
+      "engines": { "sindri": ">=0.1.0" },
+      "main": "dist/extension.js"
+    },
+    "tags": ["v0.1.0"],
+    "readmeContent": "# English (United States)\n\nThe canonical reference locale for Sindri IDE.\n\nThis extension serves as both the default localisation pack and the authoritative source of UI string keys for translators creating other locale packs.\n\n> **Status:** Scaffolded — requires the Sindri extension host and localisation API (in development).",
+    "folderPath": "en-us-language-pack"
+  },
+  {
+    "manifest": {
+      "id": "sindri.cargo-test",
+      "name": "Cargo Test Adapter",
+      "version": "0.1.0",
+      "publisher": "sindri",
+      "description": "Cargo test runner adapter — discover, run, and display Rust test results inline.",
+      "categories": ["Test & Task Adapter"],
+      "permissions": ["sindri.workspace", "sindri.terminal"],
+      "engines": { "sindri": ">=0.1.0" },
+      "contributes": {
+        "taskAdapters": [
+          { "id": "cargo-test", "languageId": "rust" }
+        ]
+      },
+      "main": "dist/extension.js"
+    },
+    "tags": ["v0.1.0"],
+    "readmeContent": "# Cargo Test Adapter\n\nIntegrates `cargo test` into the Sindri test runner.\n\n- Discovers tests via `cargo test -- --list`\n- Runs individual tests or the full suite\n- Streams output and maps failures to source locations\n\n> **Status:** Scaffolded — requires the Sindri extension host (in development).",
+    "folderPath": "cargo-test-adapter"
+  },
+  {
+    "manifest": {
+      "id": "sindri.minimap",
+      "name": "Sindri Minimap",
+      "version": "0.1.0",
+      "publisher": "sindri",
+      "description": "Adds a minimap (code overview) panel to the right edge of each editor.",
+      "categories": ["UI Extension"],
+      "permissions": ["sindri.ui"],
+      "engines": { "sindri": ">=0.1.0" },
+      "main": "dist/extension.js"
+    },
+    "tags": ["v0.1.0"],
+    "readmeContent": "# Sindri Minimap\n\nAdds a scaled-down code overview panel to the right edge of each editor pane.\n\n- Renders a pixel-perfect minimap of the current file\n- Click to jump to any position\n- Highlights the visible viewport region\n- Respects the active colour theme\n\n> **Status:** Scaffolded — requires the Sindri extension host (in development).",
+    "folderPath": "sindri-minimap"
   }
 ]
