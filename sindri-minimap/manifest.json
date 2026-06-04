@@ -1,0 +1,12 @@
+{
+  "$schema": "../manifest.schema.json",
+  "id": "sindri.minimap",
+  "name": "Sindri Minimap",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Adds a minimap (code overview) panel to the right edge of each editor.",
+  "categories": ["UI Extension"],
+  "permissions": ["sindri.ui"],
+  "engines": { "sindri": ">=0.1.0" },
+  "main": "dist/extension.js"
+}
