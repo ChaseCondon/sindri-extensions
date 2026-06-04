@@ -108,7 +108,7 @@
     "tags": [
       "v0.1.0"
     ],
-    "readmeContent": "# Aurora Pack\n\nThe complete Aurora experience for Sindri IDE \u2014 install all three Aurora extensions in one click.\n\n## What's included\n\n| Extension | Type | Description |\n| --- | --- | --- |\n| Sindri Aurora | Colour Theme | Deep purple and teal dark theme |\n| Aurora File Icons | File Icon Theme | File tree icons in the Aurora palette |\n| Aurora UI Icons | UI Icon Theme | Activity bar icons tuned for the Aurora accent |\n\n## Installation\n\nClick **Install** to install all three extensions together. Switch to Aurora Dark under Settings \u2192 Appearance \u2192 Colour theme, then select Aurora File Icons and Aurora UI Icons in the icon dropdowns.\n\n## About extension packs\n\nExtension packs are a way to bundle related extensions that are better together. Installing a pack installs each member extension individually \u2014 you can manage, update, or uninstall them independently afterward.",
+    "readmeContent": "# Aurora Pack\n\nThe complete Aurora experience for Sindri IDE \u2014 install all three Aurora extensions in one click.\n\n## What's included\n\n| Extension | Type | Description |\n| --- | --- | --- |\n| Aurora Dark | Colour Theme | Deep purple and teal dark theme |\n| Aurora File Icons | File Icon Theme | File tree icons in the Aurora palette |\n| Aurora UI Icons | UI Icon Theme | Activity bar icons tuned for the Aurora accent |\n\n## Installation\n\nClick **Install** to install all three extensions together. Switch to Aurora Dark under Settings \u2192 Appearance \u2192 Colour theme, then select Aurora File Icons and Aurora UI Icons in the icon dropdowns.\n\n## About extension packs\n\nExtension packs are a way to bundle related extensions that are better together. Installing a pack installs each member extension individually \u2014 you can manage, update, or uninstall them independently afterward.",
     "folderPath": "packs/aurora"
   },
   {
@@ -209,7 +209,7 @@
       "name": "Aurora File Icons",
       "version": "0.1.0",
       "publisher": "sindri",
-      "description": "File icon set matching the Sindri Aurora colour palette \u2014 violet, teal, and lavender on deep ink backgrounds.",
+      "description": "File icon set matching the Aurora colour palette \u2014 violet, teal, and lavender on deep ink backgrounds.",
       "categories": [
         "File Icon Theme"
       ],
@@ -244,7 +244,7 @@
     "manifest": {
       "$schema": "../../../manifest.schema.json",
       "id": "sindri.aurora-theme",
-      "name": "Sindri Aurora",
+      "name": "Aurora Dark",
       "version": "0.1.0",
       "publisher": "sindri",
       "description": "A deep purple and teal dark theme for Sindri IDE.",
@@ -285,7 +285,7 @@
     "tags": [
       "v0.1.0"
     ],
-    "readmeContent": "# Sindri Aurora\n\nA deep purple and teal dark theme for Sindri IDE \u2014 high contrast where it counts, muted chrome around it.\n\n## Palette\n\n| Role | Colour | Hex |\n| --- | --- | --- |\n| Background | Deep ink | `#0B0A18` |\n| Panel | Dark navy | `#0E0D1F` |\n| Accent | Violet | `#B06CFF` |\n| Keywords | Soft lavender | `#C490FF` |\n| Strings | Teal | `#00D4B4` |\n| Functions | Light purple | `#E0B0FF` |\n| Numbers | Sky blue | `#79B8FF` |\n| Comments | Muted blue-grey | `#3E3460` |\n| Danger | Coral | `#FF5A6E` |\n\n## Preview\n\n```typescript\n// Sindri Aurora \u2014 TypeScript example\nimport { createSignal } from \"solid-js\";\n\ninterface User {\n  id: string;\n  name: string;\n  role: \"admin\" | \"viewer\";\n}\n\nexport function useUser(id: string) {\n  const [user, setUser] = createSignal<User | null>(null);\n  const [loading, setLoading] = createSignal(true);\n\n  async function fetchUser(): Promise<void> {\n    const res = await fetch(`/api/users/${id}`);\n    if (!res.ok) throw new Error(`HTTP ${res.status}`);\n    setUser(await res.json());\n    setLoading(false);\n  }\n\n  return { user, loading, fetchUser };\n}\n```\n\n```rust\n// Sindri Aurora \u2014 Rust example\nuse std::collections::HashMap;\n\n#[derive(Debug, Clone)]\npub struct Registry<T> {\n    entries: HashMap<String, T>,\n}\n\nimpl<T: Clone> Registry<T> {\n    pub fn new() -> Self {\n        Self { entries: HashMap::new() }\n    }\n\n    pub fn register(&mut self, id: impl Into<String>, value: T) {\n        self.entries.insert(id.into(), value);\n    }\n\n    pub fn get(&self, id: &str) -> Option<&T> {\n        self.entries.get(id)\n    }\n}\n```\n\n## Installation\n\nInstall from Settings \u2192 Extensions \u2192 Marketplace, then switch to it under Settings \u2192 Appearance \u2192 Colour theme.",
+    "readmeContent": "# Aurora Dark\n\nA deep purple and teal dark theme for Sindri IDE \u2014 high contrast where it counts, muted chrome around it.\n\n## Palette\n\n| Role | Colour | Hex |\n| --- | --- | --- |\n| Background | Deep ink | `#0B0A18` |\n| Panel | Dark navy | `#0E0D1F` |\n| Accent | Violet | `#B06CFF` |\n| Keywords | Soft lavender | `#C490FF` |\n| Strings | Teal | `#00D4B4` |\n| Functions | Light purple | `#E0B0FF` |\n| Numbers | Sky blue | `#79B8FF` |\n| Comments | Muted blue-grey | `#3E3460` |\n| Danger | Coral | `#FF5A6E` |\n\n## Preview\n\n```typescript\n// Sindri Aurora \u2014 TypeScript example\nimport { createSignal } from \"solid-js\";\n\ninterface User {\n  id: string;\n  name: string;\n  role: \"admin\" | \"viewer\";\n}\n\nexport function useUser(id: string) {\n  const [user, setUser] = createSignal<User | null>(null);\n  const [loading, setLoading] = createSignal(true);\n\n  async function fetchUser(): Promise<void> {\n    const res = await fetch(`/api/users/${id}`);\n    if (!res.ok) throw new Error(`HTTP ${res.status}`);\n    setUser(await res.json());\n    setLoading(false);\n  }\n\n  return { user, loading, fetchUser };\n}\n```\n\n```rust\n// Sindri Aurora \u2014 Rust example\nuse std::collections::HashMap;\n\n#[derive(Debug, Clone)]\npub struct Registry<T> {\n    entries: HashMap<String, T>,\n}\n\nimpl<T: Clone> Registry<T> {\n    pub fn new() -> Self {\n        Self { entries: HashMap::new() }\n    }\n\n    pub fn register(&mut self, id: impl Into<String>, value: T) {\n        self.entries.insert(id.into(), value);\n    }\n\n    pub fn get(&self, id: &str) -> Option<&T> {\n        self.entries.get(id)\n    }\n}\n```\n\n## Installation\n\nInstall from Settings \u2192 Extensions \u2192 Marketplace, then switch to it under Settings \u2192 Appearance \u2192 Colour theme.",
     "folderPath": "packs/aurora/aurora-theme"
   },
   {
@@ -309,11 +309,10 @@
         "sindri": ">=0.1.0"
       },
       "contributes": {
-        "iconThemes": [
+        "uiIconPacks": [
           {
             "id": "sindri-aurora-ui",
             "name": "Aurora UI Icons",
-            "kind": "mono",
             "path": "ui-pack.json"
           }
         ]
