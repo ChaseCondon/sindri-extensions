@@ -22,6 +22,7 @@
     "css":  "css",
     "scss": "scss",
     "html": "html",
+    "htm":  "html",
     "svg":  "svg",
     "sh":   "sh",
     "bash": "sh",
@@ -29,15 +30,14 @@
     "env":  "env"
   },
   "fileNames": {
-    ".gitignore":      "git",
-    ".gitattributes":  "git",
-    "package.json":    "json",
-    "tsconfig.json":   "json",
-    "Cargo.toml":      "toml",
-    ".env":            "env",
-    ".env.local":      "env",
-    "Dockerfile":      "sh",
-    "Makefile":        "sh"
+    ".gitignore":     "git",
+    ".gitattributes": "git",
+    "package.json":   "json",
+    "tsconfig.json":  "json",
+    "Cargo.toml":     "toml",
+    ".env":           "env",
+    ".env.local":     "env",
+    ".env.example":   "env"
   },
   "defaults": {
     "file":       "file",
@@ -45,71 +45,27 @@
     "folderOpen": "folder-open"
   },
   "icons": {
-    "file": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='#7A8899' d='M4 2h5.5L13 5.5V14H4V2z'/><path fill='#99AABB' d='M9 2l4 4h-4V2z'/></svg>"
-    },
-    "folder": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='#E8A830' d='M1 5h14v9H1z'/><path fill='#F0C060' d='M1 5h6l1-2h7v2H1z'/></svg>"
-    },
-    "folder-open": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='#F0C060' d='M1 6h13l-2 8H1z'/><path fill='#E8A830' d='M1 4h5l1-2h8v4H1V4z'/></svg>"
-    },
-    "js": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='#2E2E2E' width='16' height='16' rx='2'/><text x='2' y='13' font-family='monospace' font-size='10' font-weight='bold' fill='#F7DF1E'>JS</text></svg>"
-    },
-    "ts": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='#1565C0' width='16' height='16' rx='2'/><text x='2' y='13' font-family='monospace' font-size='10' font-weight='bold' fill='#FFFFFF'>TS</text></svg>"
-    },
-    "jsx": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='#20232A' width='16' height='16' rx='2'/><text x='1' y='12' font-family='monospace' font-size='8' font-weight='bold' fill='#61DAFB'>JSX</text></svg>"
-    },
-    "tsx": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='#1565C0' width='16' height='16' rx='2'/><text x='1' y='12' font-family='monospace' font-size='8' font-weight='bold' fill='#61DAFB'>TSX</text></svg>"
-    },
-    "py": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='#1A3A5C' width='16' height='16' rx='2'/><text x='3' y='13' font-family='monospace' font-size='10' font-weight='bold' fill='#FFD43B'>Py</text></svg>"
-    },
-    "rs": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='#2C1A0E' width='16' height='16' rx='2'/><text x='2' y='13' font-family='monospace' font-size='10' font-weight='bold' fill='#F74C00'>Rs</text></svg>"
-    },
-    "go": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='#00343A' width='16' height='16' rx='2'/><text x='1' y='13' font-family='monospace' font-size='10' font-weight='bold' fill='#00ACD7'>Go</text></svg>"
-    },
-    "json": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='#1A2A1A' width='16' height='16' rx='2'/><text x='1' y='12' font-family='monospace' font-size='7' fill='#98C379'>{\"\"}</text></svg>"
-    },
-    "toml": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='#1C1A14' width='16' height='16' rx='2'/><text x='1' y='12' font-family='monospace' font-size='7' fill='#E5C07B'>TOML</text></svg>"
-    },
-    "yaml": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='#1A1A2E' width='16' height='16' rx='2'/><text x='1' y='12' font-family='monospace' font-size='7' fill='#C678DD'>YAML</text></svg>"
-    },
-    "md": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='#0A1628' width='16' height='16' rx='2'/><text x='1' y='12' font-family='monospace' font-size='8' fill='#569CD6'>MD</text></svg>"
-    },
-    "css": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='#0D2244' width='16' height='16' rx='2'/><text x='1' y='12' font-family='monospace' font-size='7' fill='#56B3F4'>CSS</text></svg>"
-    },
-    "scss": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='#2A1A2E' width='16' height='16' rx='2'/><text x='1' y='12' font-family='monospace' font-size='6' fill='#CF649A'>SCSS</text></svg>"
-    },
-    "html": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='#2A1200' width='16' height='16' rx='2'/><text x='1' y='12' font-family='monospace' font-size='6' fill='#E44D26'>HTML</text></svg>"
-    },
-    "svg": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='#1A2A20' width='16' height='16' rx='2'/><text x='1' y='12' font-family='monospace' font-size='7' fill='#79C0A8'>SVG</text></svg>"
-    },
-    "sh": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='#101810' width='16' height='16' rx='2'/><text x='2' y='13' font-family='monospace' font-size='9' fill='#98C379'>$_</text></svg>"
-    },
-    "lock": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='#1A1A1A' width='16' height='16' rx='2'/><path fill='#888' d='M5 8V6a3 3 0 016 0v2h1v6H4V8h1zm2 0h2V6a1 1 0 00-2 0v2z'/></svg>"
-    },
-    "env": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='#1A2210' width='16' height='16' rx='2'/><text x='1' y='12' font-family='monospace' font-size='7' fill='#B5D5A5'>.env</text></svg>"
-    },
-    "git": {
-      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='#2A1212' width='16' height='16' rx='2'/><text x='1' y='12' font-family='monospace' font-size='7' fill='#F05033'>GIT</text></svg>"
-    }
+    "file":        { "path": "icons/file.svg" },
+    "folder":      { "path": "icons/folder.svg" },
+    "folder-open": { "path": "icons/folder-open.svg" },
+    "js":          { "path": "icons/js.svg" },
+    "ts":          { "path": "icons/ts.svg" },
+    "jsx":         { "path": "icons/jsx.svg" },
+    "tsx":         { "path": "icons/tsx.svg" },
+    "py":          { "path": "icons/py.svg" },
+    "rs":          { "path": "icons/rs.svg" },
+    "go":          { "path": "icons/go.svg" },
+    "json":        { "path": "icons/json.svg" },
+    "toml":        { "path": "icons/toml.svg" },
+    "yaml":        { "path": "icons/yaml.svg" },
+    "md":          { "path": "icons/md.svg" },
+    "css":         { "path": "icons/css.svg" },
+    "scss":        { "path": "icons/scss.svg" },
+    "html":        { "path": "icons/html.svg" },
+    "svg":         { "path": "icons/svg.svg" },
+    "sh":          { "path": "icons/sh.svg" },
+    "lock":        { "path": "icons/lock.svg" },
+    "env":         { "path": "icons/env.svg" },
+    "git":         { "path": "icons/git.svg" }
   }
 }
