@@ -1,0 +1,54 @@
+[
+  {
+    "manifest": {
+      "id": "sindri.aurora-theme",
+      "name": "Sindri Aurora",
+      "version": "0.1.0",
+      "publisher": "sindri",
+      "description": "A deep purple and teal dark theme for Sindri IDE.",
+      "categories": ["Color Theme"],
+      "permissions": [],
+      "engines": { "sindri": ">=0.1.0" },
+      "contributes": {
+        "themes": [
+          {
+            "id": "sindri-aurora-dark",
+            "name": "Aurora Dark",
+            "kind": "dark",
+            "path": "aurora-dark.json"
+          }
+        ]
+      },
+      "readme": "README.md"
+    },
+    "tags": ["v0.1.0"],
+    "readmeContent": "# Sindri Aurora\n\nA deep purple and teal dark theme for Sindri IDE.\n\n- **Accent:** Violet `#B06CFF`\n- **Strings / literals:** Teal `#00D4B4`\n- **Keywords:** Soft lavender `#C490FF`\n- **Background:** Deep ink `#0B0A18`\n\nDesigned for long sessions — high contrast where you need it, muted chrome around it.",
+    "folderPath": "aurora-theme"
+  },
+  {
+    "manifest": {
+      "id": "sindri.neon-icons",
+      "name": "Sindri Neon Icons",
+      "version": "0.1.0",
+      "publisher": "sindri",
+      "description": "Vibrant neon file icon theme — bold language-brand glyphs on dark backgrounds.",
+      "categories": ["File Icon Theme"],
+      "permissions": [],
+      "engines": { "sindri": ">=0.1.0" },
+      "contributes": {
+        "iconThemes": [
+          {
+            "id": "sindri-neon-icons",
+            "name": "Neon Icons",
+            "kind": "color",
+            "path": "icons.json"
+          }
+        ]
+      },
+      "readme": "README.md"
+    },
+    "tags": ["v0.1.0"],
+    "readmeContent": "# Sindri Neon Icons\n\nA vibrant neon file icon theme for Sindri IDE.\n\nLanguage icons use bold label glyphs with saturated language-brand colours on dark backgrounds — easy to scan at a glance in the file tree.\n\n**Covers:** JS · TS · JSX · TSX · Python · Rust · Go · JSON · TOML · YAML · Markdown · CSS · SCSS · HTML · SVG · Shell · lock · .env · git",
+    "folderPath": "neon-icons"
+  }
+]
