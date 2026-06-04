@@ -1,0 +1,36 @@
+{
+  "id": "sindri-aurora-file-icons",
+  "name": "Aurora File Icons",
+  "kind": "color",
+  "fileExtensions": {
+    "js": "js", "mjs": "js", "cjs": "js",
+    "ts": "ts", "mts": "ts", "cts": "ts",
+    "jsx": "jsx", "tsx": "tsx",
+    "py": "py", "rs": "rs", "go": "go",
+    "json": "json", "md": "md"
+  },
+  "fileNames": {
+    ".gitignore": "git", ".gitattributes": "git",
+    "package.json": "json", "tsconfig.json": "json", "Cargo.toml": "json"
+  },
+  "defaults": {
+    "file": "file",
+    "folder": "folder",
+    "folderOpen": "folder-open"
+  },
+  "icons": {
+    "file":        { "path": "icons/file.svg" },
+    "folder":      { "path": "icons/folder.svg" },
+    "folder-open": { "path": "icons/folder-open.svg" },
+    "js":          { "path": "icons/js.svg" },
+    "ts":          { "path": "icons/ts.svg" },
+    "jsx":         { "path": "icons/jsx.svg" },
+    "tsx":         { "path": "icons/tsx.svg" },
+    "py":          { "path": "icons/py.svg" },
+    "rs":          { "path": "icons/rs.svg" },
+    "go":          { "path": "icons/go.svg" },
+    "json":        { "path": "icons/json.svg" },
+    "md":          { "path": "icons/md.svg" },
+    "git":         { "path": "icons/git.svg" }
+  }
+}

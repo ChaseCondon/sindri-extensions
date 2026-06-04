@@ -1,0 +1,17 @@
+{
+  "$schema": "../../manifest.schema.json",
+  "id": "sindri.aurora-ui-icons",
+  "name": "Aurora UI Icons",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Activity bar and toolbar icon set for the Aurora theme — same runic glyphs as the default, optimised for Aurora's violet accent.",
+  "categories": ["UI Icon Theme"],
+  "tags": ["aurora", "dark", "violet"],
+  "permissions": [],
+  "engines": { "sindri": ">=0.1.0" },
+  "contributes": {
+    "iconThemes": [
+      { "id": "sindri-aurora-ui", "name": "Aurora UI Icons", "kind": "mono", "path": "ui-pack.json" }
+    ]
+  }
+}

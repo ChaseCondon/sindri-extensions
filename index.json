@@ -223,5 +223,147 @@
     ],
     "readmeContent": "# Sindri Minimap\n\nAdds a scaled-down code overview panel to the right edge of each editor pane \u2014 the classic minimap familiar from most modern editors.\n\n## Features\n\n- **Pixel-accurate rendering** \u2014 the minimap mirrors the editor's exact content at reduced scale\n- **Viewport highlight** \u2014 a shaded band shows the currently visible region of the file\n- **Click to jump** \u2014 click anywhere in the minimap to scroll the editor to that position\n- **Theme-aware** \u2014 background, text, and selection colours follow the active colour theme\n- **Per-pane** \u2014 each split pane has its own independent minimap\n\n## Configuration\n\n```json\n{\n  \"sindri.minimap.enabled\": true,\n  \"sindri.minimap.width\": 100,\n  \"sindri.minimap.renderCharacters\": true,\n  \"sindri.minimap.maxColumn\": 120\n}\n```\n\n| Setting | Default | Description |\n| --- | --- | --- |\n| `enabled` | `true` | Show or hide the minimap |\n| `width` | `100` | Width of the minimap panel in pixels |\n| `renderCharacters` | `true` | Render actual character glyphs vs. coloured blocks |\n| `maxColumn` | `120` | Columns beyond this are not rendered |\n\n> **Status:** Scaffolded \u2014 requires the Sindri extension host and UI Extension API (in development).",
     "folderPath": "sindri-minimap"
+  },
+  {
+    "manifest": {
+      "$schema": "../../manifest.schema.json",
+      "id": "sindri.aurora-theme",
+      "name": "Sindri Aurora",
+      "version": "0.1.0",
+      "publisher": "sindri",
+      "description": "A deep purple and teal dark theme for Sindri IDE.",
+      "categories": [
+        "Color Theme"
+      ],
+      "permissions": [],
+      "engines": {
+        "sindri": ">=0.1.0"
+      },
+      "contributes": {
+        "themes": [
+          {
+            "id": "sindri-aurora-dark",
+            "name": "Aurora Dark",
+            "kind": "dark",
+            "path": "aurora-dark.json"
+          }
+        ]
+      }
+    },
+    "tags": [
+      "v0.1.0"
+    ],
+    "readmeContent": "# Sindri Aurora\n\nA deep purple and teal dark theme for Sindri IDE \u2014 high contrast where it counts, muted chrome around it.\n\n## Palette\n\n| Role | Colour | Hex |\n| --- | --- | --- |\n| Background | Deep ink | `#0B0A18` |\n| Panel | Dark navy | `#0E0D1F` |\n| Accent | Violet | `#B06CFF` |\n| Keywords | Soft lavender | `#C490FF` |\n| Strings | Teal | `#00D4B4` |\n| Functions | Light purple | `#E0B0FF` |\n| Numbers | Sky blue | `#79B8FF` |\n| Comments | Muted blue-grey | `#3E3460` |\n| Danger | Coral | `#FF5A6E` |\n\n## Preview\n\n```typescript\n// Sindri Aurora \u2014 TypeScript example\nimport { createSignal } from \"solid-js\";\n\ninterface User {\n  id: string;\n  name: string;\n  role: \"admin\" | \"viewer\";\n}\n\nexport function useUser(id: string) {\n  const [user, setUser] = createSignal<User | null>(null);\n  const [loading, setLoading] = createSignal(true);\n\n  async function fetchUser(): Promise<void> {\n    const res = await fetch(`/api/users/${id}`);\n    if (!res.ok) throw new Error(`HTTP ${res.status}`);\n    setUser(await res.json());\n    setLoading(false);\n  }\n\n  return { user, loading, fetchUser };\n}\n```\n\n```rust\n// Sindri Aurora \u2014 Rust example\nuse std::collections::HashMap;\n\n#[derive(Debug, Clone)]\npub struct Registry<T> {\n    entries: HashMap<String, T>,\n}\n\nimpl<T: Clone> Registry<T> {\n    pub fn new() -> Self {\n        Self { entries: HashMap::new() }\n    }\n\n    pub fn register(&mut self, id: impl Into<String>, value: T) {\n        self.entries.insert(id.into(), value);\n    }\n\n    pub fn get(&self, id: &str) -> Option<&T> {\n        self.entries.get(id)\n    }\n}\n```\n\n## Installation\n\nInstall from Settings \u2192 Extensions \u2192 Marketplace, then switch to it under Settings \u2192 Appearance \u2192 Colour theme.",
+    "folderPath": "aurora-pack/aurora-theme"
+  },
+  {
+    "manifest": {
+      "$schema": "../../manifest.schema.json",
+      "id": "sindri.aurora-file-icons",
+      "name": "Aurora File Icons",
+      "version": "0.1.0",
+      "publisher": "sindri",
+      "description": "File icon set matching the Sindri Aurora colour palette \u2014 violet, teal, and lavender on deep ink backgrounds.",
+      "categories": [
+        "File Icon Theme"
+      ],
+      "tags": [
+        "aurora",
+        "dark",
+        "violet",
+        "teal"
+      ],
+      "permissions": [],
+      "engines": {
+        "sindri": ">=0.1.0"
+      },
+      "contributes": {
+        "iconThemes": [
+          {
+            "id": "sindri-aurora-file-icons",
+            "name": "Aurora File Icons",
+            "kind": "color",
+            "path": "icons.json"
+          }
+        ]
+      }
+    },
+    "tags": [
+      "v0.1.0"
+    ],
+    "readmeContent": "# Aurora File Icons\n\nA file icon set designed to complement the Sindri Aurora colour theme. Violet, lavender, and teal on deep ink backgrounds \u2014 seamless with the Aurora palette.\n\n## Covered file types\n\n| Extensions | Colour |\n| --- | --- |\n| `.js` `.mjs` | Lavender `#C490FF` |\n| `.ts` `.mts` | Violet `#B06CFF` |\n| `.jsx` `.tsx` | Teal `#00D4B4` |\n| `.rs` | Light purple `#E0B0FF` |\n| `.py` | Teal `#00D4B4` |\n| `.go` | Sky blue `#79B8FF` |\n| `.json` | Violet `#B06CFF` |\n| `.md` | Lavender `#C490FF` |\n| `.git*` | Coral `#FF5A6E` |\n\n## Part of the Aurora Pack\n\nThis icon set is bundled together with the Aurora colour theme and Aurora UI Icons in the **Aurora Pack** extension pack.\n\nInstall all three together by searching for \"Aurora Pack\" in the marketplace.",
+    "folderPath": "aurora-pack/aurora-file-icons"
+  },
+  {
+    "manifest": {
+      "$schema": "../../manifest.schema.json",
+      "id": "sindri.aurora-ui-icons",
+      "name": "Aurora UI Icons",
+      "version": "0.1.0",
+      "publisher": "sindri",
+      "description": "Activity bar and toolbar icon set for the Aurora theme \u2014 same runic glyphs as the default, optimised for Aurora's violet accent.",
+      "categories": [
+        "UI Icon Theme"
+      ],
+      "tags": [
+        "aurora",
+        "dark",
+        "violet"
+      ],
+      "permissions": [],
+      "engines": {
+        "sindri": ">=0.1.0"
+      },
+      "contributes": {
+        "iconThemes": [
+          {
+            "id": "sindri-aurora-ui",
+            "name": "Aurora UI Icons",
+            "kind": "mono",
+            "path": "ui-pack.json"
+          }
+        ]
+      }
+    },
+    "tags": [
+      "v0.1.0"
+    ],
+    "readmeContent": "# Aurora UI Icons\n\nActivity bar and toolbar icons for the Sindri Aurora theme. Uses the same runic glyph set as the default Sindri UI icons \u2014 the aurora character comes from the theme's violet `#B06CFF` accent being applied to `currentColor` in these monochrome SVGs.\n\nInstall the **Aurora Pack** to get the Aurora theme, file icons, and these UI icons together.",
+    "folderPath": "aurora-pack/aurora-ui-icons"
+  },
+  {
+    "manifest": {
+      "$schema": "../../manifest.schema.json",
+      "id": "sindri.aurora-pack",
+      "name": "Aurora Pack",
+      "version": "0.1.0",
+      "publisher": "sindri",
+      "description": "The complete Aurora experience \u2014 colour theme, file icons, and UI icons in one click.",
+      "categories": [
+        "Extension Pack"
+      ],
+      "tags": [
+        "aurora",
+        "dark",
+        "violet",
+        "teal",
+        "bundle"
+      ],
+      "permissions": [],
+      "engines": {
+        "sindri": ">=0.1.0"
+      },
+      "contributes": {},
+      "extensionPack": [
+        "sindri.aurora-theme",
+        "sindri.aurora-file-icons",
+        "sindri.aurora-ui-icons"
+      ]
+    },
+    "tags": [
+      "v0.1.0"
+    ],
+    "readmeContent": "# Aurora Pack\n\nThe complete Aurora experience for Sindri IDE \u2014 install all three Aurora extensions in one click.\n\n## What's included\n\n| Extension | Type | Description |\n| --- | --- | --- |\n| Sindri Aurora | Colour Theme | Deep purple and teal dark theme |\n| Aurora File Icons | File Icon Theme | File tree icons in the Aurora palette |\n| Aurora UI Icons | UI Icon Theme | Activity bar icons tuned for the Aurora accent |\n\n## Installation\n\nClick **Install** to install all three extensions together. Switch to Aurora Dark under Settings \u2192 Appearance \u2192 Colour theme, then select Aurora File Icons and Aurora UI Icons in the icon dropdowns.\n\n## About extension packs\n\nExtension packs are a way to bundle related extensions that are better together. Installing a pack installs each member extension individually \u2014 you can manage, update, or uninstall them independently afterward.",
+    "folderPath": "aurora-pack/aurora-bundle"
   }
 ]
