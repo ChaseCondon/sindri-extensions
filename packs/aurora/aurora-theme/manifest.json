@@ -1,7 +1,7 @@
 {
   "$schema": "../../../manifest.schema.json",
   "id": "sindri.aurora-theme",
-  "name": "Sindri Aurora",
+  "name": "Aurora Dark",
   "version": "0.1.0",
   "publisher": "sindri",
   "description": "A deep purple and teal dark theme for Sindri IDE.",
