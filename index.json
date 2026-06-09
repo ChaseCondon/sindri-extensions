@@ -146,36 +146,20 @@
   {
     "manifest": {
       "$schema": "../../manifest.schema.json",
-      "id": "sindri.cargo-test",
-      "name": "Cargo Test Adapter",
+      "id": "sindri.now-playing",
+      "name": "Now Playing",
       "version": "0.1.0",
       "publisher": "sindri",
-      "description": "Cargo test runner adapter \u2014 discover, run, and display Rust test results inline.",
-      "categories": [
-        "Test & Task Adapter"
-      ],
-      "permissions": [
-        "sindri.workspace",
-        "sindri.terminal"
-      ],
-      "engines": {
-        "sindri": ">=0.1.0"
-      },
-      "contributes": {
-        "taskAdapters": [
-          {
-            "id": "cargo-test",
-            "languageId": "rust"
-          }
-        ]
-      },
-      "main": "dist/extension.js"
+      "description": "Shows the current playerctl track in the status bar. Example of sindri.env.exec + sindri.ui.createStatusBarItem.",
+      "categories": ["Other"],
+      "permissions": ["sindri.env", "sindri.ui"],
+      "engines": { "sindri": ">=0.1.0" },
+      "main": "dist/extension.js",
+      "contributes": {}
     },
-    "tags": [
-      "v0.1.0"
-    ],
-    "readmeContent": "# Cargo Test Adapter\n\nIntegrates `cargo test` into the Sindri test runner \u2014 discover, run, and see results inline without leaving the editor.\n\n## Features\n\n- **Test discovery** \u2014 runs `cargo test -- --list` to find all tests in the workspace\n- **Run individual tests** \u2014 click any test in the panel to run it in isolation\n- **Run full suite** \u2014 run all tests in the current package or workspace\n- **Streaming output** \u2014 live output streamed as tests execute\n- **Inline results** \u2014 pass/fail indicators shown in the gutter next to each `#[test]`\n- **Failure navigation** \u2014 click a failure to jump to the failing assertion\n\n## Example output\n\n```text\nrunning 4 tests\ntest parser::tests::parses_empty_input ... ok\ntest parser::tests::rejects_unclosed_bracket ... ok\ntest registry::tests::deduplicates_entries ... ok\ntest registry::tests::returns_none_for_missing ... FAILED\n\nfailures:\n\n---- registry::tests::returns_none_for_missing stdout ----\nthread 'registry::tests::returns_none_for_missing' panicked at 'assertion failed'\n```\n\n## Requirements\n\n- A Rust workspace with `cargo` on `PATH`\n- Tests using the standard `#[test]` attribute or `#[tokio::test]` for async tests\n\n> **Status:** Scaffolded \u2014 requires the Sindri extension host and Test & Task Adapter API (in development).",
-    "folderPath": "tools/cargo-test-adapter"
+    "tags": ["v0.1.0"],
+    "readmeContent": "# Now Playing\n\nShows the current `playerctl` track in the status bar — a working example of `sindri.env.exec` and `sindri.ui.createStatusBarItem`.\n\n## Usage\n\nActivate the extension. If `playerctl` is running and a player is active, the status bar shows `♪ Artist — Title`. Run the `now-playing.refresh` command to update manually.\n\n## Requirements\n\n- `playerctl` on `PATH` (Linux/MPRIS media players)\n\n## Source\n\nSee `src/extension.ts` — under 30 lines, fully commented.",
+    "folderPath": "tools/sindri-now-playing"
   },
   {
     "manifest": {

@@ -171,6 +171,25 @@
             }
           }
         },
+        "treeViews": {
+          "type": "array",
+          "description": "Tree-view panels contributed by this extension (ADR-0026 Tier 1). Each entry declares a panel that the extension host will register when sindri.ui.registerTreeView(id, …) is called from activate().",
+          "items": {
+            "type": "object",
+            "required": ["id", "title"],
+            "additionalProperties": false,
+            "properties": {
+              "id":          { "type": "string", "description": "Tree-view identifier — passed to sindri.ui.registerTreeView. Must be unique within the extension. Example: 'my-ext.my-tree'" },
+              "title":       { "type": "string", "description": "Panel title shown in the dock tab. Example: 'My Tree'" },
+              "icon":        { "type": "string", "description": "SVG markup for the activity-bar icon. Defaults to a generic list icon." },
+              "defaultDock": {
+                "type": "string",
+                "enum": ["left-top", "left-bottom", "right-top", "right-bottom", "bottom"],
+                "description": "Which dock region the panel initially appears in. Defaults to 'left-top'."
+              }
+            }
+          }
+        },
         "configuration": {
           "type": "object",
           "description": "Settings schema contributed to the Settings panel (ADR-0021). Keys are setting identifiers.",
