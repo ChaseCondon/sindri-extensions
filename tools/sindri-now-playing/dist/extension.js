@@ -18,31 +18,70 @@ var sindri_ext = (() => {
   };
   var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-  // core-extensions/sindri-now-playing/src/extension.ts
+  // ../sindri-extensions/tools/sindri-now-playing/src/extension.ts
   var extension_exports = {};
   __export(extension_exports, {
     activate: () => activate,
     deactivate: () => deactivate
   });
-  async function fetchNowPlaying() {
+  var SMTC_SCRIPT = `
+try {
+  $null = [Windows.Media.Control.GlobalSystemMediaTransportControlsSessionManager,
+           Windows.Media.Control, ContentType=WindowsRuntime]
+  $mgr = [Windows.Media.Control.GlobalSystemMediaTransportControlsSessionManager]::RequestAsync().GetAwaiter().GetResult()
+  $session = $mgr.GetCurrentSession()
+  if (-not $session) { exit 0 }
+  $props = $session.TryGetMediaPropertiesAsync().GetAwaiter().GetResult()
+  $artist = $props.Artist; $title = $props.Title
+  if ($title) { Write-Output ("\u266A " + $(if ($artist) { $artist + " - " } else { "" }) + $title) }
+} catch { exit 0 }
+`.trim();
+  async function tryExec(cmd, ...args) {
     try {
-      const result = await sindri.env.exec(
-        "playerctl",
-        "metadata",
-        "--format",
-        "\u266A {{artist}} - {{title}}"
-      );
-      if (result.code !== 0 || !result.stdout.trim()) return "\u266A \u2014";
-      return result.stdout.trim();
-    } catch {
-      return "\u266A \u2014";
+      const r = await sindri.env.exec(cmd, ...args);
+      const out = r.stdout.trim();
+      return r.code === 0 && out ? out : null;
+    } catch (e) {
+      return null;
     }
   }
+  async function fetchNowPlaying() {
+    const playerctl = await tryExec("playerctl", "metadata", "--format", "\u266A {{artist}} - {{title}}");
+    if (playerctl) return playerctl;
+    const smtc = await tryExec("pwsh", "-NoProfile", "-Command", SMTC_SCRIPT) ?? await tryExec("powershell", "-NoProfile", "-Command", SMTC_SCRIPT);
+    if (smtc) return smtc;
+    const appleScript = `
+    tell application "System Events"
+      if exists process "Music" then
+        tell application "Music"
+          if player state is playing then
+            return "\u266A " & artist of current track & " - " & name of current track
+          end if
+        end tell
+      end if
+      if exists process "Spotify" then
+        tell application "Spotify"
+          if player state is playing then
+            return "\u266A " & artist of current track & " - " & name of current track
+          end if
+        end tell
+      end if
+    end tell
+    return ""
+  `.trim();
+    const macos = await tryExec("osascript", "-e", appleScript);
+    if (macos) return macos;
+    return "\u266A \u2014";
+  }
   async function activate(context) {
-    const item = sindri.ui.createStatusBarItem("sindri.now-playing", { text: "\u266A \u2026", tooltip: "Now Playing" });
+    const item = sindri.ui.createStatusBarItem("sindri.now-playing", {
+      text: "\u266A \u2026",
+      tooltip: "Now Playing \u2014 run 'now-playing.refresh' to update"
+    });
     item.show();
     async function refresh() {
       item.text = await fetchNowPlaying();
+      item.tooltip = `Now Playing \xB7 last updated ${(/* @__PURE__ */ new Date()).toLocaleTimeString()}`;
     }
     context.subscriptions.push(
       sindri.commands.register("now-playing.refresh", refresh),
