@@ -12,8 +12,8 @@ jobs:
   release:
     name: Version Bump & Release
     runs-on: ubuntu-latest
-    # The version-bump commit itself contains [skip ci] — don't re-enter on it.
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    # Skip the version-bump commit itself to prevent re-triggering
+    if: "!contains(github.event.head_commit.message, 'chore: release packages')"
 
     permissions:
       contents: write
@@ -25,9 +25,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          # PAT required so the version-bump commit can push to main past
-          # branch protection (authenticated as repo admin, which is in the bypass list).
-          token: ${{ secrets.RELEASE_BOT_PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: oven-sh/setup-bun@v2
         with:
@@ -36,23 +34,14 @@ jobs:
       - name: Install root dependencies
         run: bun install --frozen-lockfile
 
-      # ── Check for pending changesets ──────────────────────────────────────
       - name: Detect pending changesets
-        id: changesets
+        id: detect
         run: |
           COUNT=$(find .changeset -name "*.md" ! -name "README.md" | wc -l | tr -d ' ')
           echo "count=$COUNT" >> $GITHUB_OUTPUT
-          if [ "$COUNT" = "0" ]; then
-            echo "No pending changesets — nothing to release."
-          else
-            echo "$COUNT changeset(s) found."
-          fi
 
-      # Remaining steps only run when there is something to release.
-
-      # ── Clone sindri-ide (needed by build-extension.ts) ──────────────────
       - name: Checkout sindri-ide
-        if: steps.changesets.outputs.count != '0'
+        if: steps.detect.outputs.count != '0'
         uses: actions/checkout@v4
         with:
           repository: ${{ github.repository_owner }}/sindri
@@ -66,34 +55,25 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install sindri-ide dependencies
-        if: steps.changesets.outputs.count != '0'
+        if: steps.detect.outputs.count != '0'
         run: bun install --frozen-lockfile
         working-directory: ${{ github.workspace }}/sindri-ide
 
-      # ── Bump versions ─────────────────────────────────────────────────────
-      # `changeset version` bumps package.json for each pending changeset and
-      # removes the changeset files. sync-versions.ts propagates the new
-      # version into each extension's manifest.json.
       - name: Bump versions
-        if: steps.changesets.outputs.count != '0'
+        if: steps.detect.outputs.count != '0'
         run: bun run version
 
-      # ── Commit version bumps back to main ─────────────────────────────────
-      # [skip ci] prevents this push from re-triggering this workflow.
-      - name: Commit and push version bumps
-        if: steps.changesets.outputs.count != '0'
+      - name: Commit version bumps
+        if: steps.detect.outputs.count != '0'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "chore: release packages [skip ci]"
+          git commit -m "chore: release packages"
           git push origin main
 
-      # ── Build .sinxt and create GitHub Releases ───────────────────────────
-      # create-releases.ts skips any extension whose {id}-v{version} tag already
-      # exists, so re-runs are safe.
       - name: Build and publish releases
-        if: steps.changesets.outputs.count != '0'
+        if: steps.detect.outputs.count != '0'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: bun run release
