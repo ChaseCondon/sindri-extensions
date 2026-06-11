@@ -28,25 +28,44 @@ jobs:
       - name: Install root dependencies
         run: bun install --frozen-lockfile
 
-      # ── Changeset gate ────────────────────────────────────────────────────
-      - name: Check for changeset
+      # ── Detect changed extensions ─────────────────────────────────────────
+      - name: Detect changed extensions
+        id: changes
         run: |
-          TITLE="${{ github.event.pull_request.title }}"
-          if echo "$TITLE" | grep -qiE '\[skip changeset\]|\[skip-changeset\]'; then
-            echo "Changeset check skipped (PR title opt-out)."
-            exit 0
-          fi
           CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
-          if echo "$CHANGED" | grep -q '^\.changeset/.*\.md$'; then
-            echo "Changeset file found."
-          else
-            echo ""
-            echo "ERROR: No changeset file detected."
-            echo "  Run:  bun run changeset"
-            echo "  Then commit the generated .changeset/*.md file with your PR."
-            echo "  To skip (docs/chore only): add [skip changeset] to your PR title."
-            exit 1
-          fi
+          echo "Changed files:"
+          echo "$CHANGED"
+          DIRS=""
+          for f in $CHANGED; do
+            DIR=$(echo "$f" | cut -d'/' -f1)
+            if [ -f "$DIR/manifest.json" ] && ! echo "$DIRS" | grep -qw "$DIR"; then
+              DIRS="$DIRS $DIR"
+            fi
+          done
+          echo "dirs=$DIRS" >> $GITHUB_OUTPUT
+          echo "Changed extension folders: $DIRS"
+
+      # ── Version bump check ────────────────────────────────────────────────
+      # Fail if a changed extension's manifest version is already released.
+      # The developer must bump the version in manifest.json before merging.
+      - name: Check version bumps
+        if: steps.changes.outputs.dirs != ''
+        run: |
+          git fetch --tags origin
+          FAILED=0
+          for DIR in ${{ steps.changes.outputs.dirs }}; do
+            ID=$(jq -r .id "$DIR/manifest.json")
+            VERSION=$(jq -r .version "$DIR/manifest.json")
+            TAG="${ID}-v${VERSION}"
+            if git tag -l "$TAG" | grep -q "$TAG"; then
+              echo "ERROR: $ID@$VERSION is already released (tag $TAG exists)."
+              echo "  Bump the version in $DIR/manifest.json before merging."
+              FAILED=$((FAILED + 1))
+            else
+              echo "✓ $ID@$VERSION is a new version — will release on merge."
+            fi
+          done
+          if [ $FAILED -gt 0 ]; then exit 1; fi
 
       # ── Clone sindri-ide inside the workspace ─────────────────────────────
       - name: Checkout sindri-ide
@@ -65,23 +84,6 @@ jobs:
       - name: Install sindri-ide dependencies
         run: bun install --frozen-lockfile
         working-directory: ${{ github.workspace }}/sindri-ide
-
-      # ── Detect changed extensions ─────────────────────────────────────────
-      - name: Detect changed extensions
-        id: changes
-        run: |
-          CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
-          echo "Changed files:"
-          echo "$CHANGED"
-          DIRS=""
-          for f in $CHANGED; do
-            DIR=$(echo "$f" | cut -d'/' -f1)
-            if [ -f "$DIR/manifest.json" ] && ! echo "$DIRS" | grep -qw "$DIR"; then
-              DIRS="$DIRS $DIR"
-            fi
-          done
-          echo "dirs=$DIRS" >> $GITHUB_OUTPUT
-          echo "Changed extension folders: $DIRS"
 
       # ── Build changed extensions (no --bundle, faster) ────────────────────
       - name: Build changed extensions
