@@ -23,9 +23,9 @@
 import * as path from "path";
 import * as fs from "fs";
 
-const here = new URL(".", import.meta.url).pathname;   // sindri-extensions/scripts/
-const extRoot = path.resolve(here, "..");               // sindri-extensions/
-const ideRoot = path.resolve(here, "../../sindri-ide"); // sindri-ide/
+const here = new URL(".", import.meta.url).pathname;                           // sindri-extensions/scripts/
+const extRoot = path.resolve(here, "..");                                       // sindri-extensions/
+const ideRoot = process.env.SINDRI_IDE_ROOT ?? path.resolve(here, "../../sindri-ide"); // sindri-ide/
 const buildScript = path.join(ideRoot, "scripts/build-extension.ts");
 
 const args = process.argv.slice(2);

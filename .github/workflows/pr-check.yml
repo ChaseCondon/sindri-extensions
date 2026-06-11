@@ -13,16 +13,12 @@ jobs:
     name: Validate & Build
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: sindri-extensions
+    env:
+      SINDRI_IDE_ROOT: ${{ github.workspace }}/sindri-ide
 
     steps:
-      # Check out sindri-extensions into ./sindri-extensions/ so sindri-ide
-      # can sit beside it as a sibling (../sindri-ide), matching local dev layout.
       - uses: actions/checkout@v4
         with:
-          path: sindri-extensions
           fetch-depth: 0
 
       - uses: oven-sh/setup-bun@v2
@@ -46,15 +42,13 @@ jobs:
           else
             echo ""
             echo "ERROR: No changeset file detected."
-            echo ""
             echo "  Run:  bun run changeset"
             echo "  Then commit the generated .changeset/*.md file with your PR."
-            echo ""
             echo "  To skip (docs/chore only): add [skip changeset] to your PR title."
             exit 1
           fi
 
-      # ── Clone sindri-ide as a sibling directory ───────────────────────────
+      # ── Clone sindri-ide inside the workspace ─────────────────────────────
       - name: Checkout sindri-ide
         uses: actions/checkout@v4
         with:
@@ -108,7 +102,6 @@ jobs:
         run: |
           bun run build-index
           if ! git diff --exit-code index.json; then
-            echo ""
             echo "ERROR: index.json is out of date. Run 'bun run build-index' and commit the result."
             exit 1
           fi

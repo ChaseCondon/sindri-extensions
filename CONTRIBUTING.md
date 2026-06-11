@@ -12,7 +12,7 @@ This repository is the first-party extension registry for Sindri IDE. It is also
 4. [Release pipeline](#release-pipeline)
    - [Branching model](#branching-model)
    - [Adding a changeset](#adding-a-changeset)
-   - [Version PR flow](#version-pr-flow)
+   - [Release flow (on merge to main)](#release-flow-on-merge-to-main)
    - [Beta releases](#beta-releases)
    - [Nightly builds](#nightly-builds)
 5. [manifest.json field reference](#manifestjson-field-reference)
@@ -152,22 +152,19 @@ This is an interactive prompt. Select the extensions you changed and choose a bu
 
 Commit the generated `.changeset/*.md` file alongside your code changes.
 
-### Version PR flow
+### Release flow (on merge to main)
 
-When changesets accumulate on `main`, the Changesets action automatically opens (or updates) a PR titled **"chore: release packages"**. This PR shows:
+When a PR containing a changeset is merged, `release.yml` runs automatically — no extra PR is created. It:
 
-- Which extensions will be bumped
-- What their new versions will be
-- A generated `CHANGELOG.md` update
+1. Detects pending `.changeset/*.md` files
+2. Runs `changeset version` to bump `package.json` for each changed extension and delete the changeset files
+3. Runs `sync-versions.ts` to propagate the new version into each `manifest.json`
+4. Commits the version bumps back to `main` with `[skip ci]` (so the commit doesn't re-trigger the workflow)
+5. Runs `create-releases.ts` for each bumped extension: builds the `.sinxt` with `--bundle` and creates a GitHub Release tagged `{id}-v{version}`
 
-**Review it, then merge it.** On merge, `release.yml` runs `bun run release` which:
+The whole cycle — bump, build, release — happens in a single workflow run, automatically, on every merge that contains a changeset.
 
-1. Reads each extension's bumped `manifest.json` version
-2. Checks whether a GitHub Release tagged `{id}-v{version}` already exists
-3. Builds the `.sinxt` bundle for any that don't
-4. Creates a GitHub Release with the `.sinxt` as the asset
-
-> ⚠️ **Do not merge the Version PR until all PRs for the intended release are in.** The Version PR is the release gate — merging it triggers publishing.
+> ⚠️ **Merging is the release gate.** Don't merge a PR to `main` until all changes intended for that release are ready.
 
 ### Beta releases
 
