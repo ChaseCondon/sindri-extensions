@@ -29,6 +29,14 @@ sindri-now-playing/
     └── extension.ts    ← full implementation (~100 lines)
 ```
 
+## Platform support
+
+| Platform | Media source |
+| --- | --- |
+| macOS | `osascript` — queries the Now Playing system UI |
+| Linux | `playerctl` — queries any MPRIS-compatible player |
+| Windows | PowerShell SMTC (System Media Transport Controls) |
+
 ## Build
 
 ```sh
