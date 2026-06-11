@@ -2,12 +2,13 @@
   "$schema": "./node_modules/@sindri/api/manifest.schema.json",
   "id": "sindri.ferris-says",
   "name": "Ferris Says",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "sindri",
   "description": "Calls a bundled Rust binary and renders its ASCII art in a webview panel. Validation sample for native binary bundling.",
   "categories": ["UI Extension"],
   "permissions": ["sindri.env", "sindri.ui"],
   "engines": { "sindri": ">=0.1.0" },
+  "main": "dist/extension.js",
   "contributes": {
     "webviewPanels": [
       {
