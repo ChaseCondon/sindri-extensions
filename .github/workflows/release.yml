@@ -43,6 +43,8 @@ jobs:
           repository: ${{ github.repository_owner }}/sindri
           path: sindri-ide
           sparse-checkout: |
+            /package.json
+            /bun.lockb
             scripts/
             packages/
           sparse-checkout-cone-mode: false
