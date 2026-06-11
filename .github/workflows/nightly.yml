@@ -46,7 +46,7 @@ jobs:
 
       - name: Install sindri-ide dependencies
         run: bun install --frozen-lockfile
-        working-directory: sindri-ide
+        working-directory: ${{ github.workspace }}/sindri-ide
 
       - name: Build all extensions
         run: bun run build
