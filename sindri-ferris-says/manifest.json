@@ -9,6 +9,7 @@
   "permissions": ["sindri.env", "sindri.ui"],
   "engines": { "sindri": ">=0.1.0" },
   "main": "dist/extension.js",
+  "buildable": false,
   "contributes": {
     "webviewPanels": [
       {
