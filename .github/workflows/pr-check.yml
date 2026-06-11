@@ -91,8 +91,7 @@ jobs:
         run: |
           FAILED=0
           for DIR in ${{ steps.changes.outputs.dirs }}; do
-            BUILDABLE=$(jq -r '.buildable // true' "$DIR/manifest.json")
-            if [ "$BUILDABLE" = "false" ]; then
+            if jq -e '.buildable == false' "$DIR/manifest.json" > /dev/null 2>&1; then
               echo "⚠ Skipping $DIR (buildable: false in manifest.json)"
               continue
             fi
