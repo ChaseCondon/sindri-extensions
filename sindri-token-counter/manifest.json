@@ -2,11 +2,13 @@
   "$schema": "./node_modules/@sindri/api/manifest.schema.json",
   "id": "sindri.token-counter",
   "name": "Token Counter",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "sindri",
   "description": "Counts LLM tokens in the active document using a bundled WASM module. Validation sample for WASM module execution.",
   "categories": ["UI Extension"],
   "permissions": ["sindri.ui"],
   "engines": { "sindri": ">=0.1.0" },
+  "main": "dist/extension.js",
+  "buildable": false,
   "contributes": {}
 }

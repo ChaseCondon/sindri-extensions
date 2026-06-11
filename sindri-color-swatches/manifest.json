@@ -2,11 +2,13 @@
   "$schema": "./node_modules/@sindri/api/manifest.schema.json",
   "id": "sindri.color-swatches",
   "name": "Color Swatches",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "sindri",
   "description": "Renders inline color swatches next to CSS/hex color values in the editor. Validation sample for sindri.editor.registerDecorationProvider.",
   "categories": ["UI Extension"],
   "permissions": ["sindri.ui"],
   "engines": { "sindri": ">=0.1.0" },
+  "main": "dist/extension.js",
+  "buildable": false,
   "contributes": {}
 }
