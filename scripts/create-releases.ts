@@ -15,7 +15,7 @@ import { readdirSync, readFileSync, existsSync } from "fs";
 import { join, resolve } from "path";
 
 const extRoot = resolve(import.meta.dir, "..");
-const ideRoot = resolve(extRoot, "../sindri-ide");
+const ideRoot = process.env.SINDRI_IDE_ROOT ?? resolve(extRoot, "../sindri-ide");
 
 interface Manifest { id: string; version: string; name: string; }
 

@@ -17,14 +17,11 @@ jobs:
     permissions:
       contents: write
 
-    defaults:
-      run:
-        working-directory: sindri-extensions
+    env:
+      SINDRI_IDE_ROOT: ${{ github.workspace }}/sindri-ide
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          path: sindri-extensions
 
       - uses: oven-sh/setup-bun@v2
         with:

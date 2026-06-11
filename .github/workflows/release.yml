@@ -19,16 +19,14 @@ jobs:
       contents: write
       pull-requests: write
 
-    defaults:
-      run:
-        working-directory: sindri-extensions
+    env:
+      SINDRI_IDE_ROOT: ${{ github.workspace }}/sindri-ide
 
     steps:
       - uses: actions/checkout@v4
         with:
-          path: sindri-extensions
           fetch-depth: 0
-          token: ${{ secrets.RELEASE_BOT_PAT || secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: oven-sh/setup-bun@v2
         with:
@@ -63,4 +61,4 @@ jobs:
           commit: "chore: release packages [skip ci]"
           createGithubReleases: false
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_BOT_PAT || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
