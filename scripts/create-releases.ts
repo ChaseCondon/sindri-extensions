@@ -1,14 +1,5 @@
-/**
- * Create GitHub Releases for extensions whose version was bumped.
- *
- * Run by the Changesets action as the `publish` step after the Version PR is merged.
- * For each top-level extension whose current version doesn't yet have a GitHub Release,
- * this script:
- *   1. Builds the .sinxt bundle (delegates to sindri-ide/scripts/build-extension.ts)
- *   2. Creates a GitHub Release tagged `{id}-v{version}` with the .sinxt as the asset
- *
- * Requires: gh CLI authenticated, bun on PATH, sindri-ide cloned as a sibling directory.
- */
+// For each extension whose manifest.json version has no existing GitHub Release tag,
+// builds the .sinxt bundle and creates a GitHub Release.
 
 import { spawnSync } from "child_process";
 import { readdirSync, readFileSync, existsSync } from "fs";
@@ -58,7 +49,7 @@ function createRelease(dir: string, manifest: Manifest): boolean {
   const args = [
     "release", "create", tag,
     "--title", `${name ?? id} v${version}`,
-    "--notes", `Release of \`${id}\` v${version}.\n\nSee [CHANGELOG.md](./CHANGELOG.md) for details.`,
+    "--notes", `Release of \`${id}\` v${version}.`,
     sinxtPath,
   ];
   if (isPrerelease) args.splice(3, 0, "--prerelease");

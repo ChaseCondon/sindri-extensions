@@ -1,31 +1,17 @@
 {
   "name": "sindri-extensions",
   "private": true,
-  "workspaces": [
-    "aurora-theme-pack",
-    "community-theme-collection",
-    "neon-icons",
-    "sindri-color-swatches",
-    "sindri-commit-streak",
-    "sindri-csv-grid",
-    "sindri-en-gb",
-    "sindri-ferris-says",
-    "sindri-markdown-preview",
-    "sindri-now-playing",
-    "sindri-token-counter"
-  ],
   "scripts": {
     "build-index": "bun run scripts/build-index.ts",
     "generate-icons": "bun run scripts/generate-icons.ts --all",
     "build": "bun run scripts/build-extensions.ts --all --bundle",
     "build-ext": "bun run scripts/build-extensions.ts",
-    "version": "bunx changeset version && bun run scripts/sync-versions.ts",
-    "release": "bun run scripts/create-releases.ts",
-    "changeset": "bunx changeset"
+    "release": "bun run scripts/create-releases.ts"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.31.0",
     "@phosphor-icons/core": "^2.1.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "@tabler/icons": "^3.44.0",
     "lucide-static": "^1.17.0",
     "simple-icons": "^16.23.0"
