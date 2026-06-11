@@ -9,6 +9,7 @@
   "permissions": ["sindri.ui"],
   "engines": { "sindri": ">=0.1.0" },
   "main": "dist/extension.js",
+  "available": false,
   "buildable": false,
   "contributes": {}
 }
