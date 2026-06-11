@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../manifest.schema.json",
+  "id": "sindri.catppuccin-latte-color",
+  "name": "Catppuccin Latte — Colour Theme",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Sindri's Catppuccin Latte colour theme.",
+  "categories": ["Color Theme"],
+  "tags": ["catppuccin", "latte", "light", "purple"],
+  "permissions": [],
+  "engines": { "sindri": ">=0.1.0" },
+  "contributes": {
+    "themes": [{ "id": "sindri-catppuccin-latte", "name": "Catppuccin Latte", "kind": "light", "path": "catppuccin-latte.json" }]
+  }
+}

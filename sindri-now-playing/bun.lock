@@ -1,0 +1,15 @@
+{
+  "lockfileVersion": 1,
+  "configVersion": 1,
+  "workspaces": {
+    "": {
+      "name": "sindri-now-playing",
+      "devDependencies": {
+        "@sindri/api": "file:../../../sindri-ide/packages/sindri-api",
+      },
+    },
+  },
+  "packages": {
+    "@sindri/api": ["@sindri/api@file:../../../sindri-ide/packages/sindri-api", {}],
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@sindri/api/helpers": ["../../sindri-ide/packages/sindri-api/dist/helpers.d.ts"]
+    }
+  },
+  "include": [
+    "src",
+    "../../sindri-ide/packages/sindri-api/index.d.ts"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "./node_modules/@sindri/api/manifest.schema.json",
+  "id": "sindri.now-playing",
+  "name": "Now Playing",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Shows the current playerctl track in the status bar. Example of sindri.env.exec + sindri.ui.createStatusBarItem.",
+  "categories": ["UI Extension"],
+  "permissions": ["sindri.env", "sindri.ui"],
+  "engines": { "sindri": ">=0.1.0" },
+  "main": "dist/extension.js",
+  "contributes": {}
+}

@@ -1,0 +1,17 @@
+{
+  "id":   "sindri-github-dark-icons",
+  "name": "GitHub Dark Icons",
+  "bg":          "#0d1117",
+  "folderBase":  "#388bfd",
+  "fileBody":    "#161b22",
+  "fileTab":     "#21262d",
+  "blue":   "#58a6ff",
+  "yellow": "#e3b341",
+  "green":  "#3fb950",
+  "red":    "#f85149",
+  "orange": "#ffa657",
+  "purple": "#d2a8ff",
+  "cyan":   "#79c0ff",
+  "teal":   "#7ee787",
+  "amber":  "#e3b341"
+}

@@ -1,7 +1,0 @@
-{
-  "extends": "../../packages/sindri-api/tsconfig.json",
-  "include": [
-    "src",
-    "../../packages/sindri-api/index.d.ts"
-  ]
-}

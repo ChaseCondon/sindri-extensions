@@ -1,0 +1,17 @@
+{
+  "id":   "sindri-catppuccin-latte-icons",
+  "name": "Catppuccin Latte Icons",
+  "bg":          "#eff1f5",
+  "folderBase":  "#8c8fa1",
+  "fileBody":    "#ccd0da",
+  "fileTab":     "#bcc0cc",
+  "blue":   "#1e66f5",
+  "yellow": "#df8e1d",
+  "green":  "#40a02b",
+  "red":    "#d20f39",
+  "orange": "#fe640b",
+  "purple": "#8839ef",
+  "cyan":   "#04a5e5",
+  "teal":   "#179299",
+  "amber":  "#df8e1d"
+}

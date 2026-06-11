@@ -1,0 +1,17 @@
+{
+  "id":   "sindri-github-light-icons",
+  "name": "GitHub Light Icons",
+  "bg":          "#ffffff",
+  "folderBase":  "#0969da",
+  "fileBody":    "#eaeef2",
+  "fileTab":     "#d0d7de",
+  "blue":   "#0969da",
+  "yellow": "#9a6700",
+  "green":  "#116329",
+  "red":    "#cf222e",
+  "orange": "#953800",
+  "purple": "#8250df",
+  "cyan":   "#0550ae",
+  "teal":   "#116329",
+  "amber":  "#9a6700"
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "../../manifest.schema.json",
+  "id": "sindri.gruvbox-light",
+  "name": "Gruvbox Light",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Sindri's take on Gruvbox Light — the warm parchment-toned light companion to Gruvbox Dark.",
+  "categories": ["Extension Pack", "Color Theme", "File Icon Theme"],
+  "packKind": "theme",
+  "tags": ["gruvbox", "light", "retro", "earthy", "warm"],
+  "permissions": [],
+  "engines": { "sindri": ">=0.1.0" },
+  "contributes": {},
+  "extensionPack": ["sindri.gruvbox-light-color", "sindri.gruvbox-light-icons"]
+}

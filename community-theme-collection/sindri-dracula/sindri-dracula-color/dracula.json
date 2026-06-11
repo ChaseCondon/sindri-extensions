@@ -1,0 +1,150 @@
+{
+  "id": "sindri-dracula",
+  "name": "Dracula",
+  "kind": "dark",
+  "ui": {
+    "--bg": "#282a36",
+    "--bg-panel": "#1e1f29",
+    "--bg-chrome": "#191a21",
+    "--bg-hover": "rgba(189,147,249,0.07)",
+    "--border": "#44475a",
+    "--border-subtle": "#343646",
+    "--text": "#f8f8f2",
+    "--text-dim": "#6272a4",
+    "--accent": "#bd93f9",
+    "--accent-tint": "rgba(189,147,249,0.14)",
+    "--danger": "#ff5555"
+  },
+  "glow": {
+    "--glow-color": "189,147,249",
+    "--glow-accent": "0 0 10px rgba(189,147,249,.45)",
+    "--glow-accent-strong": "0 0 18px rgba(189,147,249,.6),0 0 36px rgba(189,147,249,.25)"
+  },
+  "editor": {
+    "bg": "#282a36",
+    "fg": "#f8f8f2",
+    "caret": "#f8f8f0",
+    "selection": "#44475a",
+    "activeLine": "#323443",
+    "gutter.bg": "#282a36",
+    "gutter.fg": "#44475a",
+    "gutter.activeFg": "#6272a4",
+    "matchingBracket": "#44475a"
+  },
+  "syntax": {
+    "keyword": {
+      "color": "#ff79c6"
+    },
+    "controlKeyword": {
+      "color": "#ff79c6"
+    },
+    "string": {
+      "color": "#f1fa8c"
+    },
+    "number": {
+      "color": "#bd93f9"
+    },
+    "bool": {
+      "color": "#bd93f9"
+    },
+    "comment": {
+      "color": "#6272a4",
+      "fontStyle": "italic"
+    },
+    "function": {
+      "color": "#50fa7b"
+    },
+    "type": {
+      "color": "#8be9fd"
+    },
+    "variable": {
+      "color": "#f8f8f2"
+    },
+    "property": {
+      "color": "#8be9fd"
+    },
+    "operator": {
+      "color": "#ff79c6"
+    },
+    "punctuation": {
+      "color": "#f8f8f2"
+    },
+    "tag": {
+      "color": "#ff79c6"
+    },
+    "attribute": {
+      "color": "#50fa7b"
+    },
+    "heading": {
+      "color": "#bd93f9"
+    },
+    "link": {
+      "color": "#8be9fd"
+    },
+    "regexp": {
+      "color": "#f1fa8c"
+    },
+    "escape": {
+      "color": "#ff79c6"
+    }
+  },
+  "terminal": {
+    "black": "#21222c",
+    "red": "#ff5555",
+    "green": "#50fa7b",
+    "yellow": "#f1fa8c",
+    "blue": "#6272a4",
+    "magenta": "#ff79c6",
+    "cyan": "#8be9fd",
+    "white": "#f8f8f2",
+    "brightBlack": "#6272a4",
+    "brightRed": "#ff6e6e",
+    "brightGreen": "#69ff94",
+    "brightYellow": "#ffffa5",
+    "brightBlue": "#d6acff",
+    "brightMagenta": "#ff92df",
+    "brightCyan": "#a4ffff",
+    "brightWhite": "#ffffff"
+  },
+  "diff": {
+    "added": "rgba(80,250,123,0.12)",
+    "modified": "rgba(189,147,249,0.12)",
+    "deleted": "rgba(255,85,85,0.14)"
+  },
+  "find": {
+    "match": "rgba(189,147,249,0.40)",
+    "matchHighlight": "rgba(189,147,249,0.22)",
+    "wordHighlight": "rgba(189,147,249,0.15)"
+  },
+  "diagnostic": {
+    "error": "#ff5555",
+    "warning": "#ffb86c",
+    "info": "#8be9fd"
+  },
+  "syntaxExtended": {
+    "class": {
+      "color": "#8be9fd"
+    },
+    "interface": {
+      "color": "#8be9fd"
+    },
+    "enum": {
+      "color": "#8be9fd"
+    },
+    "namespace": {
+      "color": "#50fa7b"
+    },
+    "decorator": {
+      "color": "#50fa7b"
+    },
+    "constant": {
+      "color": "#bd93f9"
+    },
+    "macro": {
+      "color": "#ff79c6"
+    },
+    "typeParameter": {
+      "color": "#8be9fd"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id":   "sindri-gruvbox-light-icons",
+  "name": "Gruvbox Light Icons",
+  "bg":          "#fbf1c7",
+  "folderBase":  "#b57614",
+  "fileBody":    "#ebdbb2",
+  "fileTab":     "#d5c4a1",
+  "blue":   "#076678",
+  "yellow": "#b57614",
+  "green":  "#79740e",
+  "red":    "#9d0006",
+  "orange": "#af3a03",
+  "purple": "#8f3f71",
+  "cyan":   "#427b58",
+  "teal":   "#427b58",
+  "amber":  "#b57614"
+}

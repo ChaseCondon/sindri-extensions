@@ -1,0 +1,37 @@
+{
+  "$schema": "../../manifest.schema.json",
+  "id": "sindri.aurora-ui-icons",
+  "name": "Aurora UI Icons",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Activity bar and toolbar icon set for the Aurora theme \u2014 same runic glyphs as the default, optimised for Aurora's violet accent.",
+  "categories": [
+    "UI Icon Theme"
+  ],
+  "tags": [
+    "aurora",
+    "dark",
+    "violet"
+  ],
+  "permissions": [],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
+  "credits": [
+    {
+      "name": "Lucide",
+      "spdx": "ISC",
+      "url": "https://lucide.dev",
+      "notice": "Copyright (c) 2020, Lucide Contributors"
+    }
+  ],
+  "contributes": {
+    "uiIconPacks": [
+      {
+        "id": "sindri-aurora-ui",
+        "name": "Aurora UI Icons",
+        "path": "ui-pack.json"
+      }
+    ]
+  }
+}

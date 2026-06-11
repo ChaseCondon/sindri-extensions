@@ -1,0 +1,150 @@
+{
+  "id": "sindri-catppuccin-latte",
+  "name": "Catppuccin Latte",
+  "kind": "light",
+  "ui": {
+    "--bg": "#eff1f5",
+    "--bg-panel": "#e6e9ef",
+    "--bg-chrome": "#dce0e8",
+    "--bg-hover": "rgba(136,57,239,0.06)",
+    "--border": "#ccd0da",
+    "--border-subtle": "#dce0e8",
+    "--text": "#4c4f69",
+    "--text-dim": "#9ca0b0",
+    "--accent": "#8839ef",
+    "--accent-tint": "rgba(136,57,239,0.1)",
+    "--danger": "#d20f39"
+  },
+  "glow": {
+    "--glow-color": "136,57,239",
+    "--glow-accent": "0 0 8px rgba(136,57,239,.25)",
+    "--glow-accent-strong": "0 0 14px rgba(136,57,239,.35),0 0 28px rgba(136,57,239,.15)"
+  },
+  "editor": {
+    "bg": "#eff1f5",
+    "fg": "#4c4f69",
+    "caret": "#8839ef",
+    "selection": "#d1d5e0",
+    "activeLine": "#e8eaf0",
+    "gutter.bg": "#eff1f5",
+    "gutter.fg": "#bcc0cc",
+    "gutter.activeFg": "#7c7f93",
+    "matchingBracket": "#ccd0da"
+  },
+  "syntax": {
+    "keyword": {
+      "color": "#8839ef"
+    },
+    "controlKeyword": {
+      "color": "#8839ef"
+    },
+    "string": {
+      "color": "#40a02b"
+    },
+    "number": {
+      "color": "#fe640b"
+    },
+    "bool": {
+      "color": "#fe640b"
+    },
+    "comment": {
+      "color": "#9ca0b0",
+      "fontStyle": "italic"
+    },
+    "function": {
+      "color": "#1e66f5"
+    },
+    "type": {
+      "color": "#04a5e5"
+    },
+    "variable": {
+      "color": "#4c4f69"
+    },
+    "property": {
+      "color": "#179299"
+    },
+    "operator": {
+      "color": "#04a5e5"
+    },
+    "punctuation": {
+      "color": "#7c7f93"
+    },
+    "tag": {
+      "color": "#d20f39"
+    },
+    "attribute": {
+      "color": "#fe640b"
+    },
+    "heading": {
+      "color": "#8839ef"
+    },
+    "link": {
+      "color": "#1e66f5"
+    },
+    "regexp": {
+      "color": "#40a02b"
+    },
+    "escape": {
+      "color": "#df8e1d"
+    }
+  },
+  "terminal": {
+    "black": "#5c5f77",
+    "red": "#d20f39",
+    "green": "#40a02b",
+    "yellow": "#df8e1d",
+    "blue": "#1e66f5",
+    "magenta": "#ea76cb",
+    "cyan": "#179299",
+    "white": "#acb0be",
+    "brightBlack": "#6c6f85",
+    "brightRed": "#d20f39",
+    "brightGreen": "#40a02b",
+    "brightYellow": "#df8e1d",
+    "brightBlue": "#1e66f5",
+    "brightMagenta": "#ea76cb",
+    "brightCyan": "#179299",
+    "brightWhite": "#bcc0cc"
+  },
+  "diff": {
+    "added": "rgba(64,160,43,0.10)",
+    "modified": "rgba(136,57,239,0.10)",
+    "deleted": "rgba(210,15,57,0.12)"
+  },
+  "find": {
+    "match": "rgba(136,57,239,0.30)",
+    "matchHighlight": "rgba(136,57,239,0.15)",
+    "wordHighlight": "rgba(136,57,239,0.10)"
+  },
+  "diagnostic": {
+    "error": "#d20f39",
+    "warning": "#df8e1d",
+    "info": "#1e66f5"
+  },
+  "syntaxExtended": {
+    "class": {
+      "color": "#04a5e5"
+    },
+    "interface": {
+      "color": "#04a5e5"
+    },
+    "enum": {
+      "color": "#04a5e5"
+    },
+    "namespace": {
+      "color": "#179299"
+    },
+    "decorator": {
+      "color": "#fe640b"
+    },
+    "constant": {
+      "color": "#fe640b"
+    },
+    "macro": {
+      "color": "#8839ef"
+    },
+    "typeParameter": {
+      "color": "#04a5e5"
+    }
+  }
+}

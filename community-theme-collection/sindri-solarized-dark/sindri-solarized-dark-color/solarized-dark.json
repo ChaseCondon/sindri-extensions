@@ -1,0 +1,150 @@
+{
+  "id": "sindri-solarized-dark",
+  "name": "Solarized Dark",
+  "kind": "dark",
+  "ui": {
+    "--bg": "#002b36",
+    "--bg-panel": "#00232d",
+    "--bg-chrome": "#001b24",
+    "--bg-hover": "rgba(38,139,210,0.07)",
+    "--border": "#073642",
+    "--border-subtle": "#052e39",
+    "--text": "#839496",
+    "--text-dim": "#586e75",
+    "--accent": "#268bd2",
+    "--accent-tint": "rgba(38,139,210,0.14)",
+    "--danger": "#dc322f"
+  },
+  "glow": {
+    "--glow-color": "38,139,210",
+    "--glow-accent": "0 0 10px rgba(38,139,210,.4)",
+    "--glow-accent-strong": "0 0 16px rgba(38,139,210,.55),0 0 32px rgba(38,139,210,.2)"
+  },
+  "editor": {
+    "bg": "#002b36",
+    "fg": "#839496",
+    "caret": "#839496",
+    "selection": "#073642",
+    "activeLine": "#073642",
+    "gutter.bg": "#002b36",
+    "gutter.fg": "#073642",
+    "gutter.activeFg": "#586e75",
+    "matchingBracket": "#073642"
+  },
+  "syntax": {
+    "keyword": {
+      "color": "#859900"
+    },
+    "controlKeyword": {
+      "color": "#2aa198"
+    },
+    "string": {
+      "color": "#2aa198"
+    },
+    "number": {
+      "color": "#2aa198"
+    },
+    "bool": {
+      "color": "#268bd2"
+    },
+    "comment": {
+      "color": "#586e75",
+      "fontStyle": "italic"
+    },
+    "function": {
+      "color": "#268bd2"
+    },
+    "type": {
+      "color": "#b58900"
+    },
+    "variable": {
+      "color": "#cb4b16"
+    },
+    "property": {
+      "color": "#839496"
+    },
+    "operator": {
+      "color": "#859900"
+    },
+    "punctuation": {
+      "color": "#586e75"
+    },
+    "tag": {
+      "color": "#268bd2"
+    },
+    "attribute": {
+      "color": "#b58900"
+    },
+    "heading": {
+      "color": "#268bd2"
+    },
+    "link": {
+      "color": "#268bd2"
+    },
+    "regexp": {
+      "color": "#2aa198"
+    },
+    "escape": {
+      "color": "#dc322f"
+    }
+  },
+  "terminal": {
+    "black": "#073642",
+    "red": "#dc322f",
+    "green": "#859900",
+    "yellow": "#b58900",
+    "blue": "#268bd2",
+    "magenta": "#d33682",
+    "cyan": "#2aa198",
+    "white": "#eee8d5",
+    "brightBlack": "#002b36",
+    "brightRed": "#cb4b16",
+    "brightGreen": "#586e75",
+    "brightYellow": "#657b83",
+    "brightBlue": "#839496",
+    "brightMagenta": "#6c71c4",
+    "brightCyan": "#93a1a1",
+    "brightWhite": "#fdf6e3"
+  },
+  "diff": {
+    "added": "rgba(133,153,0,0.14)",
+    "modified": "rgba(38,139,210,0.12)",
+    "deleted": "rgba(220,50,47,0.14)"
+  },
+  "find": {
+    "match": "rgba(38,139,210,0.35)",
+    "matchHighlight": "rgba(38,139,210,0.20)",
+    "wordHighlight": "rgba(38,139,210,0.15)"
+  },
+  "diagnostic": {
+    "error": "#dc322f",
+    "warning": "#b58900",
+    "info": "#268bd2"
+  },
+  "syntaxExtended": {
+    "class": {
+      "color": "#b58900"
+    },
+    "interface": {
+      "color": "#b58900"
+    },
+    "enum": {
+      "color": "#b58900"
+    },
+    "namespace": {
+      "color": "#2aa198"
+    },
+    "decorator": {
+      "color": "#2aa198"
+    },
+    "constant": {
+      "color": "#2aa198"
+    },
+    "macro": {
+      "color": "#859900"
+    },
+    "typeParameter": {
+      "color": "#b58900"
+    }
+  }
+}

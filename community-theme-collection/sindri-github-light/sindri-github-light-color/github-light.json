@@ -1,0 +1,150 @@
+{
+  "id": "sindri-github-light",
+  "name": "GitHub Light",
+  "kind": "light",
+  "ui": {
+    "--bg": "#ffffff",
+    "--bg-panel": "#f6f8fa",
+    "--bg-chrome": "#eaeef2",
+    "--bg-hover": "rgba(9,105,218,0.06)",
+    "--border": "#d0d7de",
+    "--border-subtle": "#eaeef2",
+    "--text": "#24292f",
+    "--text-dim": "#57606a",
+    "--accent": "#0969da",
+    "--accent-tint": "rgba(9,105,218,0.1)",
+    "--danger": "#cf222e"
+  },
+  "glow": {
+    "--glow-color": "9,105,218",
+    "--glow-accent": "0 0 8px rgba(9,105,218,.2)",
+    "--glow-accent-strong": "0 0 14px rgba(9,105,218,.3),0 0 28px rgba(9,105,218,.1)"
+  },
+  "editor": {
+    "bg": "#ffffff",
+    "fg": "#24292f",
+    "caret": "#0969da",
+    "selection": "#d1e5f8",
+    "activeLine": "#f6f8fa",
+    "gutter.bg": "#ffffff",
+    "gutter.fg": "#d0d7de",
+    "gutter.activeFg": "#8c959f",
+    "matchingBracket": "#d1e5f8"
+  },
+  "syntax": {
+    "keyword": {
+      "color": "#cf222e"
+    },
+    "controlKeyword": {
+      "color": "#cf222e"
+    },
+    "string": {
+      "color": "#0a3069"
+    },
+    "number": {
+      "color": "#0550ae"
+    },
+    "bool": {
+      "color": "#0550ae"
+    },
+    "comment": {
+      "color": "#6e7781",
+      "fontStyle": "italic"
+    },
+    "function": {
+      "color": "#8250df"
+    },
+    "type": {
+      "color": "#953800"
+    },
+    "variable": {
+      "color": "#24292f"
+    },
+    "property": {
+      "color": "#0550ae"
+    },
+    "operator": {
+      "color": "#cf222e"
+    },
+    "punctuation": {
+      "color": "#6e7781"
+    },
+    "tag": {
+      "color": "#116329"
+    },
+    "attribute": {
+      "color": "#0550ae"
+    },
+    "heading": {
+      "color": "#0969da"
+    },
+    "link": {
+      "color": "#0969da"
+    },
+    "regexp": {
+      "color": "#0a3069"
+    },
+    "escape": {
+      "color": "#0550ae"
+    }
+  },
+  "terminal": {
+    "black": "#24292f",
+    "red": "#cf222e",
+    "green": "#116329",
+    "yellow": "#4d2d00",
+    "blue": "#0969da",
+    "magenta": "#8250df",
+    "cyan": "#1b7c83",
+    "white": "#6e7781",
+    "brightBlack": "#57606a",
+    "brightRed": "#a40e26",
+    "brightGreen": "#1a7f37",
+    "brightYellow": "#633c01",
+    "brightBlue": "#218bff",
+    "brightMagenta": "#a475f9",
+    "brightCyan": "#3192aa",
+    "brightWhite": "#8c959f"
+  },
+  "diff": {
+    "added": "rgba(17,99,41,0.10)",
+    "modified": "rgba(9,105,218,0.10)",
+    "deleted": "rgba(207,34,46,0.12)"
+  },
+  "find": {
+    "match": "rgba(9,105,218,0.25)",
+    "matchHighlight": "rgba(9,105,218,0.12)",
+    "wordHighlight": "rgba(9,105,218,0.10)"
+  },
+  "diagnostic": {
+    "error": "#cf222e",
+    "warning": "#9a6700",
+    "info": "#0969da"
+  },
+  "syntaxExtended": {
+    "class": {
+      "color": "#953800"
+    },
+    "interface": {
+      "color": "#953800"
+    },
+    "enum": {
+      "color": "#953800"
+    },
+    "namespace": {
+      "color": "#0550ae"
+    },
+    "decorator": {
+      "color": "#116329"
+    },
+    "constant": {
+      "color": "#0550ae"
+    },
+    "macro": {
+      "color": "#cf222e"
+    },
+    "typeParameter": {
+      "color": "#953800"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id":   "sindri-rose-pine-icons",
+  "name": "Rosé Pine Icons",
+  "bg":          "#191724",
+  "folderBase":  "#31748f",
+  "fileBody":    "#26233a",
+  "fileTab":     "#403d52",
+  "blue":   "#31748f",
+  "yellow": "#f6c177",
+  "green":  "#9ccfd8",
+  "red":    "#eb6f92",
+  "orange": "#ebbcba",
+  "purple": "#c4a7e7",
+  "cyan":   "#9ccfd8",
+  "teal":   "#9ccfd8",
+  "amber":  "#f6c177"
+}

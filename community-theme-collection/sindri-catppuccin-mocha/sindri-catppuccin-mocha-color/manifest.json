@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../manifest.schema.json",
+  "id": "sindri.catppuccin-mocha-color",
+  "name": "Catppuccin Mocha — Colour Theme",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Sindri's Catppuccin Mocha colour theme.",
+  "categories": ["Color Theme"],
+  "tags": ["catppuccin", "mocha", "dark", "purple"],
+  "permissions": [],
+  "engines": { "sindri": ">=0.1.0" },
+  "contributes": {
+    "themes": [{ "id": "sindri-catppuccin-mocha", "name": "Catppuccin Mocha", "kind": "dark", "path": "catppuccin-mocha.json" }]
+  }
+}

@@ -1,0 +1,176 @@
+// CSV Grid webview styles.
+// WebviewPanelHost injects --sindri-* CSS vars from the active theme.
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--sindri-bg, #1e1e1e);
+  color: var(--sindri-fg, #ccc);
+  font-family: var(--sindri-font-ui, system-ui, sans-serif);
+  font-size: 13px;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+// ── Layout shells ─────────────────────────────────────────────────────────────
+
+.input-view,
+.grid-view {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+// ── Toolbar ───────────────────────────────────────────────────────────────────
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--sindri-border, #333);
+  background: var(--sindri-bg-panel, #252526);
+}
+
+.toolbar-title {
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.55;
+}
+
+.toolbar-info {
+  flex: 1;
+  font-size: 11px;
+  color: var(--sindri-text-dim, #888);
+}
+
+// ── Buttons ───────────────────────────────────────────────────────────────────
+
+.btn {
+  padding: 3px 10px;
+  font-size: 12px;
+  font-family: inherit;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--sindri-accent, #0af);
+  color: #fff;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--sindri-fg, #ccc);
+  border: 1px solid var(--sindri-border, #444);
+
+  &:hover {
+    background: var(--sindri-border, #333);
+  }
+}
+
+// ── Input area ────────────────────────────────────────────────────────────────
+
+.input-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  min-height: 0;
+}
+
+textarea {
+  flex: 1;
+  resize: none;
+  outline: none;
+  background: var(--sindri-bg-panel, #252526);
+  color: var(--sindri-fg, #ccc);
+  border: 1px solid var(--sindri-border, #444);
+  border-radius: 4px;
+  padding: 8px;
+  font-family: var(--sindri-font-mono, monospace);
+  font-size: 12px;
+
+  &:focus {
+    border-color: var(--sindri-accent, #0af);
+  }
+}
+
+// ── Grid ──────────────────────────────────────────────────────────────────────
+
+.grid-area {
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--sindri-bg-panel, #252526);
+}
+
+th {
+  padding: 5px 10px;
+  text-align: left;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  border-bottom: 2px solid var(--sindri-border, #444);
+
+  &:hover {
+    background: color-mix(in srgb, var(--sindri-accent, #0af) 12%, transparent);
+  }
+
+  .sort-icon {
+    font-size: 10px;
+    opacity: 0.4;
+  }
+
+  &.sorted .sort-icon {
+    opacity: 1;
+    color: var(--sindri-accent, #0af);
+  }
+}
+
+td {
+  padding: 4px 10px;
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-bottom: 1px solid color-mix(in srgb, var(--sindri-border, #333) 60%, transparent);
+}
+
+tr:hover td {
+  background: color-mix(in srgb, var(--sindri-accent, #0af) 6%, transparent);
+}

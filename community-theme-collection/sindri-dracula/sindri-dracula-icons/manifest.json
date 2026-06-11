@@ -1,0 +1,33 @@
+{
+  "$schema": "../../../manifest.schema.json",
+  "id": "sindri.dracula-icons",
+  "name": "Dracula Icons",
+  "version": "1.0.0",
+  "publisher": "sindri",
+  "description": "File icons themed to Dracula.",
+  "categories": [
+    "File Icon Theme"
+  ],
+  "permissions": [],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
+  "contributes": {
+    "iconThemes": [
+      {
+        "id": "sindri-dracula-icons",
+        "name": "Dracula Icons",
+        "kind": "color",
+        "path": "icons.json"
+      }
+    ]
+  },
+  "extends": "sindri.community-icons-base",
+  "variables": {
+    "folder-base": "#44475a",
+    "semantic-1": "#8be9fd",
+    "semantic-2": "#50fa7b",
+    "semantic-3": "#ffb86c",
+    "semantic-4": "#ff5555"
+  }
+}

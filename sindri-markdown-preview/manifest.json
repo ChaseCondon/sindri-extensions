@@ -1,0 +1,20 @@
+{
+  "$schema": "./node_modules/@sindri/api/manifest.schema.json",
+  "id": "sindri.markdown-preview",
+  "name": "Markdown Preview",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Live side-by-side Markdown preview that opens as an editor tab. Validation sample for sindri.editor.registerEditor (Surface B, ADR-0028).",
+  "categories": ["UI Extension"],
+  "permissions": ["sindri.env", "sindri.ui"],
+  "engines": { "sindri": ">=0.1.0" },
+  "contributes": {
+    "editors": [
+      {
+        "id": "sindri.markdown-preview",
+        "displayName": "Markdown Preview",
+        "selector": [{ "filenamePattern": "*.md" }, { "filenamePattern": "*.mdx" }]
+      }
+    ]
+  }
+}

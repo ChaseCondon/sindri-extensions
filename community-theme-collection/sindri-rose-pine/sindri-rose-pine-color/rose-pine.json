@@ -1,0 +1,150 @@
+{
+  "id": "sindri-rose-pine",
+  "name": "Rosé Pine",
+  "kind": "dark",
+  "ui": {
+    "--bg": "#191724",
+    "--bg-panel": "#1f1d2e",
+    "--bg-chrome": "#16141f",
+    "--bg-hover": "rgba(196,167,231,0.07)",
+    "--border": "#26233a",
+    "--border-subtle": "#211e2e",
+    "--text": "#e0def4",
+    "--text-dim": "#6e6a86",
+    "--accent": "#c4a7e7",
+    "--accent-tint": "rgba(196,167,231,0.14)",
+    "--danger": "#eb6f92"
+  },
+  "glow": {
+    "--glow-color": "196,167,231",
+    "--glow-accent": "0 0 10px rgba(196,167,231,.4)",
+    "--glow-accent-strong": "0 0 18px rgba(196,167,231,.55),0 0 36px rgba(196,167,231,.22)"
+  },
+  "editor": {
+    "bg": "#191724",
+    "fg": "#e0def4",
+    "caret": "#e0def4",
+    "selection": "#403d52",
+    "activeLine": "#1c192a",
+    "gutter.bg": "#191724",
+    "gutter.fg": "#26233a",
+    "gutter.activeFg": "#6e6a86",
+    "matchingBracket": "#403d52"
+  },
+  "syntax": {
+    "keyword": {
+      "color": "#31748f"
+    },
+    "controlKeyword": {
+      "color": "#c4a7e7"
+    },
+    "string": {
+      "color": "#9ccfd8"
+    },
+    "number": {
+      "color": "#f6c177"
+    },
+    "bool": {
+      "color": "#eb6f92"
+    },
+    "comment": {
+      "color": "#6e6a86",
+      "fontStyle": "italic"
+    },
+    "function": {
+      "color": "#ebbcba"
+    },
+    "type": {
+      "color": "#c4a7e7"
+    },
+    "variable": {
+      "color": "#e0def4"
+    },
+    "property": {
+      "color": "#9ccfd8"
+    },
+    "operator": {
+      "color": "#908caa"
+    },
+    "punctuation": {
+      "color": "#6e6a86"
+    },
+    "tag": {
+      "color": "#eb6f92"
+    },
+    "attribute": {
+      "color": "#f6c177"
+    },
+    "heading": {
+      "color": "#c4a7e7"
+    },
+    "link": {
+      "color": "#31748f"
+    },
+    "regexp": {
+      "color": "#9ccfd8"
+    },
+    "escape": {
+      "color": "#f6c177"
+    }
+  },
+  "terminal": {
+    "black": "#26233a",
+    "red": "#eb6f92",
+    "green": "#31748f",
+    "yellow": "#f6c177",
+    "blue": "#9ccfd8",
+    "magenta": "#c4a7e7",
+    "cyan": "#ebbcba",
+    "white": "#e0def4",
+    "brightBlack": "#6e6a86",
+    "brightRed": "#eb6f92",
+    "brightGreen": "#31748f",
+    "brightYellow": "#f6c177",
+    "brightBlue": "#9ccfd8",
+    "brightMagenta": "#c4a7e7",
+    "brightCyan": "#ebbcba",
+    "brightWhite": "#e0def4"
+  },
+  "diff": {
+    "added": "rgba(49,116,143,0.12)",
+    "modified": "rgba(196,167,231,0.12)",
+    "deleted": "rgba(235,111,146,0.14)"
+  },
+  "find": {
+    "match": "rgba(196,167,231,0.35)",
+    "matchHighlight": "rgba(196,167,231,0.20)",
+    "wordHighlight": "rgba(196,167,231,0.15)"
+  },
+  "diagnostic": {
+    "error": "#eb6f92",
+    "warning": "#f6c177",
+    "info": "#9ccfd8"
+  },
+  "syntaxExtended": {
+    "class": {
+      "color": "#c4a7e7"
+    },
+    "interface": {
+      "color": "#c4a7e7"
+    },
+    "enum": {
+      "color": "#c4a7e7"
+    },
+    "namespace": {
+      "color": "#9ccfd8"
+    },
+    "decorator": {
+      "color": "#f6c177"
+    },
+    "constant": {
+      "color": "#f6c177"
+    },
+    "macro": {
+      "color": "#31748f"
+    },
+    "typeParameter": {
+      "color": "#c4a7e7"
+    }
+  }
+}

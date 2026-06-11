@@ -1,0 +1,17 @@
+{
+  "id":   "sindri-rose-pine-dawn-icons",
+  "name": "Rosé Pine Dawn Icons",
+  "bg":          "#faf4ed",
+  "folderBase":  "#286983",
+  "fileBody":    "#f2e9e1",
+  "fileTab":     "#dfdad9",
+  "blue":   "#286983",
+  "yellow": "#ea9d34",
+  "green":  "#56949f",
+  "red":    "#b4637a",
+  "orange": "#d7827e",
+  "purple": "#907aa9",
+  "cyan":   "#56949f",
+  "teal":   "#56949f",
+  "amber":  "#ea9d34"
+}

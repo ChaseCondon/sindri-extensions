@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../manifest.schema.json",
+  "id": "sindri.github-dark-color",
+  "name": "GitHub Dark — Colour Theme",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Sindri's GitHub Dark colour theme.",
+  "categories": ["Color Theme"],
+  "tags": ["github", "dark", "blue"],
+  "permissions": [],
+  "engines": { "sindri": ">=0.1.0" },
+  "contributes": {
+    "themes": [{ "id": "sindri-github-dark", "name": "GitHub Dark", "kind": "dark", "path": "github-dark.json" }]
+  }
+}

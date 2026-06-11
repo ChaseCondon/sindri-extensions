@@ -1,0 +1,17 @@
+{
+  "id":   "sindri-dracula-icons",
+  "name": "Dracula Icons",
+  "bg":          "#282a36",
+  "folderBase":  "#44475a",
+  "fileBody":    "#44475a",
+  "fileTab":     "#5a5d73",
+  "blue":   "#8be9fd",
+  "yellow": "#f1fa8c",
+  "green":  "#50fa7b",
+  "red":    "#ff5555",
+  "orange": "#ffb86c",
+  "purple": "#bd93f9",
+  "cyan":   "#8be9fd",
+  "teal":   "#8be9fd",
+  "amber":  "#ffb86c"
+}

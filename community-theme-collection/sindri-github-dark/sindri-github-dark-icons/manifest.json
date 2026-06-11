@@ -1,0 +1,33 @@
+{
+  "$schema": "../../../manifest.schema.json",
+  "id": "sindri.github-dark-icons",
+  "name": "GitHub Dark Icons",
+  "version": "1.0.0",
+  "publisher": "sindri",
+  "description": "File icons themed to GitHub Dark.",
+  "categories": [
+    "File Icon Theme"
+  ],
+  "permissions": [],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
+  "contributes": {
+    "iconThemes": [
+      {
+        "id": "sindri-github-dark-icons",
+        "name": "GitHub Dark Icons",
+        "kind": "color",
+        "path": "icons.json"
+      }
+    ]
+  },
+  "extends": "sindri.community-icons-base",
+  "variables": {
+    "folder-base": "#388bfd",
+    "semantic-1": "#58a6ff",
+    "semantic-2": "#3fb950",
+    "semantic-3": "#ffa657",
+    "semantic-4": "#f85149"
+  }
+}

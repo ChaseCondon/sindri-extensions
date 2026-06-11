@@ -1,0 +1,17 @@
+{
+  "id":   "sindri-nord-icons",
+  "name": "Nord Icons",
+  "bg":          "#2e3440",
+  "folderBase":  "#5e81ac",
+  "fileBody":    "#3b4252",
+  "fileTab":     "#4c566a",
+  "blue":   "#81a1c1",
+  "yellow": "#ebcb8b",
+  "green":  "#a3be8c",
+  "red":    "#bf616a",
+  "orange": "#d08770",
+  "purple": "#b48ead",
+  "cyan":   "#88c0d0",
+  "teal":   "#8fbcbb",
+  "amber":  "#ebcb8b"
+}

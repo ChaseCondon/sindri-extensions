@@ -1,0 +1,17 @@
+// Global resets and base styles for the commit-streak webview.
+// WebviewPanelHost injects --sindri-* CSS vars from the active theme.
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 16px;
+  background: var(--sindri-bg, #1e1e1e);
+  color: var(--sindri-fg, #ccc);
+  font-family: var(--sindri-font-ui, system-ui, sans-serif);
+  font-size: 13px;
+}

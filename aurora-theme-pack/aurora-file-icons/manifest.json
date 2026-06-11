@@ -1,0 +1,45 @@
+{
+  "$schema": "../../manifest.schema.json",
+  "id": "sindri.aurora-file-icons",
+  "name": "Aurora File Icons",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "File icon set matching the Aurora colour palette \u2014 violet, teal, and lavender on deep ink backgrounds.",
+  "categories": [
+    "File Icon Theme"
+  ],
+  "tags": [
+    "aurora",
+    "dark",
+    "violet",
+    "teal"
+  ],
+  "permissions": [],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
+  "credits": [
+    {
+      "name": "Lucide",
+      "spdx": "ISC",
+      "url": "https://lucide.dev",
+      "notice": "Copyright (c) 2020, Lucide Contributors"
+    },
+    {
+      "name": "Simple Icons",
+      "spdx": "CC0-1.0",
+      "url": "https://simpleicons.org",
+      "notice": "Individual brand icons are the trademarks of their respective owners. See https://simpleicons.org/legal-notice"
+    }
+  ],
+  "contributes": {
+    "iconThemes": [
+      {
+        "id": "sindri-aurora-file-icons",
+        "name": "Aurora File Icons",
+        "kind": "color",
+        "path": "icons.json"
+      }
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "../manifest.schema.json",
+  "id": "sindri.aurora-theme-pack",
+  "name": "Aurora Theme Pack",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "The complete Aurora experience \u2014 colour theme, file icons, and UI icons in one click.",
+  "categories": [
+    "Extension Pack"
+  ],
+  "tags": [
+    "aurora",
+    "dark",
+    "violet",
+    "teal",
+    "bundle"
+  ],
+  "permissions": [],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
+  "contributes": {},
+  "extensionPack": [
+    "sindri.aurora-theme",
+    "sindri.aurora-file-icons",
+    "sindri.aurora-ui-icons"
+  ]
+}

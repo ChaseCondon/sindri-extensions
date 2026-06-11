@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../manifest.schema.json",
+  "id": "sindri.one-dark-pro-color",
+  "name": "One Dark Pro — Colour Theme",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Sindri's One Dark Pro colour theme.",
+  "categories": ["Color Theme"],
+  "tags": ["one-dark", "dark", "atom", "blue"],
+  "permissions": [],
+  "engines": { "sindri": ">=0.1.0" },
+  "contributes": {
+    "themes": [{ "id": "sindri-one-dark-pro", "name": "One Dark Pro", "kind": "dark", "path": "one-dark-pro.json" }]
+  }
+}

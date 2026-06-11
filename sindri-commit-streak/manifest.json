@@ -1,0 +1,29 @@
+{
+  "$schema": "./node_modules/@sindri/api/manifest.schema.json",
+  "id": "sindri.commit-streak",
+  "name": "Commit Streak",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Shows your current commit streak in the status bar (Tier 1) and a GitHub-style 52-week contribution heatmap in a webview panel (Tier 2). ADR-0026 dogfood.",
+  "categories": [
+    "UI Extension"
+  ],
+  "permissions": [
+    "sindri.env",
+    "sindri.ui"
+  ],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
+  "main": "dist/extension.js",
+  "contributes": {
+    "webviewPanels": [
+      {
+        "id": "sindri.commit-streak",
+        "title": "Commit Streak",
+        "icon": "icons/panel.svg",
+        "defaultDock": "right-bottom"
+      }
+    ]
+  }
+}

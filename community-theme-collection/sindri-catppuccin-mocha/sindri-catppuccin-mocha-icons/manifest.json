@@ -1,0 +1,33 @@
+{
+  "$schema": "../../../manifest.schema.json",
+  "id": "sindri.catppuccin-mocha-icons",
+  "name": "Catppuccin Mocha Icons",
+  "version": "1.0.0",
+  "publisher": "sindri",
+  "description": "File icons themed to Catppuccin Mocha.",
+  "categories": [
+    "File Icon Theme"
+  ],
+  "permissions": [],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
+  "contributes": {
+    "iconThemes": [
+      {
+        "id": "sindri-catppuccin-mocha-icons",
+        "name": "Catppuccin Mocha Icons",
+        "kind": "color",
+        "path": "icons.json"
+      }
+    ]
+  },
+  "extends": "sindri.community-icons-base",
+  "variables": {
+    "folder-base": "#585b70",
+    "semantic-1": "#89b4fa",
+    "semantic-2": "#a6e3a1",
+    "semantic-3": "#fab387",
+    "semantic-4": "#f38ba8"
+  }
+}

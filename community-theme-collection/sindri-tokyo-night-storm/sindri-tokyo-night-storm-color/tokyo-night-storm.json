@@ -1,0 +1,150 @@
+{
+  "id": "sindri-tokyo-night-storm",
+  "name": "Tokyo Night Storm",
+  "kind": "dark",
+  "ui": {
+    "--bg": "#24283b",
+    "--bg-panel": "#1f2335",
+    "--bg-chrome": "#1a1e2e",
+    "--bg-hover": "rgba(122,162,247,0.07)",
+    "--border": "#364165",
+    "--border-subtle": "#2a2f45",
+    "--text": "#c0caf5",
+    "--text-dim": "#565f89",
+    "--accent": "#7aa2f7",
+    "--accent-tint": "rgba(122,162,247,0.14)",
+    "--danger": "#f7768e"
+  },
+  "glow": {
+    "--glow-color": "122,162,247",
+    "--glow-accent": "0 0 10px rgba(122,162,247,.4)",
+    "--glow-accent-strong": "0 0 18px rgba(122,162,247,.55),0 0 36px rgba(122,162,247,.22)"
+  },
+  "editor": {
+    "bg": "#24283b",
+    "fg": "#c0caf5",
+    "caret": "#c0caf5",
+    "selection": "#364165",
+    "activeLine": "#292e42",
+    "gutter.bg": "#24283b",
+    "gutter.fg": "#3b4261",
+    "gutter.activeFg": "#737aa2",
+    "matchingBracket": "#364165"
+  },
+  "syntax": {
+    "keyword": {
+      "color": "#bb9af7"
+    },
+    "controlKeyword": {
+      "color": "#bb9af7"
+    },
+    "string": {
+      "color": "#9ece6a"
+    },
+    "number": {
+      "color": "#ff9e64"
+    },
+    "bool": {
+      "color": "#ff9e64"
+    },
+    "comment": {
+      "color": "#565f89",
+      "fontStyle": "italic"
+    },
+    "function": {
+      "color": "#7aa2f7"
+    },
+    "type": {
+      "color": "#0db9d7"
+    },
+    "variable": {
+      "color": "#c0caf5"
+    },
+    "property": {
+      "color": "#73daca"
+    },
+    "operator": {
+      "color": "#89ddff"
+    },
+    "punctuation": {
+      "color": "#737aa2"
+    },
+    "tag": {
+      "color": "#f7768e"
+    },
+    "attribute": {
+      "color": "#9ece6a"
+    },
+    "heading": {
+      "color": "#7aa2f7"
+    },
+    "link": {
+      "color": "#7dcfff"
+    },
+    "regexp": {
+      "color": "#9ece6a"
+    },
+    "escape": {
+      "color": "#ff9e64"
+    }
+  },
+  "terminal": {
+    "black": "#1d202f",
+    "red": "#f7768e",
+    "green": "#9ece6a",
+    "yellow": "#e0af68",
+    "blue": "#7aa2f7",
+    "magenta": "#bb9af7",
+    "cyan": "#7dcfff",
+    "white": "#a9b1d6",
+    "brightBlack": "#414868",
+    "brightRed": "#f7768e",
+    "brightGreen": "#9ece6a",
+    "brightYellow": "#e0af68",
+    "brightBlue": "#7aa2f7",
+    "brightMagenta": "#bb9af7",
+    "brightCyan": "#7dcfff",
+    "brightWhite": "#c0caf5"
+  },
+  "diff": {
+    "added": "rgba(158,206,106,0.12)",
+    "modified": "rgba(122,162,247,0.12)",
+    "deleted": "rgba(247,118,142,0.14)"
+  },
+  "find": {
+    "match": "rgba(122,162,247,0.35)",
+    "matchHighlight": "rgba(122,162,247,0.20)",
+    "wordHighlight": "rgba(122,162,247,0.15)"
+  },
+  "diagnostic": {
+    "error": "#f7768e",
+    "warning": "#e0af68",
+    "info": "#7aa2f7"
+  },
+  "syntaxExtended": {
+    "class": {
+      "color": "#0db9d7"
+    },
+    "interface": {
+      "color": "#0db9d7"
+    },
+    "enum": {
+      "color": "#0db9d7"
+    },
+    "namespace": {
+      "color": "#73daca"
+    },
+    "decorator": {
+      "color": "#9ece6a"
+    },
+    "constant": {
+      "color": "#ff9e64"
+    },
+    "macro": {
+      "color": "#bb9af7"
+    },
+    "typeParameter": {
+      "color": "#0db9d7"
+    }
+  }
+}

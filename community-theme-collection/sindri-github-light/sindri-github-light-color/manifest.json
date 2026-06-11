@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../manifest.schema.json",
+  "id": "sindri.github-light-color",
+  "name": "GitHub Light — Colour Theme",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Sindri's GitHub Light colour theme.",
+  "categories": ["Color Theme"],
+  "tags": ["github", "light", "blue"],
+  "permissions": [],
+  "engines": { "sindri": ">=0.1.0" },
+  "contributes": {
+    "themes": [{ "id": "sindri-github-light", "name": "GitHub Light", "kind": "light", "path": "github-light.json" }]
+  }
+}

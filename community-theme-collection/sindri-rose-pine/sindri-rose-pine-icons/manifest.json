@@ -1,0 +1,33 @@
+{
+  "$schema": "../../../manifest.schema.json",
+  "id": "sindri.rose-pine-icons",
+  "name": "Rosé Pine Icons",
+  "version": "1.0.0",
+  "publisher": "sindri",
+  "description": "File icons themed to Rosé Pine.",
+  "categories": [
+    "File Icon Theme"
+  ],
+  "permissions": [],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
+  "contributes": {
+    "iconThemes": [
+      {
+        "id": "sindri-rose-pine-icons",
+        "name": "Rosé Pine Icons",
+        "kind": "color",
+        "path": "icons.json"
+      }
+    ]
+  },
+  "extends": "sindri.community-icons-base",
+  "variables": {
+    "folder-base": "#31748f",
+    "semantic-1": "#31748f",
+    "semantic-2": "#9ccfd8",
+    "semantic-3": "#ebbcba",
+    "semantic-4": "#eb6f92"
+  }
+}

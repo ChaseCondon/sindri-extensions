@@ -1,0 +1,33 @@
+{
+  "$schema": "../../../manifest.schema.json",
+  "id": "sindri.github-light-icons",
+  "name": "GitHub Light Icons",
+  "version": "1.0.0",
+  "publisher": "sindri",
+  "description": "File icons themed to GitHub Light.",
+  "categories": [
+    "File Icon Theme"
+  ],
+  "permissions": [],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
+  "contributes": {
+    "iconThemes": [
+      {
+        "id": "sindri-github-light-icons",
+        "name": "GitHub Light Icons",
+        "kind": "color",
+        "path": "icons.json"
+      }
+    ]
+  },
+  "extends": "sindri.community-icons-base",
+  "variables": {
+    "folder-base": "#0969da",
+    "semantic-1": "#0969da",
+    "semantic-2": "#116329",
+    "semantic-3": "#953800",
+    "semantic-4": "#cf222e"
+  }
+}

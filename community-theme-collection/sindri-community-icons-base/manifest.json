@@ -1,0 +1,42 @@
+{
+  "$schema": "../../manifest.schema.json",
+  "id": "sindri.community-icons-base",
+  "name": "Community Icons Base",
+  "version": "1.0.0",
+  "publisher": "sindri",
+  "description": "Shared icon templates for Sindri community icon themes. Language icons use fixed canonical brand colors; folder and system icons inherit palette variables from child themes via `extends`.",
+  "categories": ["Icon Theme Base"],
+  "permissions": [],
+  "engines": { "sindri": ">=0.1.0" },
+  "variables": {
+    "folder-base": "#6272a4",
+    "semantic-1":  "#64b5f6",
+    "semantic-2":  "#81c784",
+    "semantic-3":  "#ffb74d",
+    "semantic-4":  "#e57373"
+  },
+  "credits": [
+    {
+      "name": "Tabler Icons",
+      "spdx": "MIT",
+      "url": "https://tabler.io/icons",
+      "notice": "Copyright (c) 2020-2024 Paweł Kuna"
+    },
+    {
+      "name": "Simple Icons",
+      "spdx": "CC0-1.0",
+      "url": "https://simpleicons.org",
+      "notice": "Individual brand icons are the trademarks of their respective owners. See https://simpleicons.org/legal-notice"
+    }
+  ],
+  "contributes": {
+    "iconThemes": [
+      {
+        "id": "sindri-community-icons-base",
+        "name": "Community Icons Base",
+        "kind": "color",
+        "path": "icons.json"
+      }
+    ]
+  }
+}

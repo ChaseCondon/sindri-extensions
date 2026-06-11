@@ -1,0 +1,33 @@
+{
+  "$schema": "../../../manifest.schema.json",
+  "id": "sindri.gruvbox-light-icons",
+  "name": "Gruvbox Light Icons",
+  "version": "1.0.0",
+  "publisher": "sindri",
+  "description": "File icons themed to Gruvbox Light.",
+  "categories": [
+    "File Icon Theme"
+  ],
+  "permissions": [],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
+  "contributes": {
+    "iconThemes": [
+      {
+        "id": "sindri-gruvbox-light-icons",
+        "name": "Gruvbox Light Icons",
+        "kind": "color",
+        "path": "icons.json"
+      }
+    ]
+  },
+  "extends": "sindri.community-icons-base",
+  "variables": {
+    "folder-base": "#b57614",
+    "semantic-1": "#076678",
+    "semantic-2": "#79740e",
+    "semantic-3": "#af3a03",
+    "semantic-4": "#9d0006"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "../../../manifest.schema.json",
+  "id": "sindri.catppuccin-latte-icons",
+  "name": "Catppuccin Latte Icons",
+  "version": "1.0.0",
+  "publisher": "sindri",
+  "description": "File icons themed to Catppuccin Latte.",
+  "categories": [
+    "File Icon Theme"
+  ],
+  "permissions": [],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
+  "contributes": {
+    "iconThemes": [
+      {
+        "id": "sindri-catppuccin-latte-icons",
+        "name": "Catppuccin Latte Icons",
+        "kind": "color",
+        "path": "icons.json"
+      }
+    ]
+  },
+  "extends": "sindri.community-icons-base",
+  "variables": {
+    "folder-base": "#8c8fa1",
+    "semantic-1": "#1e66f5",
+    "semantic-2": "#40a02b",
+    "semantic-3": "#fe640b",
+    "semantic-4": "#d20f39"
+  }
+}

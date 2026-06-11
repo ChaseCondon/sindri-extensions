@@ -1,0 +1,33 @@
+{
+  "$schema": "../../../manifest.schema.json",
+  "id": "sindri.tokyo-night-storm-icons",
+  "name": "Tokyo Night Storm Icons",
+  "version": "1.0.0",
+  "publisher": "sindri",
+  "description": "File icons themed to Tokyo Night Storm.",
+  "categories": [
+    "File Icon Theme"
+  ],
+  "permissions": [],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
+  "contributes": {
+    "iconThemes": [
+      {
+        "id": "sindri-tokyo-night-storm-icons",
+        "name": "Tokyo Night Storm Icons",
+        "kind": "color",
+        "path": "icons.json"
+      }
+    ]
+  },
+  "extends": "sindri.community-icons-base",
+  "variables": {
+    "folder-base": "#3d59a1",
+    "semantic-1": "#7aa2f7",
+    "semantic-2": "#9ece6a",
+    "semantic-3": "#ff9e64",
+    "semantic-4": "#f7768e"
+  }
+}

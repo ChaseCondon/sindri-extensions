@@ -1,0 +1,15 @@
+{
+  "$schema": "../../manifest.schema.json",
+  "id": "sindri.rose-pine",
+  "name": "Rosé Pine",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Sindri's take on Rosé Pine — soothingly dark theme with warm rose and muted purple tones.",
+  "categories": ["Extension Pack", "Color Theme", "File Icon Theme"],
+  "packKind": "theme",
+  "tags": ["rose-pine", "dark", "rose", "purple", "elegant"],
+  "permissions": [],
+  "engines": { "sindri": ">=0.1.0" },
+  "contributes": {},
+  "extensionPack": ["sindri.rose-pine-color", "sindri.rose-pine-icons"]
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "../../manifest.schema.json",
+  "id": "sindri.dracula",
+  "name": "Dracula",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Sindri's take on Dracula — the classic vampire-purple dark theme with vibrant pink, cyan, and green accents.",
+  "categories": ["Extension Pack", "Color Theme", "File Icon Theme"],
+  "packKind": "theme",
+  "tags": ["dracula", "dark", "purple", "pink", "classic"],
+  "permissions": [],
+  "engines": { "sindri": ">=0.1.0" },
+  "contributes": {},
+  "extensionPack": ["sindri.dracula-color", "sindri.dracula-icons"]
+}

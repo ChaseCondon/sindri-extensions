@@ -1,0 +1,33 @@
+{
+  "$schema": "../../../manifest.schema.json",
+  "id": "sindri.rose-pine-dawn-icons",
+  "name": "Rosé Pine Dawn Icons",
+  "version": "1.0.0",
+  "publisher": "sindri",
+  "description": "File icons themed to Rosé Pine Dawn.",
+  "categories": [
+    "File Icon Theme"
+  ],
+  "permissions": [],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
+  "contributes": {
+    "iconThemes": [
+      {
+        "id": "sindri-rose-pine-dawn-icons",
+        "name": "Rosé Pine Dawn Icons",
+        "kind": "color",
+        "path": "icons.json"
+      }
+    ]
+  },
+  "extends": "sindri.community-icons-base",
+  "variables": {
+    "folder-base": "#286983",
+    "semantic-1": "#286983",
+    "semantic-2": "#56949f",
+    "semantic-3": "#d7827e",
+    "semantic-4": "#b4637a"
+  }
+}

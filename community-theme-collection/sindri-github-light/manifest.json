@@ -1,0 +1,15 @@
+{
+  "$schema": "../../manifest.schema.json",
+  "id": "sindri.github-light",
+  "name": "GitHub Light",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Sindri's take on GitHub Light — clean white canvas, the light mode palette from github.com.",
+  "categories": ["Extension Pack", "Color Theme", "File Icon Theme"],
+  "packKind": "theme",
+  "tags": ["github", "light", "blue", "clean", "minimal"],
+  "permissions": [],
+  "engines": { "sindri": ">=0.1.0" },
+  "contributes": {},
+  "extensionPack": ["sindri.github-light-color", "sindri.github-light-icons"]
+}

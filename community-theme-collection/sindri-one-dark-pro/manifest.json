@@ -1,0 +1,15 @@
+{
+  "$schema": "../../manifest.schema.json",
+  "id": "sindri.one-dark-pro",
+  "name": "One Dark Pro",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Sindri's take on One Dark Pro — Atom's iconic dark theme, rich blue accents on a neutral charcoal.",
+  "categories": ["Extension Pack", "Color Theme", "File Icon Theme"],
+  "packKind": "theme",
+  "tags": ["one-dark", "dark", "atom", "blue", "classic"],
+  "permissions": [],
+  "engines": { "sindri": ">=0.1.0" },
+  "contributes": {},
+  "extensionPack": ["sindri.one-dark-pro-color", "sindri.one-dark-pro-icons"]
+}

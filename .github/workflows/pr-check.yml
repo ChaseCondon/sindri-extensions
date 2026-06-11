@@ -1,0 +1,108 @@
+name: PR Check
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: pr-check-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install root dependencies
+        run: bun install --frozen-lockfile
+
+      # ── Changeset gate ────────────────────────────────────────────────────
+      - name: Check for changeset
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+          # Allow explicit skip for docs/tooling/chore PRs
+          if echo "$TITLE" | grep -qiE '\[skip changeset\]|\[skip-changeset\]'; then
+            echo "Changeset check skipped (PR title opt-out)."
+            exit 0
+          fi
+          # Check whether this PR adds a changeset file
+          CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          if echo "$CHANGED" | grep -q '^\.changeset/.*\.md$'; then
+            echo "Changeset file found."
+          else
+            echo ""
+            echo "ERROR: No changeset file detected."
+            echo ""
+            echo "  Run:  bun run changeset"
+            echo "  Then commit the generated .changeset/*.md file with your PR."
+            echo ""
+            echo "  To skip (docs/chore only): add [skip changeset] to your PR title."
+            exit 1
+          fi
+
+      # ── Clone sindri-ide (needed to build code extensions) ────────────────
+      - name: Checkout sindri-ide
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/sindri
+          path: ../sindri-ide
+          sparse-checkout: |
+            scripts/
+            packages/
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install sindri-ide dependencies
+        run: bun install --frozen-lockfile
+        working-directory: ../sindri-ide
+
+      # ── Detect changed extensions ─────────────────────────────────────────
+      - name: Detect changed extensions
+        id: changes
+        run: |
+          CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          echo "Changed files:"
+          echo "$CHANGED"
+          # Collect unique top-level extension folders that have a manifest.json
+          DIRS=""
+          for f in $CHANGED; do
+            DIR=$(echo "$f" | cut -d'/' -f1)
+            if [ -f "$DIR/manifest.json" ] && ! echo "$DIRS" | grep -qw "$DIR"; then
+              DIRS="$DIRS $DIR"
+            fi
+          done
+          echo "dirs=$DIRS" >> $GITHUB_OUTPUT
+          echo "Changed extension folders: $DIRS"
+
+      # ── Build changed extensions (no --bundle, faster) ────────────────────
+      - name: Build changed extensions
+        if: steps.changes.outputs.dirs != ''
+        run: |
+          FAILED=0
+          for DIR in ${{ steps.changes.outputs.dirs }}; do
+            echo "── Building $DIR ──"
+            bun run build-ext "$DIR" || FAILED=$((FAILED + 1))
+          done
+          if [ $FAILED -gt 0 ]; then
+            echo "✘ $FAILED extension(s) failed to build."
+            exit 1
+          fi
+
+      # ── Validate index.json can be regenerated cleanly ────────────────────
+      - name: Validate index.json
+        run: |
+          bun run build-index
+          if ! git diff --exit-code index.json; then
+            echo ""
+            echo "ERROR: index.json is out of date. Run 'bun run build-index' and commit the result."
+            exit 1
+          fi

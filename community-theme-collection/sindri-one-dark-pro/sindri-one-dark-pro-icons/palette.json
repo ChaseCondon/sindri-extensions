@@ -1,0 +1,17 @@
+{
+  "id":   "sindri-one-dark-pro-icons",
+  "name": "One Dark Pro Icons",
+  "bg":          "#282c34",
+  "folderBase":  "#528bff",
+  "fileBody":    "#3e4451",
+  "fileTab":     "#4b5263",
+  "blue":   "#61afef",
+  "yellow": "#e5c07b",
+  "green":  "#98c379",
+  "red":    "#e06c75",
+  "orange": "#d19a66",
+  "purple": "#c678dd",
+  "cyan":   "#56b6c2",
+  "teal":   "#56b6c2",
+  "amber":  "#e5c07b"
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "../manifest.schema.json",
+  "id": "sindri.community-theme-collection",
+  "name": "Community Theme Collection",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Sindri takes on 15 community-favourite themes — Catppuccin, Dracula, Tokyo Night, Nord, and more. Install the collection, apply the one you want.",
+  "categories": ["Extension Pack"],
+  "packKind": "theme",
+  "tags": ["themes", "community", "catppuccin", "dracula", "tokyo-night", "nord", "gruvbox", "solarized"],
+  "permissions": [],
+  "engines": { "sindri": ">=0.1.0" },
+  "contributes": {},
+  "extensionPack": [
+    "sindri.catppuccin-mocha",
+    "sindri.catppuccin-latte",
+    "sindri.github-dark",
+    "sindri.github-light",
+    "sindri.dracula",
+    "sindri.tokyo-night",
+    "sindri.tokyo-night-storm",
+    "sindri.nord",
+    "sindri.gruvbox-dark",
+    "sindri.gruvbox-light",
+    "sindri.one-dark-pro",
+    "sindri.rose-pine",
+    "sindri.rose-pine-dawn",
+    "sindri.solarized-dark",
+    "sindri.solarized-light"
+  ]
+}

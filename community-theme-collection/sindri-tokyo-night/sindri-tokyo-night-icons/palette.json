@@ -1,0 +1,17 @@
+{
+  "id":   "sindri-tokyo-night-icons",
+  "name": "Tokyo Night Icons",
+  "bg":          "#1a1b26",
+  "folderBase":  "#3d59a1",
+  "fileBody":    "#292e42",
+  "fileTab":     "#364165",
+  "blue":   "#7aa2f7",
+  "yellow": "#e0af68",
+  "green":  "#9ece6a",
+  "red":    "#f7768e",
+  "orange": "#ff9e64",
+  "purple": "#bb9af7",
+  "cyan":   "#7dcfff",
+  "teal":   "#73daca",
+  "amber":  "#e0af68"
+}

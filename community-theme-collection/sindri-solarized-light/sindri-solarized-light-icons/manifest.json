@@ -1,0 +1,33 @@
+{
+  "$schema": "../../../manifest.schema.json",
+  "id": "sindri.solarized-light-icons",
+  "name": "Solarized Light Icons",
+  "version": "1.0.0",
+  "publisher": "sindri",
+  "description": "File icons themed to Solarized Light.",
+  "categories": [
+    "File Icon Theme"
+  ],
+  "permissions": [],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
+  "contributes": {
+    "iconThemes": [
+      {
+        "id": "sindri-solarized-light-icons",
+        "name": "Solarized Light Icons",
+        "kind": "color",
+        "path": "icons.json"
+      }
+    ]
+  },
+  "extends": "sindri.community-icons-base",
+  "variables": {
+    "folder-base": "#268bd2",
+    "semantic-1": "#268bd2",
+    "semantic-2": "#859900",
+    "semantic-3": "#cb4b16",
+    "semantic-4": "#dc322f"
+  }
+}

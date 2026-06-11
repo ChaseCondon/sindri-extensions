@@ -1,0 +1,15 @@
+{
+  "$schema": "../../manifest.schema.json",
+  "id": "sindri.catppuccin-latte",
+  "name": "Catppuccin Latte",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Sindri's take on Catppuccin Latte — the light counterpart to Mocha, warm cream background with rich accent colours.",
+  "categories": ["Extension Pack", "Color Theme", "File Icon Theme"],
+  "packKind": "theme",
+  "tags": ["catppuccin", "latte", "light", "purple", "pastel"],
+  "permissions": [],
+  "engines": { "sindri": ">=0.1.0" },
+  "contributes": {},
+  "extensionPack": ["sindri.catppuccin-latte-color", "sindri.catppuccin-latte-icons"]
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "../../../manifest.schema.json",
+  "id": "sindri.gruvbox-dark-icons",
+  "name": "Gruvbox Dark Icons",
+  "version": "1.0.0",
+  "publisher": "sindri",
+  "description": "File icons themed to Gruvbox Dark.",
+  "categories": [
+    "File Icon Theme"
+  ],
+  "permissions": [],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
+  "contributes": {
+    "iconThemes": [
+      {
+        "id": "sindri-gruvbox-dark-icons",
+        "name": "Gruvbox Dark Icons",
+        "kind": "color",
+        "path": "icons.json"
+      }
+    ]
+  },
+  "extends": "sindri.community-icons-base",
+  "variables": {
+    "folder-base": "#d79921",
+    "semantic-1": "#83a598",
+    "semantic-2": "#b8bb26",
+    "semantic-3": "#fe8019",
+    "semantic-4": "#fb4934"
+  }
+}

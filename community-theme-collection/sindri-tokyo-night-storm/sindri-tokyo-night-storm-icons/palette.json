@@ -1,0 +1,17 @@
+{
+  "id":   "sindri-tokyo-night-storm-icons",
+  "name": "Tokyo Night Storm Icons",
+  "bg":          "#24283b",
+  "folderBase":  "#3d59a1",
+  "fileBody":    "#364165",
+  "fileTab":     "#414868",
+  "blue":   "#7aa2f7",
+  "yellow": "#e0af68",
+  "green":  "#9ece6a",
+  "red":    "#f7768e",
+  "orange": "#ff9e64",
+  "purple": "#bb9af7",
+  "cyan":   "#7dcfff",
+  "teal":   "#73daca",
+  "amber":  "#e0af68"
+}

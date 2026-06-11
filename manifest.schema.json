@@ -42,9 +42,11 @@
           "Language Support",
           "Language Pack",
           "Test & Task Adapter",
-          "UI Extension"
+          "UI Extension",
+          "Extension Pack",
+          "Icon Theme Base"
         ],
-        "description": "Color Theme — UI palette (sindri-dark.json style); File Icon Theme — file tree icons; UI Icon Theme — activity bar / toolbar glyphs; Language Support — Tree-sitter grammar + LSP/DAP adapters via SAP; Language Pack — human-language UI localisation; Test & Task Adapter — test runner / task adapter; UI Extension — general workbench UI additions (requires extension host)"
+        "description": "Color Theme — UI palette (ThemeDef JSON); File Icon Theme — file tree icons; UI Icon Theme — activity bar / toolbar glyphs; Language Support — Tree-sitter grammar + LSP/DAP adapters; Language Pack — human-language UI localisation; Test & Task Adapter — test runner / task adapter; UI Extension — workbench panels, status bar items, editor decorations (requires extension host); Extension Pack — installs a curated set of extensions together; Icon Theme Base — shared icon templates inherited by child icon themes via `extends`"
       }
     },
     "permissions": {
@@ -85,6 +87,20 @@
               "name": { "type": "string", "description": "Display name. Example: 'My Theme Dark'" },
               "kind": { "type": "string", "enum": ["light", "dark"], "description": "Controls which CSS variable set is applied." },
               "path": { "type": "string", "description": "Path to the ThemeDef JSON file, relative to this extension folder. Example: 'aurora-dark.json'" }
+            }
+          }
+        },
+        "uiIconPacks": {
+          "type": "array",
+          "description": "UI icon pack definitions — activity bar and toolbar glyphs (data-only, no extension host required).",
+          "items": {
+            "type": "object",
+            "required": ["id", "name", "path"],
+            "additionalProperties": false,
+            "properties": {
+              "id":   { "type": "string" },
+              "name": { "type": "string" },
+              "path": { "type": "string", "description": "Path to the UiIconPackDef JSON file." }
             }
           }
         },
@@ -181,11 +197,54 @@
             "properties": {
               "id":          { "type": "string", "description": "Tree-view identifier — passed to sindri.ui.registerTreeView. Must be unique within the extension. Example: 'my-ext.my-tree'" },
               "title":       { "type": "string", "description": "Panel title shown in the dock tab. Example: 'My Tree'" },
-              "icon":        { "type": "string", "description": "SVG markup for the activity-bar icon. Defaults to a generic list icon." },
+              "icon":        { "type": "string", "description": "Path to the SVG icon file, relative to the extension folder. Example: 'icons/panel.svg'. Defaults to a generic list icon." },
               "defaultDock": {
                 "type": "string",
                 "enum": ["left-top", "left-bottom", "right-top", "right-bottom", "bottom"],
                 "description": "Which dock region the panel initially appears in. Defaults to 'left-top'."
+              }
+            }
+          }
+        },
+        "webviewPanels": {
+          "type": "array",
+          "description": "Webview panels contributed by this extension (ADR-0026 Tier 2). Each entry declares a panel backed by a null-origin iframe; the extension returns the full HTML from provider.getHtml().",
+          "items": {
+            "type": "object",
+            "required": ["id", "title"],
+            "additionalProperties": false,
+            "properties": {
+              "id":          { "type": "string", "description": "Panel identifier — passed to sindri.ui.registerWebviewPanel. Must be unique within the extension. Example: 'my-ext.my-panel'" },
+              "title":       { "type": "string", "description": "Panel title shown in the dock tab. Example: 'My Panel'" },
+              "icon":        { "type": "string", "description": "Path to the SVG icon file, relative to the extension folder. Example: 'icons/panel.svg'. Defaults to a generic panel icon." },
+              "defaultDock": {
+                "type": "string",
+                "enum": ["left-top", "left-bottom", "right-top", "right-bottom", "bottom"],
+                "description": "Which dock region the panel initially appears in. Defaults to 'right-top'."
+              }
+            }
+          }
+        },
+        "editors": {
+          "type": "array",
+          "description": "Custom editor registrations (ADR-0028 Surface B). Each entry declares a file-type selector; the extension calls sindri.editor.registerEditor(id, provider) from activate().",
+          "items": {
+            "type": "object",
+            "required": ["id", "displayName", "selector"],
+            "additionalProperties": false,
+            "properties": {
+              "id":          { "type": "string", "description": "Editor identifier — passed to sindri.editor.registerEditor. Example: 'my-ext.my-editor'" },
+              "displayName": { "type": "string", "description": "Name shown in the 'Open with…' picker. Example: 'Markdown Preview'" },
+              "selector": {
+                "type": "array",
+                "description": "File patterns this editor handles. At least one must match for the editor to be offered.",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "filenamePattern": { "type": "string", "description": "Glob pattern matched against the file name (not full path). Example: '*.md'" }
+                  }
+                }
               }
             }
           }
@@ -209,6 +268,45 @@
     "main": {
       "type": "string",
       "description": "Entry-point bundle path for code-bearing extensions (requires extension host). Omit entirely for data-only extensions (themes, icons). Example: 'dist/extension.js'"
+    },
+    "extensionPack": {
+      "type": "array",
+      "description": "Extension IDs bundled by this Extension Pack. Installing the pack installs each listed extension individually.",
+      "items": { "type": "string", "pattern": "^[a-z0-9-]+\\.[a-z0-9-]+$" }
+    },
+    "tags": {
+      "type": "array",
+      "description": "Optional search tags shown in the marketplace. Lowercase, hyphen-separated. Example: ['dark', 'purple']",
+      "items": { "type": "string" }
+    },
+    "extends": {
+      "type": "string",
+      "description": "ID of a base extension this one inherits from (ADR-0032). The runtime merges the base icons.json (child-wins on field conflicts) and injects `variables` as CSS custom properties at activation. Only valid for icon theme extensions.",
+      "pattern": "^[a-z0-9-]+\\.[a-z0-9-]+$"
+    },
+    "variables": {
+      "type": "object",
+      "description": "Palette overrides passed to the base extension (requires 'extends', ADR-0032). Keys map to CSS custom property names injected at activation (e.g. 'folder-base' → '--folder-base'); values are CSS color strings.",
+      "additionalProperties": { "type": "string" }
+    },
+    "license": {
+      "type": "string",
+      "description": "SPDX license identifier for this extension's own license. Example: 'AGPL-3.0-only', 'MIT', 'Apache-2.0'"
+    },
+    "credits": {
+      "type": "array",
+      "description": "Third-party assets included in this extension that require attribution. Displayed in the extension detail panel under 'Credits & Licenses'.",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "additionalProperties": false,
+        "properties": {
+          "name":   { "type": "string", "description": "Name of the credited work or project. Example: 'Phosphor Icons'" },
+          "spdx":   { "type": "string", "description": "SPDX license identifier. Example: 'MIT', 'ISC', 'CC0-1.0'" },
+          "url":    { "type": "string", "description": "URL to the source project or license text." },
+          "notice": { "type": "string", "description": "Copyright or attribution notice text. Example: 'Copyright (c) 2020 Phosphor Icons'" }
+        }
+      }
     }
   }
 }

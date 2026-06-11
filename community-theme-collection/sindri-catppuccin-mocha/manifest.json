@@ -1,0 +1,15 @@
+{
+  "$schema": "../../manifest.schema.json",
+  "id": "sindri.catppuccin-mocha",
+  "name": "Catppuccin Mocha",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Sindri's take on Catppuccin Mocha — warm dark purple palette with pastel accents. Includes colour theme and matching file icons.",
+  "categories": ["Extension Pack", "Color Theme", "File Icon Theme"],
+  "packKind": "theme",
+  "tags": ["catppuccin", "mocha", "dark", "purple", "pastel"],
+  "permissions": [],
+  "engines": { "sindri": ">=0.1.0" },
+  "contributes": {},
+  "extensionPack": ["sindri.catppuccin-mocha-color", "sindri.catppuccin-mocha-icons"]
+}

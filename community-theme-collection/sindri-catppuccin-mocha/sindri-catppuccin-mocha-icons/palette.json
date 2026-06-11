@@ -1,0 +1,17 @@
+{
+  "id":   "sindri-catppuccin-mocha-icons",
+  "name": "Catppuccin Mocha Icons",
+  "bg":          "#1e1e2e",
+  "folderBase":  "#585b70",
+  "fileBody":    "#313244",
+  "fileTab":     "#45475a",
+  "blue":   "#89b4fa",
+  "yellow": "#f9e2af",
+  "green":  "#a6e3a1",
+  "red":    "#f38ba8",
+  "orange": "#fab387",
+  "purple": "#cba6f7",
+  "cyan":   "#89dceb",
+  "teal":   "#94e2d5",
+  "amber":  "#fab387"
+}

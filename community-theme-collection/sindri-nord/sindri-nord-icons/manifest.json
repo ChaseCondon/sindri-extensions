@@ -1,0 +1,33 @@
+{
+  "$schema": "../../../manifest.schema.json",
+  "id": "sindri.nord-icons",
+  "name": "Nord Icons",
+  "version": "1.0.0",
+  "publisher": "sindri",
+  "description": "File icons themed to Nord.",
+  "categories": [
+    "File Icon Theme"
+  ],
+  "permissions": [],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
+  "contributes": {
+    "iconThemes": [
+      {
+        "id": "sindri-nord-icons",
+        "name": "Nord Icons",
+        "kind": "color",
+        "path": "icons.json"
+      }
+    ]
+  },
+  "extends": "sindri.community-icons-base",
+  "variables": {
+    "folder-base": "#5e81ac",
+    "semantic-1": "#81a1c1",
+    "semantic-2": "#a3be8c",
+    "semantic-3": "#d08770",
+    "semantic-4": "#bf616a"
+  }
+}

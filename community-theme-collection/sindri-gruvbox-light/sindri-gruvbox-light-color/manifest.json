@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../manifest.schema.json",
+  "id": "sindri.gruvbox-light-color",
+  "name": "Gruvbox Light — Colour Theme",
+  "version": "0.1.0",
+  "publisher": "sindri",
+  "description": "Sindri's Gruvbox Light colour theme.",
+  "categories": ["Color Theme"],
+  "tags": ["gruvbox", "light", "retro", "earthy"],
+  "permissions": [],
+  "engines": { "sindri": ">=0.1.0" },
+  "contributes": {
+    "themes": [{ "id": "sindri-gruvbox-light", "name": "Gruvbox Light", "kind": "light", "path": "gruvbox-light.json" }]
+  }
+}

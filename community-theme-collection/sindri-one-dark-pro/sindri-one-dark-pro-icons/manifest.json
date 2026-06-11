@@ -1,0 +1,33 @@
+{
+  "$schema": "../../../manifest.schema.json",
+  "id": "sindri.one-dark-pro-icons",
+  "name": "One Dark Pro Icons",
+  "version": "1.0.0",
+  "publisher": "sindri",
+  "description": "File icons themed to One Dark Pro.",
+  "categories": [
+    "File Icon Theme"
+  ],
+  "permissions": [],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
+  "contributes": {
+    "iconThemes": [
+      {
+        "id": "sindri-one-dark-pro-icons",
+        "name": "One Dark Pro Icons",
+        "kind": "color",
+        "path": "icons.json"
+      }
+    ]
+  },
+  "extends": "sindri.community-icons-base",
+  "variables": {
+    "folder-base": "#528bff",
+    "semantic-1": "#61afef",
+    "semantic-2": "#98c379",
+    "semantic-3": "#d19a66",
+    "semantic-4": "#e06c75"
+  }
+}
