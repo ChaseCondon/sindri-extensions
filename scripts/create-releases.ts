@@ -8,7 +8,7 @@ import { join, resolve } from "path";
 const extRoot = resolve(import.meta.dir, "..");
 const ideRoot = process.env.SINDRI_IDE_ROOT ?? resolve(extRoot, "../sindri-ide");
 
-interface Manifest { id: string; version: string; name: string; }
+interface Manifest { id: string; version: string; name: string; buildable?: boolean; }
 
 function readManifest(dir: string): Manifest | null {
   const p = join(dir, "manifest.json");
@@ -62,7 +62,7 @@ function createRelease(dir: string, manifest: Manifest): boolean {
 const extensions = readdirSync(extRoot, { withFileTypes: true })
   .filter(e => e.isDirectory() && !e.name.startsWith(".") && e.name !== "node_modules")
   .map(e => ({ dir: join(extRoot, e.name), manifest: readManifest(join(extRoot, e.name)) }))
-  .filter((x): x is { dir: string; manifest: Manifest } => x.manifest !== null);
+  .filter((x): x is { dir: string; manifest: Manifest } => x.manifest !== null && x.manifest.buildable !== false);
 
 let released = 0;
 let failed = 0;
