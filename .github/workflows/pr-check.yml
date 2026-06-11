@@ -13,9 +13,16 @@ jobs:
     name: Validate & Build
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: sindri-extensions
+
     steps:
+      # Check out sindri-extensions into ./sindri-extensions/ so sindri-ide
+      # can sit beside it as a sibling (../sindri-ide), matching local dev layout.
       - uses: actions/checkout@v4
         with:
+          path: sindri-extensions
           fetch-depth: 0
 
       - uses: oven-sh/setup-bun@v2
@@ -29,12 +36,10 @@ jobs:
       - name: Check for changeset
         run: |
           TITLE="${{ github.event.pull_request.title }}"
-          # Allow explicit skip for docs/tooling/chore PRs
           if echo "$TITLE" | grep -qiE '\[skip changeset\]|\[skip-changeset\]'; then
             echo "Changeset check skipped (PR title opt-out)."
             exit 0
           fi
-          # Check whether this PR adds a changeset file
           CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
           if echo "$CHANGED" | grep -q '^\.changeset/.*\.md$'; then
             echo "Changeset file found."
@@ -49,12 +54,12 @@ jobs:
             exit 1
           fi
 
-      # ── Clone sindri-ide (needed to build code extensions) ────────────────
+      # ── Clone sindri-ide as a sibling directory ───────────────────────────
       - name: Checkout sindri-ide
         uses: actions/checkout@v4
         with:
           repository: ${{ github.repository_owner }}/sindri
-          path: ../sindri-ide
+          path: sindri-ide
           sparse-checkout: |
             scripts/
             packages/
@@ -63,7 +68,7 @@ jobs:
 
       - name: Install sindri-ide dependencies
         run: bun install --frozen-lockfile
-        working-directory: ../sindri-ide
+        working-directory: sindri-ide
 
       # ── Detect changed extensions ─────────────────────────────────────────
       - name: Detect changed extensions
@@ -72,7 +77,6 @@ jobs:
           CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
           echo "Changed files:"
           echo "$CHANGED"
-          # Collect unique top-level extension folders that have a manifest.json
           DIRS=""
           for f in $CHANGED; do
             DIR=$(echo "$f" | cut -d'/' -f1)
