@@ -18,6 +18,7 @@ function normalizeColor(raw: string): string {
 }
 
 export async function activate(context: ExtensionContext): Promise<void> {
+  console.log("[color-swatches] activate: registering decoration provider");
   const disposable = sindri.editor.registerDecorationProvider("sindri.color-swatches", {
     css: SWATCH_CSS,
     provide(ctx: DecorationContext): DecorationDatum[] {
