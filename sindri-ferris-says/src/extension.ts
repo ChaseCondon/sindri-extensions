@@ -102,7 +102,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
     if (e.key === 'Enter') speak();
   });
   if (api) {
-    api.onDidReceiveMessage(function(data) {
+    api.onMessage(function(data) {
       if (data && data.type === 'art') {
         document.getElementById('art').textContent = data.art;
       }

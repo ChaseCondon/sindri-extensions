@@ -5,7 +5,7 @@
   "name": "Now Playing",
   "version": "0.1.0",
   "publisher": "sindri",
-  "description": "Shows the current playerctl track in the status bar. Example of sindri.env.exec + sindri.ui.createStatusBarItem.",
+  "description": "Shows the current media track in the status bar with a full player panel (album art, controls, animated waveform scrubber).",
   "categories": [
     "UI Extension"
   ],
@@ -17,5 +17,13 @@
     "sindri": ">=0.1.0"
   },
   "main": "dist/extension.js",
-  "contributes": {}
+  "contributes": {
+    "webviewPanels": [
+      {
+        "id": "sindri.now-playing",
+        "title": "Now Playing",
+        "defaultDock": "right-bottom"
+      }
+    ]
+  }
 }

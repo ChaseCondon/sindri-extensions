@@ -12,8 +12,8 @@ const encoder = new TextEncoder();
 
 async function initWasm(): Promise<void> {
   const mod = await sindri.wasm.load("tokenizer.wasm");
-  const result = await WebAssembly.instantiate(mod, {});
-  wasmInstance = result.instance;
+  // instantiate(Module, imports) → Instance directly (not {instance})
+  wasmInstance = await WebAssembly.instantiate(mod, {});
   wasmMem = wasmInstance.exports.memory as WebAssembly.Memory;
 }
 

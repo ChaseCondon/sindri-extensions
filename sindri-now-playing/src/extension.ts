@@ -1,98 +1,259 @@
-/**
- * sindri-now-playing — shows the current media track in the status bar.
- *
- * Platform detection: tries each backend in order, falls back to "♪ —" on failure.
- *   Linux  → playerctl (MPRIS/DBus)
- *   Windows → PowerShell SMTC (GlobalSystemMediaTransportControlsSessionManager)
- *             picks up Spotify, Edge, WMP, anything using the Windows media session
- *   macOS  → osascript querying Music.app and Spotify
- *
- * V2 roadmap: full player UI panel with album art, scrubber, play/pause/skip —
- * waiting on sindri.ui.registerWebviewPanel (ADR-0026 Tier 2).
- */
+import { createWebviewHtml } from "@sindri/api/helpers";
 
-// PowerShell script that queries the Windows System Media Transport Controls.
-// Works on Windows 10/11 with any app that registers a media session.
-const SMTC_SCRIPT = `
-try {
-  $null = [Windows.Media.Control.GlobalSystemMediaTransportControlsSessionManager,
-           Windows.Media.Control, ContentType=WindowsRuntime]
-  $mgr = [Windows.Media.Control.GlobalSystemMediaTransportControlsSessionManager]::RequestAsync().GetAwaiter().GetResult()
-  $session = $mgr.GetCurrentSession()
-  if (-not $session) { exit 0 }
-  $props = $session.TryGetMediaPropertiesAsync().GetAwaiter().GetResult()
-  $artist = $props.Artist; $title = $props.Title
-  if ($title) { Write-Output ("♪ " + $(if ($artist) { $artist + " - " } else { "" }) + $title) }
-} catch { exit 0 }
-`.trim();
+interface TrackInfo {
+  title: string;
+  artist: string;
+  album: string;
+  state: "playing" | "paused" | "stopped";
+  position: number;   // seconds
+  duration: number;   // seconds
+  artDataUri: string; // "data:image/jpeg;base64,…" or ""
+}
 
-async function tryExec(cmd: string, ...args: string[]): Promise<string | null> {
+// ── Platform helpers ──────────────────────────────────────────────────────────
+
+async function tryExec(cmd: string, ...args: string[]): Promise<{ stdout: string; code: number | null } | null> {
   try {
     const r = await sindri.env.exec(cmd, ...args);
-    const out = r.stdout.trim();
-    return r.code === 0 && out ? out : null;
-  } catch (e: unknown) {
-    // SPAWN_FAILED = binary not on PATH; anything else is unexpected, treat as no result
+    return r;
+  } catch {
     return null;
   }
 }
 
-async function fetchNowPlaying(): Promise<string> {
-  // Linux: MPRIS via playerctl
-  const playerctl = await tryExec("playerctl", "metadata", "--format", "♪ {{artist}} - {{title}}");
-  if (playerctl) return playerctl;
-
-  // Windows: System Media Transport Controls via PowerShell
-  // Try pwsh (PowerShell Core) first, fall back to powershell (Windows PowerShell)
-  const smtc =
-    await tryExec("pwsh", "-NoProfile", "-Command", SMTC_SCRIPT) ??
-    await tryExec("powershell", "-NoProfile", "-Command", SMTC_SCRIPT);
-  if (smtc) return smtc;
-
-  // macOS: osascript querying Music.app and Spotify
-  const appleScript = `
-    tell application "System Events"
-      if exists process "Music" then
-        tell application "Music"
-          if player state is playing then
-            return "♪ " & artist of current track & " - " & name of current track
-          end if
-        end tell
-      end if
-      if exists process "Spotify" then
-        tell application "Spotify"
-          if player state is playing then
-            return "♪ " & artist of current track & " - " & name of current track
-          end if
-        end tell
+// macOS: query Music.app or Spotify via osascript, return pipe-delimited string
+const MACOS_INFO_SCRIPT = `
+set output to ""
+try
+  tell application "Music"
+    if player state is playing or player state is paused then
+      set st to (player state as string)
+      set t to current track
+      set output to st & "|" & (name of t) & "|" & (artist of t) & "|" & (album of t) & "|" & (round player position) & "|" & (round (duration of t))
+    end if
+  end tell
+end try
+if output is "" then
+  try
+    tell application "Spotify"
+      if player state is playing or player state is paused then
+        set st to (player state as string)
+        set t to current track
+        set output to st & "|" & (name of t) & "|" & (artist of t) & "|" & (album of t) & "|" & (round player position) & "|" & (round ((duration of t) / 1000))
       end if
     end tell
-    return ""
-  `.trim();
-  const macos = await tryExec("osascript", "-e", appleScript);
-  if (macos) return macos;
+  end try
+end if
+return output
+`.trim();
 
-  return "♪ —";
+const MACOS_ART_SCRIPT = `
+try
+  tell application "Music"
+    if player state is not stopped then
+      set d to raw data of artwork 1 of current track
+      set f to open for access "/tmp/sindri_np_art.jpg" with write permission
+      set eof of f to 0
+      write d to f
+      close access f
+      return "ok"
+    end if
+  end tell
+end try
+return ""
+`.trim();
+
+const MACOS_CTRL: Record<string, string> = {
+  play:  'tell application "Music" to play',
+  pause: 'tell application "Music" to pause',
+  next:  'tell application "Music" to next track',
+  prev:  'tell application "Music" to previous track',
+};
+
+// Windows: SMTC via PowerShell — returns pipe-delimited string
+const WIN_INFO_SCRIPT = `
+try {
+  $null = [Windows.Media.Control.GlobalSystemMediaTransportControlsSessionManager, Windows.Media.Control, ContentType=WindowsRuntime]
+  $mgr = [Windows.Media.Control.GlobalSystemMediaTransportControlsSessionManager]::RequestAsync().GetAwaiter().GetResult()
+  $session = $mgr.GetCurrentSession()
+  if (-not $session) { exit 0 }
+  $props = $session.TryGetMediaPropertiesAsync().GetAwaiter().GetResult()
+  $tl = $session.GetTimelineProperties()
+  $pb = $session.GetPlaybackInfo()
+  $state = if ($pb.PlaybackStatus -eq 4) { "playing" } elseif ($pb.PlaybackStatus -eq 5) { "paused" } else { "stopped" }
+  $pos = [math]::Round($tl.Position.TotalSeconds)
+  $dur = [math]::Round($tl.EndTime.TotalSeconds)
+  Write-Output ("$state|" + $props.Title + "|" + $props.Artist + "|" + $props.AlbumTitle + "|$pos|$dur")
+} catch { exit 0 }
+`.trim();
+
+const WIN_CTRL: Record<string, string> = {
+  play:  "$mgr.GetCurrentSession().TryTogglePlayPauseAsync().GetAwaiter().GetResult()",
+  pause: "$mgr.GetCurrentSession().TryTogglePlayPauseAsync().GetAwaiter().GetResult()",
+  next:  "$mgr.GetCurrentSession().TrySkipNextAsync().GetAwaiter().GetResult()",
+  prev:  "$mgr.GetCurrentSession().TrySkipPreviousAsync().GetAwaiter().GetResult()",
+};
+
+function wrapWinCtrl(action: string): string {
+  return `
+try {
+  $null = [Windows.Media.Control.GlobalSystemMediaTransportControlsSessionManager, Windows.Media.Control, ContentType=WindowsRuntime]
+  $mgr = [Windows.Media.Control.GlobalSystemMediaTransportControlsSessionManager]::RequestAsync().GetAwaiter().GetResult()
+  ${WIN_CTRL[action] ?? ""}
+} catch {}
+`.trim();
 }
 
+// ── Track info fetch ──────────────────────────────────────────────────────────
+
+async function fetchTrackInfo(): Promise<TrackInfo | null> {
+  // macOS
+  const macRes = await tryExec("osascript", "-e", MACOS_INFO_SCRIPT);
+  if (macRes && macRes.code === 0 && macRes.stdout.trim().includes("|")) {
+    const [state, title, artist, album, pos, dur] = macRes.stdout.trim().split("|");
+    if (title) {
+      return {
+        title, artist, album,
+        state: (state === "playing" ? "playing" : state === "paused" ? "paused" : "stopped"),
+        position: parseInt(pos) || 0,
+        duration: parseInt(dur) || 0,
+        artDataUri: "",
+      };
+    }
+  }
+
+  // Windows
+  const winRes = await tryExec("pwsh", "-NoProfile", "-Command", WIN_INFO_SCRIPT)
+    ?? await tryExec("powershell", "-NoProfile", "-Command", WIN_INFO_SCRIPT);
+  if (winRes && winRes.stdout.trim().includes("|")) {
+    const [state, title, artist, album, pos, dur] = winRes.stdout.trim().split("|");
+    if (title) {
+      return {
+        title, artist, album,
+        state: (state as TrackInfo["state"]) ?? "stopped",
+        position: parseInt(pos) || 0,
+        duration: parseInt(dur) || 0,
+        artDataUri: "",
+      };
+    }
+  }
+
+  // Linux
+  const linRes = await tryExec("playerctl", "metadata", "--format",
+    "{{lc(status)}}|{{title}}|{{artist}}|{{album}}|{{position}}|{{mpris:length}}");
+  if (linRes && linRes.code === 0 && linRes.stdout.trim().includes("|")) {
+    const [state, title, artist, album, posUs, durUs] = linRes.stdout.trim().split("|");
+    if (title) {
+      return {
+        title, artist, album,
+        state: (state === "playing" ? "playing" : state === "paused" ? "paused" : "stopped"),
+        position: Math.round(parseInt(posUs) / 1_000_000) || 0,
+        duration: Math.round(parseInt(durUs) / 1_000_000) || 0,
+        artDataUri: "",
+      };
+    }
+  }
+
+  return null;
+}
+
+async function fetchAlbumArt(): Promise<string> {
+  // macOS: save artwork to temp file then base64-encode
+  const artRes = await tryExec("osascript", "-e", MACOS_ART_SCRIPT);
+  if (artRes?.stdout.trim() === "ok") {
+    const b64Res = await tryExec("base64", "-b", "0", "-i", "/tmp/sindri_np_art.jpg");
+    if (b64Res?.code === 0 && b64Res.stdout.trim()) {
+      return `data:image/jpeg;base64,${b64Res.stdout.trim()}`;
+    }
+  }
+  return "";
+}
+
+// ── Player control ────────────────────────────────────────────────────────────
+
+async function sendControl(action: string, seekPos?: number): Promise<void> {
+  if (action === "seek" && seekPos !== undefined) {
+    const s = Math.round(seekPos);
+    await tryExec("osascript", "-e", `tell application "Music" to set player position to ${s}`);
+    // Windows seek: not well-supported via SMTC
+    return;
+  }
+  const mac = MACOS_CTRL[action];
+  if (mac) { await tryExec("osascript", "-e", mac); return; }
+  const winScript = wrapWinCtrl(action);
+  await tryExec("pwsh", "-NoProfile", "-Command", winScript)
+    ?? await tryExec("powershell", "-NoProfile", "-Command", winScript);
+}
+
+// ── Extension activation ──────────────────────────────────────────────────────
+
 export async function activate(context: ExtensionContext): Promise<void> {
-  const item = sindri.ui.createStatusBarItem("sindri.now-playing", {
-    text: "♪ …",
-    tooltip: "Now Playing — run 'now-playing.refresh' to update",
+  const item = sindri.ui.createStatusBarItem("sindri.now-playing.bar", {
+    text: "♪ —",
+    tooltip: "Now Playing",
   });
   item.show();
 
-  async function refresh(): Promise<void> {
-    item.text = await fetchNowPlaying();
-    item.tooltip = `Now Playing · last updated ${new Date().toLocaleTimeString()}`;
+  let panel: WebviewPanel | undefined;
+  let lastArtTitle = "";
+  let lastArtUri = "";
+  let pollTimer: ReturnType<typeof setInterval> | null = null;
+
+  async function poll(): Promise<void> {
+    const info = await fetchTrackInfo();
+    if (!info) {
+      item.text = "♪ —";
+      item.tooltip = "Now Playing — nothing playing";
+      panel?.postMessage({ type: "noTrack" });
+      return;
+    }
+
+    item.text = info.state === "playing"
+      ? `♪ ${info.artist ? info.artist + " — " : ""}${info.title}`
+      : `⏸ ${info.title}`;
+    item.tooltip = `${info.title}${info.artist ? " · " + info.artist : ""}`;
+
+    // Fetch album art only when the track changes
+    if (info.title !== lastArtTitle) {
+      lastArtTitle = info.title;
+      lastArtUri = await fetchAlbumArt();
+    }
+    info.artDataUri = lastArtUri;
+
+    panel?.postMessage({ type: "track", info });
   }
 
-  context.subscriptions.push(
-    sindri.commands.register("now-playing.refresh", refresh) as unknown as { dispose(): void },
-    item,
+  panel = sindri.ui.registerWebviewPanel(
+    { id: "sindri.now-playing", title: "Now Playing", defaultDock: "right-bottom" },
+    {
+      getHtml(_ctx: WebviewContext): string {
+        return createWebviewHtml("sindri.now-playing");
+      },
+      async onMessage(msg: unknown): Promise<void> {
+        const m = msg as { type?: string; action?: string; position?: number };
+        if (m?.type === "ready") {
+          await poll();
+          return;
+        }
+        if (m?.type === "control" && m.action) {
+          await sendControl(m.action, m.position);
+          // Immediate re-poll so UI reflects the change without waiting
+          setTimeout(() => poll(), 300);
+        }
+      },
+    },
   );
 
-  await refresh();
+  context.subscriptions.push(panel, item);
+
+  await poll();
+  pollTimer = setInterval(poll, 3000);
+
+  context.subscriptions.push({
+    dispose() {
+      if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    },
+  });
 }
 
 export function deactivate(): void {}

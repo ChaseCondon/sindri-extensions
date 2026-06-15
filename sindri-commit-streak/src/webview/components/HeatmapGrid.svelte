@@ -1,20 +1,34 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+
   export let commits: { date: string; count: number }[] = [];
   export let streak = 0;
+  export let repoCount = 1;
 
-  // Pick up accent from the injected theme vars
-  $: accent = "var(--sindri-accent, #0af)";
+  let gridEl: HTMLDivElement;
+  let cols = 53;
+
+  const accent = "var(--sindri-accent, #0af)";
 
   function cellBackground(count: number): string {
     if (count === 0) return "var(--sindri-border, #333)";
     const pct = Math.min(100, count * 20 + 15);
     return `color-mix(in srgb, ${accent} ${pct}%, transparent)`;
   }
+
+  onMount(() => {
+    const obs = new ResizeObserver(entries => {
+      const w = entries[0]?.contentRect.width ?? 0;
+      // Each cell: ~13px + 2px gap = 15px per column; min 13 cols, max 53
+      cols = w > 0 ? Math.max(13, Math.min(53, Math.floor(w / 15))) : 53;
+    });
+    obs.observe(gridEl);
+    return () => obs.disconnect();
+  });
 </script>
 
-<section class="heatmap">
-  <h3 class="title">Commit activity — last 52 weeks</h3>
-  <div class="grid">
+<section class="heatmap" bind:this={gridEl}>
+  <div class="grid" style="grid-template-columns: repeat({cols}, 1fr)">
     {#each commits as c (c.date)}
       <div
         class="cell"
@@ -23,34 +37,30 @@
       />
     {/each}
   </div>
-  <p class="footer">{streak}-day streak</p>
+  <p class="footer">
+    🔥 {streak}-day streak{repoCount > 1 ? " (aggregated)" : ""}
+  </p>
 </section>
 
 <style>
   .heatmap {
-    /* intentionally unstyled — inherits body vars from global styles.scss */
-  }
-
-  .title {
-    margin: 0 0 12px;
-    font-size: 11px;
-    font-weight: 600;
-    opacity: 0.55;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+    padding: 16px;
+    min-width: 0;
+    overflow: hidden;
   }
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(53, 1fr);
     gap: 2px;
+    width: 100%;
   }
 
   .cell {
-    aspect-ratio: 1;
+    height: 13px;
     border-radius: 2px;
     cursor: default;
     position: relative;
+    min-width: 0;
   }
 
   .cell:hover::after {

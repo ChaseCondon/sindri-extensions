@@ -26,8 +26,8 @@ body {
 
 // ── Layout shells ─────────────────────────────────────────────────────────────
 
-.input-view,
-.grid-view {
+.grid-view,
+.raw-view {
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -91,9 +91,31 @@ body {
   }
 }
 
-// ── Input area ────────────────────────────────────────────────────────────────
+// ── Empty state ───────────────────────────────────────────────────────────────
 
-.input-area {
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 24px;
+  text-align: center;
+
+  p { margin: 0; opacity: 0.55; font-size: 13px; }
+  p.dim { opacity: 0.35; }
+  code {
+    font-family: var(--sindri-font-mono, monospace);
+    background: color-mix(in srgb, var(--sindri-accent, #0af) 12%, transparent);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+}
+
+// ── Raw / mode-toggle ─────────────────────────────────────────────────────────
+
+.mode-toggle { display: flex; gap: 3px; }
+
+.raw-area {
   flex: 1;
   display: flex;
   flex-direction: column;

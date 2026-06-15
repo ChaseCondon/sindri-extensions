@@ -10,13 +10,21 @@
     "UI Extension"
   ],
   "permissions": [
-    "sindri.ui"
+    "sindri.ui",
+    "sindri.editor"
   ],
   "engines": {
     "sindri": ">=0.1.0"
   },
   "main": "dist/extension.js",
   "contributes": {
+    "webviewPanels": [
+      {
+        "id": "sindri.csv-grid",
+        "title": "CSV Grid",
+        "defaultDock": "right-bottom"
+      }
+    ],
     "editors": [
       {
         "id": "sindri.csv-grid",

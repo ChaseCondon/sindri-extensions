@@ -1,29 +1,79 @@
 import { computeStreak } from "./streak";
 import { createWebviewHtml } from "@sindri/api/helpers";
 
-async function fetchCommitData(): Promise<{
-  commits: { date: string; count: number }[];
-  streak: number;
-}> {
-  const { stdout, stderr } = await sindri.env.exec(
-    "git", "log", "--format=%cd", "--date=short", "-n", "365",
-  );
-  if (stderr) console.warn("[commit-streak] git stderr:", stderr);
+interface CommitDay { date: string; count: number; }
+interface RepoInfo { name: string; path: string; commits: CommitDay[]; streak: number; }
 
-  const dates = stdout.split("\n").filter(Boolean);
-  const streak = computeStreak(dates);
-
+function buildCommitDays(dates: string[]): CommitDay[] {
   const counts = new Map<string, number>();
   for (const d of dates) counts.set(d, (counts.get(d) ?? 0) + 1);
-
-  const commits = Array.from({ length: 365 }, (_, i) => {
+  return Array.from({ length: 365 }, (_, i) => {
     const dt = new Date();
     dt.setDate(dt.getDate() - (364 - i));
     const key = dt.toISOString().slice(0, 10);
     return { date: key, count: counts.get(key) ?? 0 };
   });
+}
 
-  return { commits, streak };
+async function gitLog(repoPath: string): Promise<string[]> {
+  const { stdout } = await sindri.env.exec(
+    "git", "-C", repoPath, "log", "--format=%cd", "--date=short", "-n", "365",
+  );
+  return stdout.split("\n").filter(Boolean);
+}
+
+async function findRepos(workspaceRoot: string): Promise<{ name: string; path: string }[]> {
+  try {
+    const { stdout } = await sindri.env.exec(
+      "find", workspaceRoot, "-maxdepth", "3", "-name", ".git", "-type", "d",
+    );
+    return stdout.split("\n").filter(Boolean).map(gitDir => {
+      const p = gitDir.replace(/\/.git$/, "");
+      return { name: p.split("/").pop() ?? p, path: p };
+    });
+  } catch {
+    // If find fails (e.g. Windows), fall back to treating workspaceRoot as a single repo.
+    return [{ name: workspaceRoot.split(/[\\/]/).pop() ?? "workspace", path: workspaceRoot }];
+  }
+}
+
+async function fetchAllData(workspaceRoot: string): Promise<{
+  repos: RepoInfo[];
+  aggregate: { commits: CommitDay[]; streak: number };
+}> {
+  const repos = await findRepos(workspaceRoot);
+  if (repos.length === 0) {
+    return { repos: [], aggregate: { commits: buildCommitDays([]), streak: 0 } };
+  }
+
+  const repoInfos = await Promise.all(repos.map(async ({ name, path }) => {
+    try {
+      const dates = await gitLog(path);
+      return { name, path, commits: buildCommitDays(dates), streak: computeStreak(dates) };
+    } catch {
+      return { name, path, commits: buildCommitDays([]), streak: 0 };
+    }
+  }));
+
+  // Aggregate: union of all commit dates across repos (each date counted once per repo)
+  const aggCounts = new Map<string, number>();
+  for (const repo of repoInfos) {
+    for (const { date, count } of repo.commits) {
+      if (count > 0) aggCounts.set(date, (aggCounts.get(date) ?? 0) + count);
+    }
+  }
+  const aggDates = Array.from(aggCounts.keys());
+  const aggCommits = Array.from({ length: 365 }, (_, i) => {
+    const dt = new Date();
+    dt.setDate(dt.getDate() - (364 - i));
+    const key = dt.toISOString().slice(0, 10);
+    return { date: key, count: aggCounts.get(key) ?? 0 };
+  });
+
+  return {
+    repos: repoInfos,
+    aggregate: { commits: aggCommits, streak: computeStreak(aggDates) },
+  };
 }
 
 export async function activate(context: ExtensionContext): Promise<void> {
@@ -34,43 +84,44 @@ export async function activate(context: ExtensionContext): Promise<void> {
   chip.show();
 
   let panel: WebviewPanel | undefined;
-
-  const provider: WebviewPanelProvider = {
-    getHtml(_ctx: WebviewContext): string {
-      return createWebviewHtml("sindri.commit-streak");
-    },
-
-    async onMessage(msg: unknown): Promise<void> {
-      if ((msg as { type?: string })?.type !== "ready") return;
-      try {
-        const data = await fetchCommitData();
-        panel?.postMessage(data);
-      } catch (err) {
-        console.error("[commit-streak] failed to load data:", String(err));
-        panel?.postMessage({ error: String(err) });
-      }
-    },
-  };
+  const workspaceRoot = sindri.env.workspaceRoot;
 
   panel = sindri.ui.registerWebviewPanel(
+    { id: "sindri.commit-streak", title: "Commit Streak", defaultDock: "right-bottom" },
     {
-      id: "sindri.commit-streak",
-      title: "Commit Streak",
-      defaultDock: "right-bottom",
+      getHtml(_ctx: WebviewContext): string {
+        return createWebviewHtml("sindri.commit-streak");
+      },
+      async onMessage(msg: unknown): Promise<void> {
+        if ((msg as { type?: string })?.type !== "ready") return;
+        if (!workspaceRoot) {
+          panel?.postMessage({ error: "No workspace folder open." });
+          return;
+        }
+        try {
+          const data = await fetchAllData(workspaceRoot);
+          panel?.postMessage({ type: "data", ...data });
+        } catch (err) {
+          panel?.postMessage({ error: String(err) });
+        }
+      },
     },
-    provider,
   );
 
   context.subscriptions.push(chip, panel);
 
-  // Populate the chip on startup
-  try {
-    const { streak } = await fetchCommitData();
-    chip.text = `🔥 ${streak}`;
-    chip.tooltip = `${streak}-day commit streak`;
-  } catch {
+  if (workspaceRoot) {
+    try {
+      const { aggregate } = await fetchAllData(workspaceRoot);
+      chip.text = `🔥 ${aggregate.streak}`;
+      chip.tooltip = `${aggregate.streak}-day streak across all repos`;
+    } catch {
+      chip.text = "🔥 —";
+      chip.tooltip = "Commit streak — git not available";
+    }
+  } else {
     chip.text = "🔥 —";
-    chip.tooltip = "Commit streak — git not available";
+    chip.tooltip = "Commit streak — open a workspace folder";
   }
 }
 

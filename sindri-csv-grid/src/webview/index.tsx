@@ -5,4 +5,7 @@ import "./styles.scss";
 const rootEl = document.getElementById("root");
 if (!rootEl) throw new Error("[csv-grid] #root element not found");
 
-createRoot(rootEl).render(<CsvGrid />);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const api = (window as any).acquireSindriApi?.() ?? null;
+
+createRoot(rootEl).render(<CsvGrid api={api} />);
