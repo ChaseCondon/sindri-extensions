@@ -16,31 +16,47 @@ function buildCommitDays(dates: string[]): CommitDay[] {
 }
 
 async function gitLog(repoPath: string): Promise<string[]> {
-  const { stdout, stderr, code } = await sindri.env.exec(
-    "git", "-C", repoPath, "log", "--format=%cd", "--date=short", "-n", "365",
-  );
-  if (code !== 0 || stderr) console.warn(`[commit-streak] git stderr:`, stderr.trim());
-  return stdout.split("\n").filter(Boolean);
+  try {
+    const { stdout, stderr, code } = await sindri.env.exec(
+      "git", "-C", repoPath, "log", "--format=%cd", "--date=short", "-n", "365",
+    );
+    if (stderr) console.warn(`[commit-streak] git -C ${repoPath} stderr (exit ${code}):`, stderr.trim());
+    if (code !== 0) { console.warn(`[commit-streak] git log failed for ${repoPath}, exit ${code}`); return []; }
+    const dates = stdout.split("\n").filter(Boolean);
+    console.log(`[commit-streak] git log ${repoPath}: ${dates.length} entries, first=${dates[0] ?? "(none)"}`);
+    return dates;
+  } catch (err) {
+    console.warn(`[commit-streak] git exec threw for ${repoPath}:`, String(err));
+    return [];
+  }
 }
 
 async function findRepos(workspaceRoot: string): Promise<{ name: string; path: string }[]> {
-  try {
-    const { stdout, stderr } = await sindri.env.exec(
-      "find", workspaceRoot, "-maxdepth", "3", "-name", ".git", "-type", "d",
-    );
-    if (stderr) console.warn("[commit-streak] find stderr:", stderr.trim());
-    const repos = stdout.split("\n")
-      .filter(line => /\/\.git$/.test(line.trim()))  // must end with /.git exactly
-      .map(gitDir => {
-        const p = gitDir.trim().replace(/\/.git$/, "");
-        return { name: p.split("/").pop() ?? p, path: p };
-      });
-    console.log(`[commit-streak] found ${repos.length} repos under ${workspaceRoot}:`, repos.map(r => r.name).join(", ") || "(none)");
-    return repos;
-  } catch (err) {
-    console.warn("[commit-streak] find failed, falling back to workspace root:", err);
-    return [{ name: workspaceRoot.split(/[\\/]/).pop() ?? "workspace", path: workspaceRoot }];
+  // Try `find` to locate .git dirs; fall back through known absolute paths for macOS app sandbox.
+  for (const findCmd of ["find", "/usr/bin/find"]) {
+    try {
+      const { stdout, stderr, code } = await sindri.env.exec(
+        findCmd, workspaceRoot, "-maxdepth", "3", "-name", ".git", "-type", "d",
+      );
+      if (stderr) console.warn(`[commit-streak] ${findCmd} stderr (exit ${code}):`, stderr.trim());
+      if (code !== 0) continue;
+      const repos = stdout.split("\n")
+        .filter(line => /\/\.git$/.test(line.trim()))
+        .map(gitDir => {
+          const p = gitDir.trim().replace(/\/.git$/, "");
+          return { name: p.split("/").pop() ?? p, path: p };
+        });
+      console.log(`[commit-streak] found ${repos.length} repos under ${workspaceRoot}:`, repos.map(r => r.name).join(", ") || "(none)");
+      if (repos.length > 0) return repos;
+      // find ran but found nothing; workspaceRoot might itself be a repo
+      break;
+    } catch (err) {
+      console.warn(`[commit-streak] ${findCmd} exec threw:`, String(err));
+    }
   }
+  // Fallback: check if workspaceRoot is itself a git repo
+  console.warn("[commit-streak] falling back to workspace root as single repo");
+  return [{ name: workspaceRoot.split(/[\\/]/).pop() ?? "workspace", path: workspaceRoot }];
 }
 
 async function fetchAllData(workspaceRoot: string): Promise<{
@@ -90,7 +106,6 @@ export async function activate(context: ExtensionContext): Promise<void> {
   chip.show();
 
   let panel: WebviewPanel | undefined;
-  const workspaceRoot = sindri.env.workspaceRoot;
 
   panel = sindri.ui.registerWebviewPanel(
     { id: "sindri.commit-streak", title: "Commit Streak", defaultDock: "right-bottom" },
@@ -100,14 +115,18 @@ export async function activate(context: ExtensionContext): Promise<void> {
       },
       async onMessage(msg: unknown): Promise<void> {
         if ((msg as { type?: string })?.type !== "ready") return;
-        if (!workspaceRoot) {
+        // Read workspaceRoot dynamically — it may have been null at activation time.
+        const root = sindri.env.workspaceRoot;
+        console.log("[commit-streak] panel ready, workspaceRoot =", root);
+        if (!root) {
           panel?.postMessage({ error: "No workspace folder open." });
           return;
         }
         try {
-          const data = await fetchAllData(workspaceRoot);
+          const data = await fetchAllData(root);
           panel?.postMessage({ type: "data", ...data });
         } catch (err) {
+          console.warn("[commit-streak] fetchAllData threw:", String(err));
           panel?.postMessage({ error: String(err) });
         }
       },
@@ -116,12 +135,16 @@ export async function activate(context: ExtensionContext): Promise<void> {
 
   context.subscriptions.push(chip, panel);
 
-  if (workspaceRoot) {
+  // Read dynamically so workspace-open-after-activation works correctly.
+  const root = sindri.env.workspaceRoot;
+  console.log("[commit-streak] activate, workspaceRoot =", root);
+  if (root) {
     try {
-      const { aggregate } = await fetchAllData(workspaceRoot);
+      const { aggregate } = await fetchAllData(root);
       chip.text = `🔥 ${aggregate.streak}`;
       chip.tooltip = `${aggregate.streak}-day streak across all repos`;
-    } catch {
+    } catch (err) {
+      console.warn("[commit-streak] initial fetchAllData failed:", String(err));
       chip.text = "🔥 —";
       chip.tooltip = "Commit streak — git not available";
     }

@@ -4,7 +4,7 @@
   "id": "sindri.commit-streak",
   "type": "extension",
   "name": "Commit Streak",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "publisher": "sindri",
   "description": "Shows your current commit streak in the status bar (Tier 1) and a GitHub-style 52-week contribution heatmap in a webview panel (Tier 2). ADR-0026 dogfood.",
   "categories": [
