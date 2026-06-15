@@ -6,15 +6,21 @@
  * status bar item that updates whenever the active document changes.
  */
 
+const LOG = (...a: unknown[]) => console.log("[token-counter]", ...a);
+const WARN = (...a: unknown[]) => console.warn("[token-counter]", ...a);
+
 let wasmInstance: WebAssembly.Instance | null = null;
 let wasmMem: WebAssembly.Memory | null = null;
 const encoder = new TextEncoder();
 
 async function initWasm(): Promise<void> {
+  LOG("loading tokenizer.wasm…");
   const mod = await sindri.wasm.load("tokenizer.wasm");
+  LOG("compiling WASM module…");
   // instantiate(Module, imports) → Instance directly (not {instance})
   wasmInstance = await WebAssembly.instantiate(mod, {});
   wasmMem = wasmInstance.exports.memory as WebAssembly.Memory;
+  LOG("WASM ready");
 }
 
 function countTokens(text: string): number {
@@ -53,7 +59,13 @@ async function updateStatusBar(
 }
 
 export async function activate(context: ExtensionContext): Promise<void> {
-  await initWasm();
+  LOG("activating…");
+  try {
+    await initWasm();
+  } catch (err) {
+    WARN("WASM init failed:", err);
+    return;
+  }
 
   const bar = sindri.ui.createStatusBarItem("sindri.token-counter.bar", {
     text: "~… tokens",

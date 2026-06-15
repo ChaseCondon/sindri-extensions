@@ -23,7 +23,6 @@
       {
         "id": "sindri.commit-streak",
         "title": "Commit Streak",
-        "icon": "icons/panel.svg",
         "defaultDock": "right-bottom"
       }
     ]

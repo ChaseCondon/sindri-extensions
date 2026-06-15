@@ -1,5 +1,8 @@
 import { createWebviewHtml } from "@sindri/api/helpers";
 
+const LOG = (...a: unknown[]) => console.log("[now-playing]", ...a);
+const WARN = (...a: unknown[]) => console.warn("[now-playing]", ...a);
+
 interface TrackInfo {
   title: string;
   artist: string;
@@ -25,23 +28,29 @@ async function tryExec(cmd: string, ...args: string[]): Promise<{ stdout: string
 const MACOS_INFO_SCRIPT = `
 set output to ""
 try
-  tell application "Music"
-    if player state is playing or player state is paused then
-      set st to (player state as string)
-      set t to current track
-      set output to st & "|" & (name of t) & "|" & (artist of t) & "|" & (album of t) & "|" & (round player position) & "|" & (round (duration of t))
-    end if
-  end tell
-end try
-if output is "" then
-  try
-    tell application "Spotify"
+  if application "Music" is running then
+    tell application "Music"
       if player state is playing or player state is paused then
         set st to (player state as string)
         set t to current track
-        set output to st & "|" & (name of t) & "|" & (artist of t) & "|" & (album of t) & "|" & (round player position) & "|" & (round ((duration of t) / 1000))
+        set output to st & "|" & (name of t) & "|" & (artist of t) & "|" & (album of t) & "|" & (round player position) & "|" & (round (duration of t))
       end if
     end tell
+  end if
+end try
+if output is "" then
+  try
+    if application "Spotify" is running then
+      tell application "Spotify"
+        if player state is playing or player state is paused then
+          set st to (player state as string)
+          set t to current track
+          set pos to round (player position)
+          set dur to round ((duration of t) / 1000)
+          set output to st & "|" & (name of t) & "|" & (artist of t) & "|" & (album of t) & "|" & pos & "|" & dur
+        end if
+      end tell
+    end if
   end try
 end if
 return output
@@ -109,6 +118,7 @@ try {
 async function fetchTrackInfo(): Promise<TrackInfo | null> {
   // macOS
   const macRes = await tryExec("osascript", "-e", MACOS_INFO_SCRIPT);
+  LOG("osascript result:", macRes?.code, JSON.stringify(macRes?.stdout?.trim().slice(0, 80)));
   if (macRes && macRes.code === 0 && macRes.stdout.trim().includes("|")) {
     const [state, title, artist, album, pos, dur] = macRes.stdout.trim().split("|");
     if (title) {
@@ -120,6 +130,11 @@ async function fetchTrackInfo(): Promise<TrackInfo | null> {
         artDataUri: "",
       };
     }
+  }
+  if (macRes?.stdout?.trim() === "" && macRes?.code === 0) {
+    LOG("no active player on macOS");
+  } else if (macRes?.code !== 0) {
+    WARN("osascript failed:", macRes?.stderr?.trim());
   }
 
   // Windows
@@ -224,10 +239,10 @@ export async function activate(context: ExtensionContext): Promise<void> {
   }
 
   panel = sindri.ui.registerWebviewPanel(
-    { id: "sindri.now-playing", title: "Now Playing", defaultDock: "right-bottom" },
+    { id: "sindri.now-playing", title: "Now Playing", defaultDock: "bottom" },
     {
       getHtml(_ctx: WebviewContext): string {
-        return createWebviewHtml("sindri.now-playing");
+        return createWebviewHtml("sindri.now-playing", { css: false });
       },
       async onMessage(msg: unknown): Promise<void> {
         const m = msg as { type?: string; action?: string; position?: number };

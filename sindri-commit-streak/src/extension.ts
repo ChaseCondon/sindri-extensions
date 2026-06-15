@@ -16,23 +16,29 @@ function buildCommitDays(dates: string[]): CommitDay[] {
 }
 
 async function gitLog(repoPath: string): Promise<string[]> {
-  const { stdout } = await sindri.env.exec(
+  const { stdout, stderr, code } = await sindri.env.exec(
     "git", "-C", repoPath, "log", "--format=%cd", "--date=short", "-n", "365",
   );
+  if (code !== 0 || stderr) console.warn(`[commit-streak] git stderr:`, stderr.trim());
   return stdout.split("\n").filter(Boolean);
 }
 
 async function findRepos(workspaceRoot: string): Promise<{ name: string; path: string }[]> {
   try {
-    const { stdout } = await sindri.env.exec(
+    const { stdout, stderr } = await sindri.env.exec(
       "find", workspaceRoot, "-maxdepth", "3", "-name", ".git", "-type", "d",
     );
-    return stdout.split("\n").filter(Boolean).map(gitDir => {
-      const p = gitDir.replace(/\/.git$/, "");
-      return { name: p.split("/").pop() ?? p, path: p };
-    });
-  } catch {
-    // If find fails (e.g. Windows), fall back to treating workspaceRoot as a single repo.
+    if (stderr) console.warn("[commit-streak] find stderr:", stderr.trim());
+    const repos = stdout.split("\n")
+      .filter(line => /\/\.git$/.test(line.trim()))  // must end with /.git exactly
+      .map(gitDir => {
+        const p = gitDir.trim().replace(/\/.git$/, "");
+        return { name: p.split("/").pop() ?? p, path: p };
+      });
+    console.log(`[commit-streak] found ${repos.length} repos under ${workspaceRoot}:`, repos.map(r => r.name).join(", ") || "(none)");
+    return repos;
+  } catch (err) {
+    console.warn("[commit-streak] find failed, falling back to workspace root:", err);
     return [{ name: workspaceRoot.split(/[\\/]/).pop() ?? "workspace", path: workspaceRoot }];
   }
 }
@@ -90,7 +96,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
     { id: "sindri.commit-streak", title: "Commit Streak", defaultDock: "right-bottom" },
     {
       getHtml(_ctx: WebviewContext): string {
-        return createWebviewHtml("sindri.commit-streak");
+        return createWebviewHtml("sindri.commit-streak", { css: false });
       },
       async onMessage(msg: unknown): Promise<void> {
         if ((msg as { type?: string })?.type !== "ready") return;

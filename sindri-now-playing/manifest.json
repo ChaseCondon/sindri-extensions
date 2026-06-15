@@ -22,7 +22,7 @@
       {
         "id": "sindri.now-playing",
         "title": "Now Playing",
-        "defaultDock": "right-bottom"
+        "defaultDock": "bottom"
       }
     ]
   }

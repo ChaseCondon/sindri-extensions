@@ -22,7 +22,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
   }
 
   panel = sindri.ui.registerWebviewPanel(
-    { id: "sindri.csv-grid", title: "CSV Grid", defaultDock: "right-bottom" },
+    { id: "sindri.csv-grid", title: "CSV Grid", defaultDock: "bottom" },
     {
       getHtml(_ctx: WebviewContext): string {
         return createWebviewHtml("sindri.csv-grid");

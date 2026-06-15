@@ -22,7 +22,7 @@
       {
         "id": "sindri.csv-grid",
         "title": "CSV Grid",
-        "defaultDock": "right-bottom"
+        "defaultDock": "bottom"
       }
     ],
     "editors": [
