@@ -1,15 +1,32 @@
 {
   "$schema": "../../../manifest.schema.json",
   "id": "sindri.solarized-dark-color",
+  "type": "extension",
   "name": "Solarized Dark — Colour Theme",
   "version": "0.1.0",
   "publisher": "sindri",
   "description": "Sindri's Solarized Dark colour theme.",
-  "categories": ["Color Theme"],
-  "tags": ["solarized", "dark", "teal", "blue"],
+  "categories": [
+    "Color Theme"
+  ],
+  "tags": [
+    "solarized",
+    "dark",
+    "teal",
+    "blue"
+  ],
   "permissions": [],
-  "engines": { "sindri": ">=0.1.0" },
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
   "contributes": {
-    "themes": [{ "id": "sindri-solarized-dark", "name": "Solarized Dark", "kind": "dark", "path": "solarized-dark.json" }]
+    "themes": [
+      {
+        "id": "sindri-solarized-dark",
+        "name": "Solarized Dark",
+        "kind": "dark",
+        "path": "solarized-dark.json"
+      }
+    ]
   }
 }

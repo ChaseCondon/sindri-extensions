@@ -1,6 +1,7 @@
 {
   "$schema": "../../../manifest.schema.json",
   "id": "sindri.solarized-light-icons",
+  "type": "extension",
   "name": "Solarized Light Icons",
   "version": "1.0.0",
   "publisher": "sindri",

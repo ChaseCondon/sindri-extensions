@@ -1,6 +1,7 @@
 {
   "$schema": "../../../manifest.schema.json",
   "id": "sindri.github-light-icons",
+  "type": "extension",
   "name": "GitHub Light Icons",
   "version": "1.0.0",
   "publisher": "sindri",

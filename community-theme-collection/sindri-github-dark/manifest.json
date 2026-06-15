@@ -1,15 +1,30 @@
 {
   "$schema": "../../manifest.schema.json",
   "id": "sindri.github-dark",
+  "type": "pack",
   "name": "GitHub Dark",
   "version": "0.1.0",
   "publisher": "sindri",
   "description": "Sindri's take on GitHub Dark — the familiar dark mode palette straight from github.com.",
-  "categories": ["Extension Pack", "Color Theme", "File Icon Theme"],
+  "categories": [
+    "Extension Pack",
+    "Color Theme",
+    "File Icon Theme"
+  ],
   "packKind": "theme",
-  "tags": ["github", "dark", "blue", "minimal"],
+  "tags": [
+    "github",
+    "dark",
+    "blue",
+    "minimal"
+  ],
   "permissions": [],
-  "engines": { "sindri": ">=0.1.0" },
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
   "contributes": {},
-  "extensionPack": ["sindri.github-dark-color", "sindri.github-dark-icons"]
+  "extensionPack": [
+    "sindri.github-dark-color",
+    "sindri.github-dark-icons"
+  ]
 }

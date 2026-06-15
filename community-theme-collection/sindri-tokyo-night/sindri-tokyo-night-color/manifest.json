@@ -1,15 +1,32 @@
 {
   "$schema": "../../../manifest.schema.json",
   "id": "sindri.tokyo-night-color",
+  "type": "extension",
   "name": "Tokyo Night — Colour Theme",
   "version": "0.1.0",
   "publisher": "sindri",
   "description": "Sindri's Tokyo Night colour theme.",
-  "categories": ["Color Theme"],
-  "tags": ["tokyo-night", "dark", "navy", "blue"],
+  "categories": [
+    "Color Theme"
+  ],
+  "tags": [
+    "tokyo-night",
+    "dark",
+    "navy",
+    "blue"
+  ],
   "permissions": [],
-  "engines": { "sindri": ">=0.1.0" },
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
   "contributes": {
-    "themes": [{ "id": "sindri-tokyo-night", "name": "Tokyo Night", "kind": "dark", "path": "tokyo-night.json" }]
+    "themes": [
+      {
+        "id": "sindri-tokyo-night",
+        "name": "Tokyo Night",
+        "kind": "dark",
+        "path": "tokyo-night.json"
+      }
+    ]
   }
 }

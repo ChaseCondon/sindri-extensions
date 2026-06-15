@@ -1,15 +1,31 @@
 {
   "$schema": "../../manifest.schema.json",
   "id": "sindri.nord",
+  "type": "pack",
   "name": "Nord",
   "version": "0.1.0",
   "publisher": "sindri",
   "description": "Sindri's take on Nord — Arctic-inspired dark theme, icy blues and cool greys with muted Aurora accent colours.",
-  "categories": ["Extension Pack", "Color Theme", "File Icon Theme"],
+  "categories": [
+    "Extension Pack",
+    "Color Theme",
+    "File Icon Theme"
+  ],
   "packKind": "theme",
-  "tags": ["nord", "dark", "arctic", "blue", "minimal"],
+  "tags": [
+    "nord",
+    "dark",
+    "arctic",
+    "blue",
+    "minimal"
+  ],
   "permissions": [],
-  "engines": { "sindri": ">=0.1.0" },
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
   "contributes": {},
-  "extensionPack": ["sindri.nord-color", "sindri.nord-icons"]
+  "extensionPack": [
+    "sindri.nord-color",
+    "sindri.nord-icons"
+  ]
 }

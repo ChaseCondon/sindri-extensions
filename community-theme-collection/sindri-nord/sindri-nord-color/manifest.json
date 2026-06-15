@@ -1,15 +1,32 @@
 {
   "$schema": "../../../manifest.schema.json",
   "id": "sindri.nord-color",
+  "type": "extension",
   "name": "Nord — Colour Theme",
   "version": "0.1.0",
   "publisher": "sindri",
   "description": "Sindri's Nord colour theme.",
-  "categories": ["Color Theme"],
-  "tags": ["nord", "dark", "arctic", "blue"],
+  "categories": [
+    "Color Theme"
+  ],
+  "tags": [
+    "nord",
+    "dark",
+    "arctic",
+    "blue"
+  ],
   "permissions": [],
-  "engines": { "sindri": ">=0.1.0" },
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
   "contributes": {
-    "themes": [{ "id": "sindri-nord", "name": "Nord", "kind": "dark", "path": "nord.json" }]
+    "themes": [
+      {
+        "id": "sindri-nord",
+        "name": "Nord",
+        "kind": "dark",
+        "path": "nord.json"
+      }
+    ]
   }
 }

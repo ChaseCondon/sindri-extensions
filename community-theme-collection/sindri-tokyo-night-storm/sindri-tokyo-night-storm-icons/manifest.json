@@ -1,6 +1,7 @@
 {
   "$schema": "../../../manifest.schema.json",
   "id": "sindri.tokyo-night-storm-icons",
+  "type": "extension",
   "name": "Tokyo Night Storm Icons",
   "version": "1.0.0",
   "publisher": "sindri",

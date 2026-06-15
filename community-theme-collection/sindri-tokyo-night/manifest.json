@@ -1,15 +1,31 @@
 {
   "$schema": "../../manifest.schema.json",
   "id": "sindri.tokyo-night",
+  "type": "pack",
   "name": "Tokyo Night",
   "version": "0.1.0",
   "publisher": "sindri",
   "description": "Sindri's take on Tokyo Night — deep navy night-time aesthetic with neon blue and purple accents.",
-  "categories": ["Extension Pack", "Color Theme", "File Icon Theme"],
+  "categories": [
+    "Extension Pack",
+    "Color Theme",
+    "File Icon Theme"
+  ],
   "packKind": "theme",
-  "tags": ["tokyo-night", "dark", "navy", "blue", "neon"],
+  "tags": [
+    "tokyo-night",
+    "dark",
+    "navy",
+    "blue",
+    "neon"
+  ],
   "permissions": [],
-  "engines": { "sindri": ">=0.1.0" },
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
   "contributes": {},
-  "extensionPack": ["sindri.tokyo-night-color", "sindri.tokyo-night-icons"]
+  "extensionPack": [
+    "sindri.tokyo-night-color",
+    "sindri.tokyo-night-icons"
+  ]
 }

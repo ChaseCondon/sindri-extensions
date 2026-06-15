@@ -1,6 +1,7 @@
 {
   "$schema": "../../../manifest.schema.json",
   "id": "sindri.gruvbox-light-icons",
+  "type": "extension",
   "name": "Gruvbox Light Icons",
   "version": "1.0.0",
   "publisher": "sindri",

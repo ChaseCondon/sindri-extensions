@@ -5,6 +5,7 @@
   "version": "1.0.0",
   "publisher": "sindri",
   "description": "Shared icon templates for Sindri community icon themes. Language icons use fixed canonical brand colors; folder and system icons inherit palette variables from child themes via `extends`.",
+  "type": "template",
   "categories": ["Icon Theme Base"],
   "permissions": [],
   "engines": { "sindri": ">=0.1.0" },

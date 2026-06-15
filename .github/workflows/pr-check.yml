@@ -21,6 +21,25 @@ jobs:
         with:
           fetch-depth: 0
 
+      # ── Checkout sindri-ide (bun deps + Rust CLI source) ───────────────────
+      - name: Checkout sindri-ide
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/sindri
+          path: sindri-ide
+          sparse-checkout: |
+            /package.json
+            /bun.lockb
+            scripts/
+            packages/
+            src-tauri/Cargo.toml
+            src-tauri/Cargo.lock
+            src-tauri/crates/sindri-cli/
+            src-tauri/crates/sindri-core/
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── Bun (needed by ext build's JS bundle step) ─────────────────────────
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
@@ -28,33 +47,47 @@ jobs:
       - name: Install root dependencies
         run: bun install --frozen-lockfile
 
-      # ── Detect changed extensions ─────────────────────────────────────────
+      - name: Install sindri-ide dependencies
+        run: bun install --frozen-lockfile
+        working-directory: ${{ github.workspace }}/sindri-ide
+
+      # ── Rust + sindri CLI ──────────────────────────────────────────────────
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: sindri-ide/src-tauri -> target
+
+      - name: Build sindri CLI
+        run: cargo build --release -p sindri-cli
+        working-directory: ${{ github.workspace }}/sindri-ide/src-tauri
+
+      - name: Add sindri to PATH
+        run: echo "${{ github.workspace }}/sindri-ide/src-tauri/target/release" >> $GITHUB_PATH
+
+      # ── Detect changed extensions ──────────────────────────────────────────
       - name: Detect changed extensions
         id: changes
         run: |
-          CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
-          echo "Changed files:"
-          echo "$CHANGED"
-          DIRS=""
-          for f in $CHANGED; do
-            DIR=$(echo "$f" | cut -d'/' -f1)
-            if [ -f "$DIR/manifest.json" ] && ! echo "$DIRS" | grep -qw "$DIR"; then
-              DIRS="$DIRS $DIR"
-            fi
-          done
-          echo "dirs=$DIRS" >> $GITHUB_OUTPUT
-          echo "Changed extension folders: $DIRS"
+          # Exit code 1 = no changes; swallow it so the step succeeds.
+          CHANGED_JSON=$(sindri ext changed --repo . --since "origin/${{ github.base_ref }}" --json 2>&1) || true
+          echo "changed_json=$CHANGED_JSON" >> $GITHUB_OUTPUT
+          echo "Changed extensions: $CHANGED_JSON"
+          # Count how many entries (non-empty array means changes exist).
+          COUNT=$(echo "$CHANGED_JSON" | jq 'length')
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
 
-      # ── Version bump check ────────────────────────────────────────────────
+      # ── Version bump check ─────────────────────────────────────────────────
       # Fail if a changed extension's manifest version is already released.
-      # The developer must bump the version in manifest.json before merging.
       - name: Check version bumps
-        if: steps.changes.outputs.dirs != ''
+        if: steps.changes.outputs.count != '0'
         run: |
           git fetch --tags origin
           FAILED=0
-          for DIR in ${{ steps.changes.outputs.dirs }}; do
-            ID=$(jq -r .id "$DIR/manifest.json")
+          for ROW in $(echo '${{ steps.changes.outputs.changed_json }}' | jq -r '.[] | @base64'); do
+            _jq() { echo "${ROW}" | base64 --decode | jq -r "${1}"; }
+            ID=$(_jq '.id')
+            DIR=$(_jq '.dir')
             VERSION=$(jq -r .version "$DIR/manifest.json")
             TAG="${ID}-v${VERSION}"
             if git tag -l "$TAG" | grep -q "$TAG"; then
@@ -67,36 +100,31 @@ jobs:
           done
           if [ $FAILED -gt 0 ]; then exit 1; fi
 
-      # ── Clone sindri-ide inside the workspace ─────────────────────────────
-      - name: Checkout sindri-ide
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ github.repository_owner }}/sindri
-          path: sindri-ide
-          sparse-checkout: |
-            /package.json
-            /bun.lockb
-            scripts/
-            packages/
-          sparse-checkout-cone-mode: false
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install sindri-ide dependencies
-        run: bun install --frozen-lockfile
-        working-directory: ${{ github.workspace }}/sindri-ide
-
-      # ── Build changed extensions (no --bundle, faster) ────────────────────
-      - name: Build changed extensions
-        if: steps.changes.outputs.dirs != ''
+      # ── Validate manifests of changed extensions ───────────────────────────
+      - name: Validate manifests
+        if: steps.changes.outputs.count != '0'
         run: |
           FAILED=0
-          for DIR in ${{ steps.changes.outputs.dirs }}; do
-            if jq -e '.buildable == false' "$DIR/manifest.json" > /dev/null 2>&1; then
-              echo "⚠ Skipping $DIR (buildable: false in manifest.json)"
+          for DIR in $(echo '${{ steps.changes.outputs.changed_json }}' | jq -r '.[].dir'); do
+            sindri ext validate "$DIR" || FAILED=$((FAILED + 1))
+          done
+          if [ $FAILED -gt 0 ]; then exit 1; fi
+
+      # ── Build changed extensions ───────────────────────────────────────────
+      - name: Build changed extensions
+        if: steps.changes.outputs.count != '0'
+        run: |
+          FAILED=0
+          for ROW in $(echo '${{ steps.changes.outputs.changed_json }}' | jq -r '.[] | @base64'); do
+            _jq() { echo "${ROW}" | base64 --decode | jq -r "${1}"; }
+            DIR=$(_jq '.dir')
+            BUILDABLE=$(_jq '.buildable')
+            if [ "$BUILDABLE" = "false" ]; then
+              echo "⚠ Skipping $DIR (buildable: false)"
               continue
             fi
             echo "── Building $DIR ──"
-            bun run build-ext "$DIR" || FAILED=$((FAILED + 1))
+            sindri ext build "$DIR" --ide-root "$SINDRI_IDE_ROOT" || FAILED=$((FAILED + 1))
           done
           if [ $FAILED -gt 0 ]; then
             echo "✘ $FAILED extension(s) failed to build."
@@ -106,8 +134,8 @@ jobs:
       # ── Validate index.json can be regenerated cleanly ────────────────────
       - name: Validate index.json
         run: |
-          bun run build-index
+          sindri ext build-index --repo .
           if ! git diff --exit-code index.json; then
-            echo "ERROR: index.json is out of date. Run 'bun run build-index' and commit the result."
+            echo "ERROR: index.json is out of date. Run 'sindri ext build-index' and commit the result."
             exit 1
           fi

@@ -30,7 +30,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the manifest format, full API referen
 | [sindri-color-swatches](sindri-color-swatches/) | 🚧 scaffolded | `sindri.editor` decorator API | Inline CSS color swatch decorations — validates `sindri.editor.registerDecorationProvider` |
 | [sindri-token-counter](sindri-token-counter/) | 🚧 scaffolded | WASM execution | Counts LLM tokens in the active document using a bundled WASM module |
 | [sindri-ferris-says](sindri-ferris-says/) | 🚧 scaffolded | Native binary bundling + notifications | Calls a bundled Rust binary; fires a startup toast via `sindri.ui.showInformationMessage` |
-| [sindri-en-gb](sindri-en-gb/) | 🚧 scaffolded | Localisation API | British English locale — validates `sindri.ui.registerLocale` |
+| sindri-en-pirate | 💡 planned (Phase 2) | Localisation API (`sindri.l10n`) | Pirate-speak locale pack — first real content pack for the IDE l10n + locale picker landing in Phase 2 |
 | [sindri-rune-oracle](sindri-rune-oracle/) | 💡 planned | Input + modal API | Magic-8-ball: `showInputBox` with validation → `showMessageBox` — validates the input/modal primitives |
 | [sindri-markdown-preview](sindri-markdown-preview/) | 💡 planned | Surface B (`registerEditor`) | Custom editor tab — validates `sindri.ui.registerEditor` (Phase 3) |
 
@@ -39,8 +39,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the manifest format, full API referen
 ## Quick start — build a code extension
 
 ```sh
-cd sindri-ide
-bun run scripts/build-extension.ts ../sindri-extensions/<extension-name>
+# From sindri-extensions/
+sindri ext build <extension-name>           # dev build
+sindri ext build <extension-name> --bundle  # production .sinxt archive
 ```
 
 Output lands in `<extension-name>/dist/`. See [CONTRIBUTING.md — Code extension guide](CONTRIBUTING.md#code-extension-guide) for the full build reference.
@@ -84,4 +85,4 @@ Language icons always use their canonical brand colors — `variables` only affe
 
 ## Registry layout
 
-`index.json` is **generated** — run `bun run scripts/build-index.ts` after adding or changing an extension. Do not edit it by hand.
+`index.json` is **generated** — run `sindri ext build-index --repo .` from `sindri-extensions/` after adding or changing an extension. Do not edit it by hand.

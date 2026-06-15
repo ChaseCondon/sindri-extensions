@@ -1,6 +1,7 @@
 {
   "$schema": "./node_modules/@sindri/api/manifest.schema.json",
   "id": "sindri.csv-grid",
+  "type": "extension",
   "name": "CSV Grid",
   "version": "0.1.0",
   "publisher": "sindri",
@@ -21,8 +22,12 @@
         "id": "sindri.csv-grid",
         "displayName": "CSV Grid",
         "selector": [
-          { "filenamePattern": "*.csv" },
-          { "filenamePattern": "*.tsv" }
+          {
+            "filenamePattern": "*.csv"
+          },
+          {
+            "filenamePattern": "*.tsv"
+          }
         ]
       }
     ]

@@ -1,15 +1,32 @@
 {
   "$schema": "../../../manifest.schema.json",
   "id": "sindri.gruvbox-dark-color",
+  "type": "extension",
   "name": "Gruvbox Dark — Colour Theme",
   "version": "0.1.0",
   "publisher": "sindri",
   "description": "Sindri's Gruvbox Dark colour theme.",
-  "categories": ["Color Theme"],
-  "tags": ["gruvbox", "dark", "retro", "earthy"],
+  "categories": [
+    "Color Theme"
+  ],
+  "tags": [
+    "gruvbox",
+    "dark",
+    "retro",
+    "earthy"
+  ],
   "permissions": [],
-  "engines": { "sindri": ">=0.1.0" },
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
   "contributes": {
-    "themes": [{ "id": "sindri-gruvbox-dark", "name": "Gruvbox Dark", "kind": "dark", "path": "gruvbox-dark.json" }]
+    "themes": [
+      {
+        "id": "sindri-gruvbox-dark",
+        "name": "Gruvbox Dark",
+        "kind": "dark",
+        "path": "gruvbox-dark.json"
+      }
+    ]
   }
 }

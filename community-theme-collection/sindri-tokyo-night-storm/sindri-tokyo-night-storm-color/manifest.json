@@ -1,15 +1,32 @@
 {
   "$schema": "../../../manifest.schema.json",
   "id": "sindri.tokyo-night-storm-color",
+  "type": "extension",
   "name": "Tokyo Night Storm — Colour Theme",
   "version": "0.1.0",
   "publisher": "sindri",
   "description": "Sindri's Tokyo Night Storm colour theme.",
-  "categories": ["Color Theme"],
-  "tags": ["tokyo-night", "storm", "dark", "blue-grey"],
+  "categories": [
+    "Color Theme"
+  ],
+  "tags": [
+    "tokyo-night",
+    "storm",
+    "dark",
+    "blue-grey"
+  ],
   "permissions": [],
-  "engines": { "sindri": ">=0.1.0" },
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
   "contributes": {
-    "themes": [{ "id": "sindri-tokyo-night-storm", "name": "Tokyo Night Storm", "kind": "dark", "path": "tokyo-night-storm.json" }]
+    "themes": [
+      {
+        "id": "sindri-tokyo-night-storm",
+        "name": "Tokyo Night Storm",
+        "kind": "dark",
+        "path": "tokyo-night-storm.json"
+      }
+    ]
   }
 }

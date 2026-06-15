@@ -10,6 +10,8 @@
   "tags": ["themes", "community", "catppuccin", "dracula", "tokyo-night", "nord", "gruvbox", "solarized"],
   "permissions": [],
   "engines": { "sindri": ">=0.1.0" },
+  "type": "collection",
+  "provides": ["sindri.community-icons-base"],
   "contributes": {},
   "extensionPack": [
     "sindri.catppuccin-mocha",

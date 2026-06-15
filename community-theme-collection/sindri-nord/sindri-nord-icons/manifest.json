@@ -1,6 +1,7 @@
 {
   "$schema": "../../../manifest.schema.json",
   "id": "sindri.nord-icons",
+  "type": "extension",
   "name": "Nord Icons",
   "version": "1.0.0",
   "publisher": "sindri",

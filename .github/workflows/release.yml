@@ -22,13 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
-      - name: Install root dependencies
-        run: bun install --frozen-lockfile
-
+      # ── Checkout sindri-ide (bun deps + Rust CLI source) ───────────────────
       - name: Checkout sindri-ide
         uses: actions/checkout@v4
         with:
@@ -39,14 +33,41 @@ jobs:
             /bun.lockb
             scripts/
             packages/
+            src-tauri/Cargo.toml
+            src-tauri/Cargo.lock
+            src-tauri/crates/sindri-cli/
+            src-tauri/crates/sindri-core/
           sparse-checkout-cone-mode: false
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── Bun (needed by ext build's JS bundle step) ─────────────────────────
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install root dependencies
+        run: bun install --frozen-lockfile
 
       - name: Install sindri-ide dependencies
         run: bun install --frozen-lockfile
         working-directory: ${{ github.workspace }}/sindri-ide
 
+      # ── Rust + sindri CLI ─────────────────────────────────────────────────
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: sindri-ide/src-tauri -> target
+
+      - name: Build sindri CLI
+        run: cargo build --release -p sindri-cli
+        working-directory: ${{ github.workspace }}/sindri-ide/src-tauri
+
+      - name: Add sindri to PATH
+        run: echo "${{ github.workspace }}/sindri-ide/src-tauri/target/release" >> $GITHUB_PATH
+
+      # ── Release ────────────────────────────────────────────────────────────
       - name: Build and release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bun run release
+        run: sindri ext release --repo . --ide-root "$SINDRI_IDE_ROOT"

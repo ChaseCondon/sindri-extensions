@@ -1,15 +1,31 @@
 {
   "$schema": "../../manifest.schema.json",
   "id": "sindri.gruvbox-dark",
+  "type": "pack",
   "name": "Gruvbox Dark",
   "version": "0.1.0",
   "publisher": "sindri",
   "description": "Sindri's take on Gruvbox Dark — earthy retro palette, warm browns and yellows on a deep charcoal background.",
-  "categories": ["Extension Pack", "Color Theme", "File Icon Theme"],
+  "categories": [
+    "Extension Pack",
+    "Color Theme",
+    "File Icon Theme"
+  ],
   "packKind": "theme",
-  "tags": ["gruvbox", "dark", "retro", "earthy", "warm"],
+  "tags": [
+    "gruvbox",
+    "dark",
+    "retro",
+    "earthy",
+    "warm"
+  ],
   "permissions": [],
-  "engines": { "sindri": ">=0.1.0" },
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
   "contributes": {},
-  "extensionPack": ["sindri.gruvbox-dark-color", "sindri.gruvbox-dark-icons"]
+  "extensionPack": [
+    "sindri.gruvbox-dark-color",
+    "sindri.gruvbox-dark-icons"
+  ]
 }

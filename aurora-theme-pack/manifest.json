@@ -19,6 +19,7 @@
   "engines": {
     "sindri": ">=0.1.0"
   },
+  "type": "pack",
   "contributes": {},
   "extensionPack": [
     "sindri.aurora-theme",

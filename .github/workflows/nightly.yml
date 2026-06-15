@@ -23,13 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
-      - name: Install root dependencies
-        run: bun install --frozen-lockfile
-
+      # ── Checkout sindri-ide (bun deps + Rust CLI source) ───────────────────
       - name: Checkout sindri-ide
         uses: actions/checkout@v4
         with:
@@ -40,15 +34,58 @@ jobs:
             /bun.lockb
             scripts/
             packages/
+            src-tauri/Cargo.toml
+            src-tauri/Cargo.lock
+            src-tauri/crates/sindri-cli/
+            src-tauri/crates/sindri-core/
           sparse-checkout-cone-mode: false
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── Bun (needed by ext build's JS bundle step) ─────────────────────────
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install root dependencies
+        run: bun install --frozen-lockfile
 
       - name: Install sindri-ide dependencies
         run: bun install --frozen-lockfile
         working-directory: ${{ github.workspace }}/sindri-ide
 
+      # ── Rust + sindri CLI ──────────────────────────────────────────────────
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: sindri-ide/src-tauri -> target
+
+      - name: Build sindri CLI
+        run: cargo build --release -p sindri-cli
+        working-directory: ${{ github.workspace }}/sindri-ide/src-tauri
+
+      - name: Add sindri to PATH
+        run: echo "${{ github.workspace }}/sindri-ide/src-tauri/target/release" >> $GITHUB_PATH
+
+      # ── Build all extensions (mirrors build-extensions.ts --all --bundle) ──
+      # Recursive find of all manifest.json dirs, skipping buildable:false.
       - name: Build all extensions
-        run: bun run build
+        run: |
+          FAILED=0
+          while IFS= read -r mf; do
+            dir=$(dirname "$mf")
+            BUILDABLE=$(jq -r 'if .buildable == false then "false" else "true" end' "$mf")
+            if [ "$BUILDABLE" = "false" ]; then
+              echo "⚠ Skipping ${dir#./} (buildable: false)"
+              continue
+            fi
+            echo "── ${dir#./} ──"
+            sindri ext build "$dir" --bundle --ide-root "$SINDRI_IDE_ROOT" || FAILED=$((FAILED + 1))
+          done < <(find . -not \( -path '*/node_modules/*' -prune \) -name manifest.json | sort)
+          if [ $FAILED -gt 0 ]; then
+            echo "✘ $FAILED extension(s) failed to build."
+            exit 1
+          fi
 
       - name: Rename assets to nightly names
         run: |

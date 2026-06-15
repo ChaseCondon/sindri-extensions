@@ -2,21 +2,296 @@
   "name": "Sindri Sample Extensions",
   "description": "Official sample extensions for Sindri IDE — one per API surface, for extension developers.",
   "homepage": "https://github.com/sindri-ide/sindri-extensions",
-  "extensions": [
-    "sindri-color-swatches",
-    "sindri-commit-streak",
-    "community-theme-collection/sindri-community-icons-base",
-    "sindri-csv-grid",
-    "sindri-en-gb",
-    "sindri-ferris-says",
-    "neon-icons",
-    "sindri-now-playing",
-    "sindri-token-counter"
-  ],
-  "packs": [
-    "aurora-theme-pack"
-  ],
-  "collections": [
-    "community-theme-collection"
+  "entries": [
+    {
+      "id": "sindri.community-theme-collection",
+      "path": "community-theme-collection",
+      "type": "collection"
+    },
+    {
+      "id": "sindri.aurora-theme-pack",
+      "path": "aurora-theme-pack",
+      "type": "pack"
+    },
+    {
+      "id": "sindri.catppuccin-latte",
+      "path": "community-theme-collection/sindri-catppuccin-latte",
+      "type": "pack"
+    },
+    {
+      "id": "sindri.catppuccin-mocha",
+      "path": "community-theme-collection/sindri-catppuccin-mocha",
+      "type": "pack"
+    },
+    {
+      "id": "sindri.dracula",
+      "path": "community-theme-collection/sindri-dracula",
+      "type": "pack"
+    },
+    {
+      "id": "sindri.github-dark",
+      "path": "community-theme-collection/sindri-github-dark",
+      "type": "pack"
+    },
+    {
+      "id": "sindri.github-light",
+      "path": "community-theme-collection/sindri-github-light",
+      "type": "pack"
+    },
+    {
+      "id": "sindri.gruvbox-dark",
+      "path": "community-theme-collection/sindri-gruvbox-dark",
+      "type": "pack"
+    },
+    {
+      "id": "sindri.gruvbox-light",
+      "path": "community-theme-collection/sindri-gruvbox-light",
+      "type": "pack"
+    },
+    {
+      "id": "sindri.nord",
+      "path": "community-theme-collection/sindri-nord",
+      "type": "pack"
+    },
+    {
+      "id": "sindri.one-dark-pro",
+      "path": "community-theme-collection/sindri-one-dark-pro",
+      "type": "pack"
+    },
+    {
+      "id": "sindri.rose-pine",
+      "path": "community-theme-collection/sindri-rose-pine",
+      "type": "pack"
+    },
+    {
+      "id": "sindri.rose-pine-dawn",
+      "path": "community-theme-collection/sindri-rose-pine-dawn",
+      "type": "pack"
+    },
+    {
+      "id": "sindri.solarized-dark",
+      "path": "community-theme-collection/sindri-solarized-dark",
+      "type": "pack"
+    },
+    {
+      "id": "sindri.solarized-light",
+      "path": "community-theme-collection/sindri-solarized-light",
+      "type": "pack"
+    },
+    {
+      "id": "sindri.tokyo-night",
+      "path": "community-theme-collection/sindri-tokyo-night",
+      "type": "pack"
+    },
+    {
+      "id": "sindri.tokyo-night-storm",
+      "path": "community-theme-collection/sindri-tokyo-night-storm",
+      "type": "pack"
+    },
+    {
+      "id": "sindri.aurora-file-icons",
+      "path": "aurora-theme-pack/aurora-file-icons",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.aurora-theme",
+      "path": "aurora-theme-pack/aurora-theme",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.aurora-ui-icons",
+      "path": "aurora-theme-pack/aurora-ui-icons",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.catppuccin-latte-color",
+      "path": "community-theme-collection/sindri-catppuccin-latte/sindri-catppuccin-latte-color",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.catppuccin-latte-icons",
+      "path": "community-theme-collection/sindri-catppuccin-latte/sindri-catppuccin-latte-icons",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.catppuccin-mocha-color",
+      "path": "community-theme-collection/sindri-catppuccin-mocha/sindri-catppuccin-mocha-color",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.catppuccin-mocha-icons",
+      "path": "community-theme-collection/sindri-catppuccin-mocha/sindri-catppuccin-mocha-icons",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.color-swatches",
+      "path": "sindri-color-swatches",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.commit-streak",
+      "path": "sindri-commit-streak",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.community-icons-base",
+      "path": "community-theme-collection/sindri-community-icons-base",
+      "type": "template"
+    },
+    {
+      "id": "sindri.csv-grid",
+      "path": "sindri-csv-grid",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.dracula-color",
+      "path": "community-theme-collection/sindri-dracula/sindri-dracula-color",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.dracula-icons",
+      "path": "community-theme-collection/sindri-dracula/sindri-dracula-icons",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.ferris-says",
+      "path": "sindri-ferris-says",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.github-dark-color",
+      "path": "community-theme-collection/sindri-github-dark/sindri-github-dark-color",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.github-dark-icons",
+      "path": "community-theme-collection/sindri-github-dark/sindri-github-dark-icons",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.github-light-color",
+      "path": "community-theme-collection/sindri-github-light/sindri-github-light-color",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.github-light-icons",
+      "path": "community-theme-collection/sindri-github-light/sindri-github-light-icons",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.gruvbox-dark-color",
+      "path": "community-theme-collection/sindri-gruvbox-dark/sindri-gruvbox-dark-color",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.gruvbox-dark-icons",
+      "path": "community-theme-collection/sindri-gruvbox-dark/sindri-gruvbox-dark-icons",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.gruvbox-light-color",
+      "path": "community-theme-collection/sindri-gruvbox-light/sindri-gruvbox-light-color",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.gruvbox-light-icons",
+      "path": "community-theme-collection/sindri-gruvbox-light/sindri-gruvbox-light-icons",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.neon-icons",
+      "path": "neon-icons",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.nord-color",
+      "path": "community-theme-collection/sindri-nord/sindri-nord-color",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.nord-icons",
+      "path": "community-theme-collection/sindri-nord/sindri-nord-icons",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.now-playing",
+      "path": "sindri-now-playing",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.one-dark-pro-color",
+      "path": "community-theme-collection/sindri-one-dark-pro/sindri-one-dark-pro-color",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.one-dark-pro-icons",
+      "path": "community-theme-collection/sindri-one-dark-pro/sindri-one-dark-pro-icons",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.rose-pine-color",
+      "path": "community-theme-collection/sindri-rose-pine/sindri-rose-pine-color",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.rose-pine-dawn-color",
+      "path": "community-theme-collection/sindri-rose-pine-dawn/sindri-rose-pine-dawn-color",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.rose-pine-dawn-icons",
+      "path": "community-theme-collection/sindri-rose-pine-dawn/sindri-rose-pine-dawn-icons",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.rose-pine-icons",
+      "path": "community-theme-collection/sindri-rose-pine/sindri-rose-pine-icons",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.solarized-dark-color",
+      "path": "community-theme-collection/sindri-solarized-dark/sindri-solarized-dark-color",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.solarized-dark-icons",
+      "path": "community-theme-collection/sindri-solarized-dark/sindri-solarized-dark-icons",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.solarized-light-color",
+      "path": "community-theme-collection/sindri-solarized-light/sindri-solarized-light-color",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.solarized-light-icons",
+      "path": "community-theme-collection/sindri-solarized-light/sindri-solarized-light-icons",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.token-counter",
+      "path": "sindri-token-counter",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.tokyo-night-color",
+      "path": "community-theme-collection/sindri-tokyo-night/sindri-tokyo-night-color",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.tokyo-night-icons",
+      "path": "community-theme-collection/sindri-tokyo-night/sindri-tokyo-night-icons",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.tokyo-night-storm-color",
+      "path": "community-theme-collection/sindri-tokyo-night-storm/sindri-tokyo-night-storm-color",
+      "type": "extension"
+    },
+    {
+      "id": "sindri.tokyo-night-storm-icons",
+      "path": "community-theme-collection/sindri-tokyo-night-storm/sindri-tokyo-night-storm-icons",
+      "type": "extension"
+    }
   ]
 }

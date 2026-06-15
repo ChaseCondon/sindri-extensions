@@ -1,15 +1,27 @@
 {
   "$schema": "./node_modules/@sindri/api/manifest.schema.json",
   "id": "sindri.token-counter",
+  "type": "extension",
   "name": "Token Counter",
   "version": "0.1.1",
   "publisher": "sindri",
-  "description": "Counts LLM tokens in the active document using a bundled WASM module. Validation sample for WASM module execution.",
-  "categories": ["UI Extension"],
-  "permissions": ["sindri.ui"],
-  "engines": { "sindri": ">=0.1.0" },
+  "description": "Counts approximate GPT-4 tokens in the active document using a bundled WASM module. Validation sample for sindri.wasm.load() (ADR-0035).",
+  "categories": [
+    "UI Extension"
+  ],
+  "permissions": [
+    "sindri.ui",
+    "sindri.editor"
+  ],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
   "main": "dist/extension.js",
-  "available": false,
-  "buildable": false,
-  "contributes": {}
+  "available": true,
+  "buildable": true,
+  "contributes": {
+    "wasm": [
+      "dist/tokenizer.wasm"
+    ]
+  }
 }

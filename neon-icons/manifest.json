@@ -1,10 +1,11 @@
 {
   "$schema": "../manifest.schema.json",
   "id": "sindri.neon-icons",
+  "type": "extension",
   "name": "Sindri Neon Icons",
   "version": "0.1.0",
   "publisher": "sindri",
-  "description": "Vibrant neon file icon theme \u2014 bold language-brand glyphs on dark backgrounds.",
+  "description": "Vibrant neon file icon theme — bold language-brand glyphs on dark backgrounds.",
   "categories": [
     "File Icon Theme"
   ],

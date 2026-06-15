@@ -1,6 +1,7 @@
 {
   "$schema": "../../../manifest.schema.json",
   "id": "sindri.rose-pine-dawn-icons",
+  "type": "extension",
   "name": "Rosé Pine Dawn Icons",
   "version": "1.0.0",
   "publisher": "sindri",

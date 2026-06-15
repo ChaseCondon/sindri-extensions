@@ -1,12 +1,23 @@
 const SWATCH_CSS = `.cm-color-swatch {
-  box-shadow: inset 0 -3px 0 0 var(--swatch-color);
   cursor: default;
+}
+.cm-color-swatch::after {
+  content: '';
+  display: inline-block;
+  width: 1cap;
+  height: 1cap;
+  background-color: var(--swatch-color);
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 2px;
+  margin-left: 4px;
+  vertical-align: baseline;
 }`;
 
 // Matches hex (#rgb, #rgba, #rrggbb, #rrggbbaa) and functional notation (rgb/rgba/hsl/hsla).
 // Alternation is longest-first so #rrggbbaa beats #rrggbb beats #rgb.
+// [^\n)] avoids spanning multiple lines for functional notation.
 const COLOR_RE =
-  /#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})\b|rgba?\s*\([^)]+\)|hsla?\s*\([^)]+\)/g;
+  /#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})\b|rgba?\s*\([^\n)]+\)|hsla?\s*\([^\n)]+\)/g;
 
 function normalizeColor(raw: string): string {
   // For #rgb / #rgba shorthand: expand so the browser renders the swatch correctly.

@@ -1,15 +1,32 @@
 {
   "$schema": "../../../manifest.schema.json",
   "id": "sindri.dracula-color",
+  "type": "extension",
   "name": "Dracula — Colour Theme",
   "version": "0.1.0",
   "publisher": "sindri",
   "description": "Sindri's Dracula colour theme.",
-  "categories": ["Color Theme"],
-  "tags": ["dracula", "dark", "purple", "pink"],
+  "categories": [
+    "Color Theme"
+  ],
+  "tags": [
+    "dracula",
+    "dark",
+    "purple",
+    "pink"
+  ],
   "permissions": [],
-  "engines": { "sindri": ">=0.1.0" },
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
   "contributes": {
-    "themes": [{ "id": "sindri-dracula", "name": "Dracula", "kind": "dark", "path": "dracula.json" }]
+    "themes": [
+      {
+        "id": "sindri-dracula",
+        "name": "Dracula",
+        "kind": "dark",
+        "path": "dracula.json"
+      }
+    ]
   }
 }

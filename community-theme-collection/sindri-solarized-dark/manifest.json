@@ -1,15 +1,31 @@
 {
   "$schema": "../../manifest.schema.json",
   "id": "sindri.solarized-dark",
+  "type": "pack",
   "name": "Solarized Dark",
   "version": "0.1.0",
   "publisher": "sindri",
   "description": "Sindri's take on Solarized Dark — Ethan Schoonover's precision-tuned dark palette with teal and blue accents.",
-  "categories": ["Extension Pack", "Color Theme", "File Icon Theme"],
+  "categories": [
+    "Extension Pack",
+    "Color Theme",
+    "File Icon Theme"
+  ],
   "packKind": "theme",
-  "tags": ["solarized", "dark", "teal", "blue", "classic"],
+  "tags": [
+    "solarized",
+    "dark",
+    "teal",
+    "blue",
+    "classic"
+  ],
   "permissions": [],
-  "engines": { "sindri": ">=0.1.0" },
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
   "contributes": {},
-  "extensionPack": ["sindri.solarized-dark-color", "sindri.solarized-dark-icons"]
+  "extensionPack": [
+    "sindri.solarized-dark-color",
+    "sindri.solarized-dark-icons"
+  ]
 }

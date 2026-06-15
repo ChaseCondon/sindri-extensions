@@ -1,15 +1,32 @@
 {
   "$schema": "../../../manifest.schema.json",
   "id": "sindri.rose-pine-dawn-color",
+  "type": "extension",
   "name": "Rosé Pine Dawn — Colour Theme",
   "version": "0.1.0",
   "publisher": "sindri",
   "description": "Sindri's Rosé Pine Dawn colour theme.",
-  "categories": ["Color Theme"],
-  "tags": ["rose-pine", "dawn", "light", "rose"],
+  "categories": [
+    "Color Theme"
+  ],
+  "tags": [
+    "rose-pine",
+    "dawn",
+    "light",
+    "rose"
+  ],
   "permissions": [],
-  "engines": { "sindri": ">=0.1.0" },
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
   "contributes": {
-    "themes": [{ "id": "sindri-rose-pine-dawn", "name": "Rosé Pine Dawn", "kind": "light", "path": "rose-pine-dawn.json" }]
+    "themes": [
+      {
+        "id": "sindri-rose-pine-dawn",
+        "name": "Rosé Pine Dawn",
+        "kind": "light",
+        "path": "rose-pine-dawn.json"
+      }
+    ]
   }
 }

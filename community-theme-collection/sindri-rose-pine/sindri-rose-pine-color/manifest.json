@@ -1,15 +1,32 @@
 {
   "$schema": "../../../manifest.schema.json",
   "id": "sindri.rose-pine-color",
+  "type": "extension",
   "name": "Rosé Pine — Colour Theme",
   "version": "0.1.0",
   "publisher": "sindri",
   "description": "Sindri's Rosé Pine colour theme.",
-  "categories": ["Color Theme"],
-  "tags": ["rose-pine", "dark", "rose", "purple"],
+  "categories": [
+    "Color Theme"
+  ],
+  "tags": [
+    "rose-pine",
+    "dark",
+    "rose",
+    "purple"
+  ],
   "permissions": [],
-  "engines": { "sindri": ">=0.1.0" },
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
   "contributes": {
-    "themes": [{ "id": "sindri-rose-pine", "name": "Rosé Pine", "kind": "dark", "path": "rose-pine.json" }]
+    "themes": [
+      {
+        "id": "sindri-rose-pine",
+        "name": "Rosé Pine",
+        "kind": "dark",
+        "path": "rose-pine.json"
+      }
+    ]
   }
 }

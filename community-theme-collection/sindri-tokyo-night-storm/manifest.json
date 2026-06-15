@@ -1,15 +1,30 @@
 {
   "$schema": "../../manifest.schema.json",
   "id": "sindri.tokyo-night-storm",
+  "type": "pack",
   "name": "Tokyo Night Storm",
   "version": "0.1.0",
   "publisher": "sindri",
   "description": "Sindri's take on Tokyo Night Storm — a softer blue-grey variant of Tokyo Night for long editing sessions.",
-  "categories": ["Extension Pack", "Color Theme", "File Icon Theme"],
+  "categories": [
+    "Extension Pack",
+    "Color Theme",
+    "File Icon Theme"
+  ],
   "packKind": "theme",
-  "tags": ["tokyo-night", "storm", "dark", "blue-grey"],
+  "tags": [
+    "tokyo-night",
+    "storm",
+    "dark",
+    "blue-grey"
+  ],
   "permissions": [],
-  "engines": { "sindri": ">=0.1.0" },
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
   "contributes": {},
-  "extensionPack": ["sindri.tokyo-night-storm-color", "sindri.tokyo-night-storm-icons"]
+  "extensionPack": [
+    "sindri.tokyo-night-storm-color",
+    "sindri.tokyo-night-storm-icons"
+  ]
 }

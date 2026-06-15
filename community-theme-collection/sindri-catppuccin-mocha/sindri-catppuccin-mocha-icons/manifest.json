@@ -1,6 +1,7 @@
 {
   "$schema": "../../../manifest.schema.json",
   "id": "sindri.catppuccin-mocha-icons",
+  "type": "extension",
   "name": "Catppuccin Mocha Icons",
   "version": "1.0.0",
   "publisher": "sindri",

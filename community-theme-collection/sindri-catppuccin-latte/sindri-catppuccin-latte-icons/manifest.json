@@ -1,6 +1,7 @@
 {
   "$schema": "../../../manifest.schema.json",
   "id": "sindri.catppuccin-latte-icons",
+  "type": "extension",
   "name": "Catppuccin Latte Icons",
   "version": "1.0.0",
   "publisher": "sindri",

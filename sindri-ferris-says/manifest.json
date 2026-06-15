@@ -1,16 +1,24 @@
 {
   "$schema": "./node_modules/@sindri/api/manifest.schema.json",
   "id": "sindri.ferris-says",
+  "type": "extension",
   "name": "Ferris Says",
   "version": "0.1.1",
   "publisher": "sindri",
-  "description": "Calls a bundled Rust binary and renders its ASCII art in a webview panel. Validation sample for native binary bundling.",
-  "categories": ["UI Extension"],
-  "permissions": ["sindri.env", "sindri.ui"],
-  "engines": { "sindri": ">=0.1.0" },
+  "description": "Calls a bundled Rust binary and renders Ferris the crab's ASCII art in a webview panel. Validation sample for native binary bundling (ADR-0036).",
+  "categories": [
+    "UI Extension"
+  ],
+  "permissions": [
+    "sindri.env",
+    "sindri.ui"
+  ],
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
   "main": "dist/extension.js",
-  "available": false,
-  "buildable": false,
+  "available": true,
+  "buildable": true,
   "contributes": {
     "webviewPanels": [
       {
@@ -18,6 +26,9 @@
         "title": "Ferris Says",
         "defaultDock": "right-bottom"
       }
-    ]
+    ],
+    "binaries": {
+      "ferris-says": "bin/ferris-says"
+    }
   }
 }

@@ -1,15 +1,31 @@
 {
   "$schema": "../../manifest.schema.json",
   "id": "sindri.rose-pine-dawn",
+  "type": "pack",
   "name": "Rosé Pine Dawn",
   "version": "0.1.0",
   "publisher": "sindri",
   "description": "Sindri's take on Rosé Pine Dawn — the light companion to Rosé Pine, warm parchment with dusty rose accents.",
-  "categories": ["Extension Pack", "Color Theme", "File Icon Theme"],
+  "categories": [
+    "Extension Pack",
+    "Color Theme",
+    "File Icon Theme"
+  ],
   "packKind": "theme",
-  "tags": ["rose-pine", "dawn", "light", "rose", "elegant"],
+  "tags": [
+    "rose-pine",
+    "dawn",
+    "light",
+    "rose",
+    "elegant"
+  ],
   "permissions": [],
-  "engines": { "sindri": ">=0.1.0" },
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
   "contributes": {},
-  "extensionPack": ["sindri.rose-pine-dawn-color", "sindri.rose-pine-dawn-icons"]
+  "extensionPack": [
+    "sindri.rose-pine-dawn-color",
+    "sindri.rose-pine-dawn-icons"
+  ]
 }

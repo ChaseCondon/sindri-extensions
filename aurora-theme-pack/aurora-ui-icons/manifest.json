@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "publisher": "sindri",
   "description": "Activity bar and toolbar icon set for the Aurora theme \u2014 same runic glyphs as the default, optimised for Aurora's violet accent.",
+  "type": "extension",
   "categories": [
     "UI Icon Theme"
   ],

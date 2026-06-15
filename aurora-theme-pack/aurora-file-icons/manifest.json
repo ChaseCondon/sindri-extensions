@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "publisher": "sindri",
   "description": "File icon set matching the Aurora colour palette \u2014 violet, teal, and lavender on deep ink backgrounds.",
+  "type": "extension",
   "categories": [
     "File Icon Theme"
   ],

@@ -1,15 +1,31 @@
 {
   "$schema": "../../manifest.schema.json",
   "id": "sindri.solarized-light",
+  "type": "pack",
   "name": "Solarized Light",
   "version": "0.1.0",
   "publisher": "sindri",
   "description": "Sindri's take on Solarized Light — the cream-toned light companion to Solarized Dark.",
-  "categories": ["Extension Pack", "Color Theme", "File Icon Theme"],
+  "categories": [
+    "Extension Pack",
+    "Color Theme",
+    "File Icon Theme"
+  ],
   "packKind": "theme",
-  "tags": ["solarized", "light", "teal", "blue", "classic"],
+  "tags": [
+    "solarized",
+    "light",
+    "teal",
+    "blue",
+    "classic"
+  ],
   "permissions": [],
-  "engines": { "sindri": ">=0.1.0" },
+  "engines": {
+    "sindri": ">=0.1.0"
+  },
   "contributes": {},
-  "extensionPack": ["sindri.solarized-light-color", "sindri.solarized-light-icons"]
+  "extensionPack": [
+    "sindri.solarized-light-color",
+    "sindri.solarized-light-icons"
+  ]
 }
