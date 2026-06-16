@@ -23,38 +23,40 @@ async function tryExec(cmd: string, ...args: string[]): Promise<{ stdout: string
   }
 }
 
-// macOS: query Music.app or Spotify via osascript, return pipe-delimited string
-// Variable names chosen to avoid macOS 15 AppleScript reserved-word conflicts
-// ('st' and 't' are single-char and trigger "Expected expression" on Darwin 25+).
-const MACOS_INFO_SCRIPT = `
-set output to ""
-try
-  if application "Music" is running then
-    tell application "Music"
-      if player state is playing or player state is paused then
-        set psState to (player state as string)
-        set trackRef to current track
-        set output to psState & "|" & (name of trackRef) & "|" & (artist of trackRef) & "|" & (album of trackRef) & "|" & (round player position) & "|" & (round (duration of trackRef))
-      end if
-    end tell
-  end if
-end try
-if output is "" then
-  try
-    if application "Spotify" is running then
-      tell application "Spotify"
-        if player state is playing or player state is paused then
-          set psState to (player state as string)
-          set trackRef to current track
-          set posVal to round (player position)
-          set durVal to round ((duration of trackRef) / 1000)
-          set output to psState & "|" & (name of trackRef) & "|" & (artist of trackRef) & "|" & (album of trackRef) & "|" & posVal & "|" & durVal
-        end if
-      end tell
+// macOS AppleScript — one script per app, NO try/end try wrappers.
+//
+// Why no try/end try: macOS shows "Sindri wants to control Spotify/Music" the
+// FIRST TIME tell application "..." runs. Wrapping in try silently swallows
+// that permission request so the dialog never appears and it fails forever.
+// Without try, the dialog fires on first run; the user grants it once; done.
+//
+// Variable names avoid macOS 15+ reserved-word conflicts ('st','t' break).
+const MACOS_SPOTIFY_SCRIPT = `
+if application "Spotify" is running then
+  tell application "Spotify"
+    if player state is playing or player state is paused then
+      set psState to (player state as string)
+      set trackRef to current track
+      set posVal to round (player position)
+      set durVal to round ((duration of trackRef) / 1000)
+      return psState & "|" & (name of trackRef) & "|" & (artist of trackRef) & "|" & (album of trackRef) & "|" & posVal & "|" & durVal
     end if
-  end try
+  end tell
 end if
-return output
+return ""
+`.trim();
+
+const MACOS_MUSIC_SCRIPT = `
+if application "Music" is running then
+  tell application "Music"
+    if player state is playing or player state is paused then
+      set psState to (player state as string)
+      set trackRef to current track
+      return psState & "|" & (name of trackRef) & "|" & (artist of trackRef) & "|" & (album of trackRef) & "|" & (round player position) & "|" & (round (duration of trackRef))
+    end if
+  end tell
+end if
+return ""
 `.trim();
 
 const MACOS_ART_SCRIPT = `
@@ -73,11 +75,18 @@ end try
 return ""
 `.trim();
 
-const MACOS_CTRL: Record<string, string> = {
+const MACOS_MUSIC_CTRL: Record<string, string> = {
   play:  'tell application "Music" to play',
   pause: 'tell application "Music" to pause',
   next:  'tell application "Music" to next track',
   prev:  'tell application "Music" to previous track',
+};
+
+const MACOS_SPOTIFY_CTRL: Record<string, string> = {
+  play:  'tell application "Spotify" to play',
+  pause: 'tell application "Spotify" to pause',
+  next:  'tell application "Spotify" to next track',
+  prev:  'tell application "Spotify" to previous track',
 };
 
 // Windows: SMTC via PowerShell — returns pipe-delimited string
@@ -116,71 +125,39 @@ try {
 
 // ── Track info fetch ──────────────────────────────────────────────────────────
 
-// ── macOS: Spotify local web API ─────────────────────────────────────────────
-// Spotify exposes a local HTTP API on port 4380 — no permissions, no external
-// tools needed. curl is bundled with macOS at /usr/bin/curl.
-//
-// Returns:  TrackInfo if track found
-//           null      if Spotify is running but nothing is playing
-//           undefined if Spotify is not running (try next approach)
-async function trySpotifyLocalApi(): Promise<TrackInfo | null | undefined> {
-  const r = await tryExec("/usr/bin/curl", "-s", "--max-time", "1",
-    "-H", "Origin: https://open.spotify.com",
-    "http://localhost:4380/");
-  if (!r || r.code !== 0 || !r.stdout.trim()) return undefined;
-  try {
-    const data = JSON.parse(r.stdout) as {
-      playing?: boolean;
-      running?: boolean;
-      track?: {
-        track_resource?: { name?: string };
-        artist_resource?: { name?: string };
-        album_resource?: { name?: string };
-        length?: number;
-      };
-      playing_position?: number;
-    };
-    if (!data.running) return undefined;
-    if (!data.track?.track_resource?.name) return null;
-    return {
-      title:    data.track.track_resource.name,
-      artist:   data.track.artist_resource?.name ?? "",
-      album:    data.track.album_resource?.name  ?? "",
-      state:    data.playing ? "playing" : "paused",
-      position: Math.round(data.playing_position ?? 0),
-      duration: Math.round(data.track.length ?? 0),
-      artDataUri: "",
-    };
-  } catch {
-    return undefined;
-  }
+function parsePipeResult(raw: string, durDivisor = 1): TrackInfo | null {
+  const parts = raw.trim().split("|");
+  if (parts.length < 6) return null;
+  const [state, title, artist, album, pos, dur] = parts;
+  if (!title) return null;
+  return {
+    title, artist, album,
+    state: state === "playing" ? "playing" : state === "paused" ? "paused" : "stopped",
+    position: parseInt(pos) || 0,
+    duration: Math.round(parseInt(dur) / durDivisor) || 0,
+    artDataUri: "",
+  };
 }
 
 async function fetchTrackInfo(): Promise<TrackInfo | null> {
   // ── macOS ────────────────────────────────────────────────────────────────────
+  // Run Spotify and Music.app as separate osascript calls so a permission
+  // denial for one app doesn't block the other.
 
-  // 1. Spotify local API — no permissions, no external tools (curl is built-in).
-  const spotifyResult = await trySpotifyLocalApi();
-  if (spotifyResult !== undefined) {
-    return spotifyResult; // null = running but no track; TrackInfo = track found
+  const spotRes = await tryExec("osascript", "-e", MACOS_SPOTIFY_SCRIPT);
+  if (spotRes?.code === 0 && spotRes.stdout.trim().includes("|")) {
+    const info = parsePipeResult(spotRes.stdout, 1);
+    if (info) return info;
+  } else if (spotRes && spotRes.code !== 0) {
+    LOG("Spotify AppleScript error:", spotRes.stdout.trim() || `exit ${spotRes.code}`);
   }
 
-  // 2. AppleScript for Music.app — requires Automation permission granted once
-  //    in System Settings → Privacy & Security → Automation → Sindri.
-  const macRes = await tryExec("osascript", "-e", MACOS_INFO_SCRIPT);
-  if (macRes && macRes.code === 0 && macRes.stdout.trim().includes("|")) {
-    const [state, title, artist, album, pos, dur] = macRes.stdout.trim().split("|");
-    if (title) {
-      return {
-        title, artist, album,
-        state: (state === "playing" ? "playing" : state === "paused" ? "paused" : "stopped"),
-        position: parseInt(pos) || 0,
-        duration: parseInt(dur) || 0,
-        artDataUri: "",
-      };
-    }
-  } else if (macRes && macRes.code !== 0) {
-    LOG("osascript:", macRes.stdout.trim() || `exit ${macRes.code}`);
+  const musicRes = await tryExec("osascript", "-e", MACOS_MUSIC_SCRIPT);
+  if (musicRes?.code === 0 && musicRes.stdout.trim().includes("|")) {
+    const info = parsePipeResult(musicRes.stdout, 1);
+    if (info) return info;
+  } else if (musicRes && musicRes.code !== 0) {
+    LOG("Music AppleScript error:", musicRes.stdout.trim() || `exit ${musicRes.code}`);
   }
 
   // ── Windows ──────────────────────────────────────────────────────────────────
@@ -236,11 +213,13 @@ async function sendControl(action: string, seekPos?: number): Promise<void> {
   if (action === "seek" && seekPos !== undefined) {
     const s = Math.round(seekPos);
     await tryExec("osascript", "-e", `tell application "Music" to set player position to ${s}`);
-    // Windows seek: not well-supported via SMTC
+    await tryExec("osascript", "-e", `tell application "Spotify" to set player position to ${s}`);
     return;
   }
-  const mac = MACOS_CTRL[action];
-  if (mac) { await tryExec("osascript", "-e", mac); return; }
+  const spotCmd = MACOS_SPOTIFY_CTRL[action];
+  if (spotCmd) await tryExec("osascript", "-e", spotCmd);
+  const musicCmd = MACOS_MUSIC_CTRL[action];
+  if (musicCmd) await tryExec("osascript", "-e", musicCmd);
   const winScript = wrapWinCtrl(action);
   await tryExec("pwsh", "-NoProfile", "-Command", winScript)
     ?? await tryExec("powershell", "-NoProfile", "-Command", winScript);

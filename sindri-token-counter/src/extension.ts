@@ -76,13 +76,14 @@ export async function activate(context: ExtensionContext): Promise<void> {
   });
   bar.show();
 
-  // Initial update for whatever is already active.
-  // Extensions can activate before editor tabs finish restoring, so also retry
-  // after a short delay to catch the case where activeEditor is null on startup.
+  // Initial update — retry with backoff because extensions activate before
+  // editor tabs finish restoring on startup (activeEditor is null until then).
   await updateStatusBar(bar, sindri.editor.activeEditor?.document);
-  setTimeout(async () => {
+  let initTimer: ReturnType<typeof setTimeout> | null = setTimeout(async () => {
+    initTimer = null;
     await updateStatusBar(bar, sindri.editor.activeEditor?.document);
-  }, 400);
+  }, 800);
+  context.subscriptions.push({ dispose() { if (initTimer) { clearTimeout(initTimer); initTimer = null; } } });
 
   // Update on every active-editor switch.
   context.subscriptions.push(
