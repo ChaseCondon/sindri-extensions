@@ -205,6 +205,7 @@ async function sendControl(action: string, seekPos?: number): Promise<void> {
 // ── Extension activation ──────────────────────────────────────────────────────
 
 export async function activate(context: ExtensionContext): Promise<void> {
+  LOG("activate v0.2.1 — AppleScript vars: psState/trackRef (macOS 15 fix)");
   const item = sindri.ui.createStatusBarItem("sindri.now-playing.bar", {
     text: "♪ —",
     tooltip: "Now Playing",
