@@ -16,11 +16,13 @@ const encoder = new TextEncoder();
 async function initWasm(): Promise<void> {
   LOG("loading tokenizer.wasm…");
   const mod = await sindri.wasm.load("tokenizer.wasm");
-  LOG("compiling WASM module…");
-  // instantiate(Module, imports) → Instance directly (not {instance})
-  wasmInstance = await WebAssembly.instantiate(mod, {});
+  LOG("got module:", typeof mod, mod instanceof WebAssembly.Module ? "Module" : String(mod));
+  // instantiate(Module, imports) → Instance directly (not {module,instance})
+  const result = await WebAssembly.instantiate(mod, {});
+  // instantiate(Module) returns Instance directly; instantiate(BufferSource) returns {module,instance}
+  wasmInstance = result instanceof WebAssembly.Instance ? result : (result as {instance: WebAssembly.Instance}).instance;
   wasmMem = wasmInstance.exports.memory as WebAssembly.Memory;
-  LOG("WASM ready");
+  LOG("WASM ready, exports:", Object.keys(wasmInstance.exports).join(", "));
 }
 
 function countTokens(text: string): number {
@@ -63,7 +65,8 @@ export async function activate(context: ExtensionContext): Promise<void> {
   try {
     await initWasm();
   } catch (err) {
-    WARN("WASM init failed:", err);
+    const msg = err instanceof Error ? err.message : (err != null ? String(err) : "unknown");
+    WARN("WASM init failed:", msg, err);
     return;
   }
 
