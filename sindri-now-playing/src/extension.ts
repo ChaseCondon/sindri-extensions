@@ -117,10 +117,58 @@ try {
 
 // ── Track info fetch ──────────────────────────────────────────────────────────
 
+// nowplaying-cli reads from macOS MediaRemote — works for ALL players (Spotify,
+// Music, YouTube Music, etc.) without needing Automation permission.
+async function tryNowPlayingCli(): Promise<TrackInfo | null> {
+  const paths = ["/opt/homebrew/bin/nowplaying-cli", "/usr/local/bin/nowplaying-cli", "nowplaying-cli"];
+  for (const bin of paths) {
+    const r = await tryExec(bin, "get", "title", "artist", "album", "playbackRate", "duration", "elapsedTime");
+    if (r === null) continue; // binary not found at this path
+    if (r.code !== 0) {
+      LOG(`nowplaying-cli (${bin}) exited ${r.code} — nothing playing`);
+      return null; // found but nothing playing
+    }
+    const lines = r.stdout.trim().split("\n");
+    const [title, artist, album, rateStr, durStr, elapsedStr] = lines;
+    if (!title?.trim() || title.trim() === "(null)") return null;
+    const rate = parseFloat(rateStr ?? "0") || 0;
+    return {
+      title: title.trim(),
+      artist: (artist?.trim() === "(null)" ? "" : artist?.trim()) ?? "",
+      album:  (album?.trim()  === "(null)" ? "" : album?.trim())  ?? "",
+      state: rate > 0 ? "playing" : "paused",
+      position: Math.round(parseFloat(elapsedStr ?? "0")) || 0,
+      duration: Math.round(parseFloat(durStr ?? "0")) || 0,
+      artDataUri: "",
+    };
+  }
+  return undefined as unknown as null; // all paths tried, binary not installed
+}
+
+let _npCliAvailable: boolean | null = null; // null = not yet tested
+
 async function fetchTrackInfo(): Promise<TrackInfo | null> {
-  // macOS
+  // macOS — try nowplaying-cli first (no Automation permission required, works
+  // for Spotify/Music/YouTube/Tidal/etc. via the MediaRemote framework).
+  if (_npCliAvailable !== false) {
+    const result = await tryNowPlayingCli();
+    if (result !== undefined) { // undefined = binary not found
+      if (_npCliAvailable === null) {
+        _npCliAvailable = true;
+        LOG("nowplaying-cli found — using MediaRemote (no Automation permission needed)");
+      }
+      return result; // may be null if nothing is playing
+    }
+    if (_npCliAvailable === null) {
+      _npCliAvailable = false;
+      WARN("nowplaying-cli not found. Install with: brew install nowplaying-cli");
+      WARN("Falling back to AppleScript (requires Automation permission for each player app).");
+    }
+  }
+
+  // macOS AppleScript fallback (Music.app / Spotify) — requires Automation permission.
+  // Grant in System Settings → Privacy & Security → Automation → Sindri.
   const macRes = await tryExec("osascript", "-e", MACOS_INFO_SCRIPT);
-  LOG("osascript result:", macRes?.code, JSON.stringify(macRes?.stdout?.trim().slice(0, 80)));
   if (macRes && macRes.code === 0 && macRes.stdout.trim().includes("|")) {
     const [state, title, artist, album, pos, dur] = macRes.stdout.trim().split("|");
     if (title) {
@@ -132,11 +180,10 @@ async function fetchTrackInfo(): Promise<TrackInfo | null> {
         artDataUri: "",
       };
     }
-  }
-  if (macRes?.stdout?.trim() === "" && macRes?.code === 0) {
-    LOG("no active player on macOS");
+  } else if (macRes?.code === 0) {
+    LOG("AppleScript: no active player (or Automation permission not granted for Spotify/Music)");
   } else if (macRes?.code !== 0) {
-    WARN("osascript failed:", macRes?.stderr?.trim());
+    WARN("osascript error:", macRes?.stdout?.trim() || `exit ${macRes?.code}`);
   }
 
   // Windows

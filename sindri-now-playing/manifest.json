@@ -3,7 +3,7 @@
   "id": "sindri.now-playing",
   "type": "extension",
   "name": "Now Playing",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "publisher": "sindri",
   "description": "Shows the current media track in the status bar with a full player panel (album art, controls, animated waveform scrubber).",
   "categories": [
