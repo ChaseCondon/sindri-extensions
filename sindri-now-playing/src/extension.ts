@@ -1,7 +1,6 @@
 import { createWebviewHtml } from "@sindri/api/helpers";
 
 const LOG = (...a: unknown[]) => console.log("[now-playing]", ...a);
-const WARN = (...a: unknown[]) => console.warn("[now-playing]", ...a);
 
 interface TrackInfo {
   title: string;
@@ -117,57 +116,57 @@ try {
 
 // ── Track info fetch ──────────────────────────────────────────────────────────
 
-// nowplaying-cli reads from macOS MediaRemote — works for ALL players (Spotify,
-// Music, YouTube Music, etc.) without needing Automation permission.
-async function tryNowPlayingCli(): Promise<TrackInfo | null> {
-  const paths = ["/opt/homebrew/bin/nowplaying-cli", "/usr/local/bin/nowplaying-cli", "nowplaying-cli"];
-  for (const bin of paths) {
-    const r = await tryExec(bin, "get", "title", "artist", "album", "playbackRate", "duration", "elapsedTime");
-    if (r === null) continue; // binary not found at this path
-    if (r.code !== 0) {
-      LOG(`nowplaying-cli (${bin}) exited ${r.code} — nothing playing`);
-      return null; // found but nothing playing
-    }
-    const lines = r.stdout.trim().split("\n");
-    const [title, artist, album, rateStr, durStr, elapsedStr] = lines;
-    if (!title?.trim() || title.trim() === "(null)") return null;
-    const rate = parseFloat(rateStr ?? "0") || 0;
+// ── macOS: Spotify local web API ─────────────────────────────────────────────
+// Spotify exposes a local HTTP API on port 4380 — no permissions, no external
+// tools needed. curl is bundled with macOS at /usr/bin/curl.
+//
+// Returns:  TrackInfo if track found
+//           null      if Spotify is running but nothing is playing
+//           undefined if Spotify is not running (try next approach)
+async function trySpotifyLocalApi(): Promise<TrackInfo | null | undefined> {
+  const r = await tryExec("/usr/bin/curl", "-s", "--max-time", "1",
+    "-H", "Origin: https://open.spotify.com",
+    "http://localhost:4380/");
+  if (!r || r.code !== 0 || !r.stdout.trim()) return undefined;
+  try {
+    const data = JSON.parse(r.stdout) as {
+      playing?: boolean;
+      running?: boolean;
+      track?: {
+        track_resource?: { name?: string };
+        artist_resource?: { name?: string };
+        album_resource?: { name?: string };
+        length?: number;
+      };
+      playing_position?: number;
+    };
+    if (!data.running) return undefined;
+    if (!data.track?.track_resource?.name) return null;
     return {
-      title: title.trim(),
-      artist: (artist?.trim() === "(null)" ? "" : artist?.trim()) ?? "",
-      album:  (album?.trim()  === "(null)" ? "" : album?.trim())  ?? "",
-      state: rate > 0 ? "playing" : "paused",
-      position: Math.round(parseFloat(elapsedStr ?? "0")) || 0,
-      duration: Math.round(parseFloat(durStr ?? "0")) || 0,
+      title:    data.track.track_resource.name,
+      artist:   data.track.artist_resource?.name ?? "",
+      album:    data.track.album_resource?.name  ?? "",
+      state:    data.playing ? "playing" : "paused",
+      position: Math.round(data.playing_position ?? 0),
+      duration: Math.round(data.track.length ?? 0),
       artDataUri: "",
     };
+  } catch {
+    return undefined;
   }
-  return undefined as unknown as null; // all paths tried, binary not installed
 }
 
-let _npCliAvailable: boolean | null = null; // null = not yet tested
-
 async function fetchTrackInfo(): Promise<TrackInfo | null> {
-  // macOS — try nowplaying-cli first (no Automation permission required, works
-  // for Spotify/Music/YouTube/Tidal/etc. via the MediaRemote framework).
-  if (_npCliAvailable !== false) {
-    const result = await tryNowPlayingCli();
-    if (result !== undefined) { // undefined = binary not found
-      if (_npCliAvailable === null) {
-        _npCliAvailable = true;
-        LOG("nowplaying-cli found — using MediaRemote (no Automation permission needed)");
-      }
-      return result; // may be null if nothing is playing
-    }
-    if (_npCliAvailable === null) {
-      _npCliAvailable = false;
-      WARN("nowplaying-cli not found. Install with: brew install nowplaying-cli");
-      WARN("Falling back to AppleScript (requires Automation permission for each player app).");
-    }
+  // ── macOS ────────────────────────────────────────────────────────────────────
+
+  // 1. Spotify local API — no permissions, no external tools (curl is built-in).
+  const spotifyResult = await trySpotifyLocalApi();
+  if (spotifyResult !== undefined) {
+    return spotifyResult; // null = running but no track; TrackInfo = track found
   }
 
-  // macOS AppleScript fallback (Music.app / Spotify) — requires Automation permission.
-  // Grant in System Settings → Privacy & Security → Automation → Sindri.
+  // 2. AppleScript for Music.app — requires Automation permission granted once
+  //    in System Settings → Privacy & Security → Automation → Sindri.
   const macRes = await tryExec("osascript", "-e", MACOS_INFO_SCRIPT);
   if (macRes && macRes.code === 0 && macRes.stdout.trim().includes("|")) {
     const [state, title, artist, album, pos, dur] = macRes.stdout.trim().split("|");
@@ -180,13 +179,11 @@ async function fetchTrackInfo(): Promise<TrackInfo | null> {
         artDataUri: "",
       };
     }
-  } else if (macRes?.code === 0) {
-    LOG("AppleScript: no active player (or Automation permission not granted for Spotify/Music)");
-  } else if (macRes?.code !== 0) {
-    WARN("osascript error:", macRes?.stdout?.trim() || `exit ${macRes?.code}`);
+  } else if (macRes && macRes.code !== 0) {
+    LOG("osascript:", macRes.stdout.trim() || `exit ${macRes.code}`);
   }
 
-  // Windows
+  // ── Windows ──────────────────────────────────────────────────────────────────
   const winRes = await tryExec("pwsh", "-NoProfile", "-Command", WIN_INFO_SCRIPT)
     ?? await tryExec("powershell", "-NoProfile", "-Command", WIN_INFO_SCRIPT);
   if (winRes && winRes.stdout.trim().includes("|")) {
@@ -202,7 +199,7 @@ async function fetchTrackInfo(): Promise<TrackInfo | null> {
     }
   }
 
-  // Linux
+  // ── Linux ────────────────────────────────────────────────────────────────────
   const linRes = await tryExec("playerctl", "metadata", "--format",
     "{{lc(status)}}|{{title}}|{{artist}}|{{album}}|{{position}}|{{mpris:length}}");
   if (linRes && linRes.code === 0 && linRes.stdout.trim().includes("|")) {
@@ -252,27 +249,8 @@ async function sendControl(action: string, seekPos?: number): Promise<void> {
 // ── Extension activation ──────────────────────────────────────────────────────
 
 export async function activate(context: ExtensionContext): Promise<void> {
-  LOG("activate v0.2.2");
+  LOG("activate v0.3.0");
 
-  // Diagnostic: probe Music.app automation access before the first poll so users can
-  // distinguish "no player running" from "Automation permission denied".
-  const diagRes = await tryExec("osascript", "-e", `
-try
-  set isRunning to application "Music" is running
-  if isRunning then
-    tell application "Music"
-      return "music-running:state=" & (player state as string)
-    end tell
-  else
-    return "music-not-running"
-  end if
-on error errMsg
-  return "error:" & errMsg
-end try
-`);
-  LOG("Music.app diagnostic:", diagRes?.stdout?.trim() ?? `exec-failed(${diagRes?.code})`);
-  // If you see "error:..." above, grant Sindri Automation access in
-  // System Settings → Privacy & Security → Automation.
   const item = sindri.ui.createStatusBarItem("sindri.now-playing.bar", {
     text: "♪ —",
     tooltip: "Now Playing",

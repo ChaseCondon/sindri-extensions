@@ -77,8 +77,12 @@ export async function activate(context: ExtensionContext): Promise<void> {
   bar.show();
 
   // Initial update for whatever is already active.
-  const active = sindri.editor.activeEditor;
-  await updateStatusBar(bar, active?.document);
+  // Extensions can activate before editor tabs finish restoring, so also retry
+  // after a short delay to catch the case where activeEditor is null on startup.
+  await updateStatusBar(bar, sindri.editor.activeEditor?.document);
+  setTimeout(async () => {
+    await updateStatusBar(bar, sindri.editor.activeEditor?.document);
+  }, 400);
 
   // Update on every active-editor switch.
   context.subscriptions.push(
