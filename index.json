@@ -129,19 +129,9 @@
       "type": "extension"
     },
     {
-      "id": "sindri.commit-streak",
-      "path": "sindri-commit-streak",
-      "type": "extension"
-    },
-    {
       "id": "sindri.community-icons-base",
       "path": "community-theme-collection/sindri-community-icons-base",
       "type": "template"
-    },
-    {
-      "id": "sindri.csv-grid",
-      "path": "sindri-csv-grid",
-      "type": "extension"
     },
     {
       "id": "sindri.dracula-color",

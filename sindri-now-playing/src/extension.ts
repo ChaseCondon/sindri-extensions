@@ -25,15 +25,17 @@ async function tryExec(cmd: string, ...args: string[]): Promise<{ stdout: string
 }
 
 // macOS: query Music.app or Spotify via osascript, return pipe-delimited string
+// Variable names chosen to avoid macOS 15 AppleScript reserved-word conflicts
+// ('st' and 't' are single-char and trigger "Expected expression" on Darwin 25+).
 const MACOS_INFO_SCRIPT = `
 set output to ""
 try
   if application "Music" is running then
     tell application "Music"
       if player state is playing or player state is paused then
-        set st to (player state as string)
-        set t to current track
-        set output to st & "|" & (name of t) & "|" & (artist of t) & "|" & (album of t) & "|" & (round player position) & "|" & (round (duration of t))
+        set psState to (player state as string)
+        set trackRef to current track
+        set output to psState & "|" & (name of trackRef) & "|" & (artist of trackRef) & "|" & (album of trackRef) & "|" & (round player position) & "|" & (round (duration of trackRef))
       end if
     end tell
   end if
@@ -43,11 +45,11 @@ if output is "" then
     if application "Spotify" is running then
       tell application "Spotify"
         if player state is playing or player state is paused then
-          set st to (player state as string)
-          set t to current track
-          set pos to round (player position)
-          set dur to round ((duration of t) / 1000)
-          set output to st & "|" & (name of t) & "|" & (artist of t) & "|" & (album of t) & "|" & pos & "|" & dur
+          set psState to (player state as string)
+          set trackRef to current track
+          set posVal to round (player position)
+          set durVal to round ((duration of trackRef) / 1000)
+          set output to psState & "|" & (name of trackRef) & "|" & (artist of trackRef) & "|" & (album of trackRef) & "|" & posVal & "|" & durVal
         end if
       end tell
     end if

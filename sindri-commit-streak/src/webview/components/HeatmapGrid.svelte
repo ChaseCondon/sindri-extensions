@@ -84,5 +84,6 @@
     margin: 10px 0 0;
     font-size: 12px;
     opacity: 0.7;
+    color: var(--sindri-fg, #ccc);
   }
 </style>

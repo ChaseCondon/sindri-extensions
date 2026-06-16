@@ -62,7 +62,7 @@
 </main>
 
 <style>
-  main { display: flex; flex-direction: column; }
+  main { display: flex; flex-direction: column; color: var(--sindri-fg, #ccc); }
 
   .status { opacity: 0.5; font-size: 13px; margin: 16px; }
   .error { color: #f88; opacity: 1; }

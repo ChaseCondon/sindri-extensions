@@ -2,11 +2,9 @@
   "name": "sindri-extensions",
   "private": true,
   "scripts": {
-    "build-index": "bun run scripts/build-index.ts",
+    "build-index": "sindri ext build-index --repo .",
     "generate-icons": "bun run scripts/generate-icons.ts --all",
-    "build": "bun run scripts/build-extensions.ts --all --bundle",
-    "build-ext": "bun run scripts/build-extensions.ts",
-    "release": "bun run scripts/create-releases.ts"
+    "release": "sindri ext release --repo . --ide-root ../sindri-ide"
   },
   "devDependencies": {
     "@phosphor-icons/core": "^2.1.1",
