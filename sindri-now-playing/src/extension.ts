@@ -139,17 +139,33 @@ function parsePipeResult(raw: string, durDivisor = 1): TrackInfo | null {
   };
 }
 
+// When macOS Automation permission for Spotify is denied, osascript exits 1
+// with empty stdout. We log guidance once and skip Spotify polling until the
+// extension is reactivated (user must grant permission in System Settings).
+let spotifyPermissionDenied = false;
+
 async function fetchTrackInfo(): Promise<TrackInfo | null> {
   // ── macOS ────────────────────────────────────────────────────────────────────
   // Run Spotify and Music.app as separate osascript calls so a permission
   // denial for one app doesn't block the other.
 
-  const spotRes = await tryExec("osascript", "-e", MACOS_SPOTIFY_SCRIPT);
-  if (spotRes?.code === 0 && spotRes.stdout.trim().includes("|")) {
-    const info = parsePipeResult(spotRes.stdout, 1);
-    if (info) return info;
-  } else if (spotRes && spotRes.code !== 0) {
-    LOG("Spotify AppleScript error:", spotRes.stdout.trim() || `exit ${spotRes.code}`);
+  if (!spotifyPermissionDenied) {
+    const spotRes = await tryExec("osascript", "-e", MACOS_SPOTIFY_SCRIPT);
+    if (spotRes?.code === 0 && spotRes.stdout.trim().includes("|")) {
+      const info = parsePipeResult(spotRes.stdout, 1);
+      if (info) return info;
+    } else if (spotRes && spotRes.code !== 0) {
+      if (!spotRes.stdout.trim()) {
+        // Empty stderr on exit 1 = Automation permission denied by macOS TCC.
+        spotifyPermissionDenied = true;
+        LOG(
+          "Spotify Automation permission denied. To fix: System Settings → Privacy & Security → Automation → Sindri → enable Spotify.",
+          "Spotify polling suspended until extension is reactivated.",
+        );
+      } else {
+        LOG("Spotify AppleScript error:", spotRes.stdout.trim());
+      }
+    }
   }
 
   const musicRes = await tryExec("osascript", "-e", MACOS_MUSIC_SCRIPT);
@@ -228,7 +244,7 @@ async function sendControl(action: string, seekPos?: number): Promise<void> {
 // ── Extension activation ──────────────────────────────────────────────────────
 
 export async function activate(context: ExtensionContext): Promise<void> {
-  LOG("activate v0.3.0");
+  LOG("activate v0.3.3");
 
   const item = sindri.ui.createStatusBarItem("sindri.now-playing.bar", {
     text: "♪ —",

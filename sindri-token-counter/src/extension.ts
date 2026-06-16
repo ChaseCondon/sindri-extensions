@@ -76,14 +76,20 @@ export async function activate(context: ExtensionContext): Promise<void> {
   });
   bar.show();
 
-  // Initial update — retry with backoff because extensions activate before
-  // editor tabs finish restoring on startup (activeEditor is null until then).
+  // Initial update — poll because activeEditor is null until editor tabs finish
+  // restoring on startup. onDidChangeActiveEditor doesn't fire when there's no
+  // editor change, just a restoration. Poll every 500ms for up to 5s.
   await updateStatusBar(bar, sindri.editor.activeEditor?.document);
-  let initTimer: ReturnType<typeof setTimeout> | null = setTimeout(async () => {
-    initTimer = null;
-    await updateStatusBar(bar, sindri.editor.activeEditor?.document);
-  }, 800);
-  context.subscriptions.push({ dispose() { if (initTimer) { clearTimeout(initTimer); initTimer = null; } } });
+  let pollCount = 0;
+  let initPoll: ReturnType<typeof setInterval> | null = setInterval(async () => {
+    pollCount++;
+    const doc = sindri.editor.activeEditor?.document;
+    if (doc || pollCount >= 10) {
+      if (initPoll) { clearInterval(initPoll); initPoll = null; }
+    }
+    await updateStatusBar(bar, doc);
+  }, 500);
+  context.subscriptions.push({ dispose() { if (initPoll) { clearInterval(initPoll); initPoll = null; } } });
 
   // Update on every active-editor switch.
   context.subscriptions.push(
