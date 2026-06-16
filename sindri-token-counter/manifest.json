@@ -3,7 +3,7 @@
   "id": "sindri.token-counter",
   "type": "extension",
   "name": "Token Counter",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "publisher": "sindri",
   "description": "Counts approximate GPT-4 tokens in the active document using a bundled WASM module. Validation sample for sindri.wasm.load() (ADR-0035).",
   "categories": [
