@@ -1,6 +1,5 @@
 {
   "$schema": "./node_modules/@sindri/api/manifest.schema.json",
-  "buildable": false,
   "id": "sindri.commit-streak",
   "type": "extension",
   "name": "Commit Streak",

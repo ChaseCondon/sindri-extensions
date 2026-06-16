@@ -205,7 +205,27 @@ async function sendControl(action: string, seekPos?: number): Promise<void> {
 // ── Extension activation ──────────────────────────────────────────────────────
 
 export async function activate(context: ExtensionContext): Promise<void> {
-  LOG("activate v0.2.1 — AppleScript vars: psState/trackRef (macOS 15 fix)");
+  LOG("activate v0.2.2");
+
+  // Diagnostic: probe Music.app automation access before the first poll so users can
+  // distinguish "no player running" from "Automation permission denied".
+  const diagRes = await tryExec("osascript", "-e", `
+try
+  set isRunning to application "Music" is running
+  if isRunning then
+    tell application "Music"
+      return "music-running:state=" & (player state as string)
+    end tell
+  else
+    return "music-not-running"
+  end if
+on error errMsg
+  return "error:" & errMsg
+end try
+`);
+  LOG("Music.app diagnostic:", diagRes?.stdout?.trim() ?? `exec-failed(${diagRes?.code})`);
+  // If you see "error:..." above, grant Sindri Automation access in
+  // System Settings → Privacy & Security → Automation.
   const item = sindri.ui.createStatusBarItem("sindri.now-playing.bar", {
     text: "♪ —",
     tooltip: "Now Playing",
