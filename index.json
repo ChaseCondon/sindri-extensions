@@ -139,6 +139,11 @@
       "type": "template"
     },
     {
+      "id": "sindri.csv-grid",
+      "path": "sindri-csv-grid",
+      "type": "extension"
+    },
+    {
       "id": "sindri.dracula-color",
       "path": "community-theme-collection/sindri-dracula/sindri-dracula-color",
       "type": "extension"

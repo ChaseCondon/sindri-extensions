@@ -3,19 +3,30 @@
   "id": "sindri.csv-grid",
   "type": "extension",
   "name": "CSV Grid",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "publisher": "sindri",
-  "description": "Opens .csv files as a sortable, scrollable grid in an editor tab. Reference implementation for sindri.editor.registerEditor (Surface B, ADR-0028). Not yet implemented — scoped to a future phase.",
+  "description": "Opens .csv and .tsv files as a sortable, scrollable grid in an editor tab. Reference implementation for sindri.ui.registerEditor (Surface B, ADR-0028).",
   "categories": [
     "UI Extension"
   ],
   "permissions": [
     "sindri.ui",
-    "sindri.editor"
+    "sindri.fs"
   ],
   "engines": {
     "sindri": ">=0.1.0"
   },
-  "buildable": false,
-  "contributes": {}
+  "contributes": {
+    "customEditors": [
+      {
+        "viewType": "sindri.csv-grid",
+        "displayName": "CSV Grid",
+        "selector": [
+          { "pattern": "*.csv" },
+          { "pattern": "*.tsv" }
+        ],
+        "priority": "default"
+      }
+    ]
+  }
 }
