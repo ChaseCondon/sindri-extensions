@@ -38,6 +38,7 @@ jobs:
             src-tauri/Cargo.lock
             src-tauri/crates/sindri-cli/
             src-tauri/crates/sindri-core/
+            src-tauri/src/lib.rs
           sparse-checkout-cone-mode: false
           token: ${{ secrets.GITHUB_TOKEN }}
 
