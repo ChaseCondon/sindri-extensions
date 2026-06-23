@@ -12,8 +12,17 @@ function webviewHtml(): string {
 </html>`;
 }
 
+// Injected by the sindri host; parent directory of extension.js (i.e. dist/).
+declare const __sindri_bundle_dir: string;
+
 export function activate(): void {
-  console.log('[csv-grid] activate() called — registering custom editor');
+  // Read and log the version so you can always verify which build is running.
+  sindri.env.fs.read(__sindri_bundle_dir + '/../manifest.json')
+    .then((raw: string) => {
+      const version = (JSON.parse(raw) as { version: string }).version;
+      console.log(`[csv-grid v${version}] activated`);
+    })
+    .catch(() => console.log('[csv-grid] activated (version unknown)'));
   sindri.ui.registerEditor(
     "sindri.csv-grid",
     [{ pattern: "*.csv" }, { pattern: "*.tsv" }],
