@@ -24,10 +24,9 @@ body {
   height: 100vh;
 }
 
-// ── Layout shells ─────────────────────────────────────────────────────────────
+// ── Layout shell ──────────────────────────────────────────────────────────────
 
-.grid-view,
-.raw-view {
+.csv-shell {
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -60,6 +59,11 @@ body {
   color: var(--sindri-text-dim, #888);
 }
 
+.toolbar-actions {
+  display: flex;
+  gap: 4px;
+}
+
 // ── Buttons ───────────────────────────────────────────────────────────────────
 
 .btn {
@@ -75,20 +79,14 @@ body {
 .btn-primary {
   background: var(--sindri-accent, #0af);
   color: #fff;
-
-  &:hover {
-    opacity: 0.85;
-  }
+  &:hover { opacity: 0.85; }
 }
 
 .btn-secondary {
   background: transparent;
   color: var(--sindri-fg, #ccc);
   border: 1px solid var(--sindri-border, #444);
-
-  &:hover {
-    background: var(--sindri-border, #333);
-  }
+  &:hover { background: var(--sindri-border, #333); }
 }
 
 // ── Empty state ───────────────────────────────────────────────────────────────
@@ -111,9 +109,11 @@ body {
   }
 }
 
-// ── Raw / mode-toggle ─────────────────────────────────────────────────────────
+// ── Mode toggle ───────────────────────────────────────────────────────────────
 
 .mode-toggle { display: flex; gap: 3px; }
+
+// ── Raw view ──────────────────────────────────────────────────────────────────
 
 .raw-area {
   flex: 1;
@@ -162,10 +162,9 @@ thead {
 }
 
 th {
-  padding: 5px 10px;
+  padding: 0;
   text-align: left;
   cursor: pointer;
-  user-select: none;
   white-space: nowrap;
   border-bottom: 2px solid var(--sindri-border, #444);
 
@@ -176,6 +175,7 @@ th {
   .sort-icon {
     font-size: 10px;
     opacity: 0.4;
+    pointer-events: none;
   }
 
   &.sorted .sort-icon {
@@ -185,14 +185,39 @@ th {
 }
 
 td {
-  padding: 4px 10px;
+  padding: 0;
   max-width: 280px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   border-bottom: 1px solid color-mix(in srgb, var(--sindri-border, #333) 60%, transparent);
 }
 
 tr:hover td {
   background: color-mix(in srgb, var(--sindri-accent, #0af) 6%, transparent);
+}
+
+// ── Editable cells ────────────────────────────────────────────────────────────
+
+.cell-content {
+  display: block;
+  padding: 4px 10px;
+  min-width: 60px;
+  outline: none;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: text;
+  user-select: text;
+  -webkit-user-select: text;
+
+  &:focus {
+    background: color-mix(in srgb, var(--sindri-accent, #0af) 15%, transparent);
+    outline: 1px solid var(--sindri-accent, #0af);
+    outline-offset: -1px;
+    white-space: pre;
+    overflow: visible;
+  }
+}
+
+.cell-header {
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.03em;
 }

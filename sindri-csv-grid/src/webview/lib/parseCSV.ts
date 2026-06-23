@@ -35,6 +35,17 @@ export function parseCSV(raw: string): string[][] {
   return rows;
 }
 
+export function serializeCSV(rows: string[][]): string {
+  return rows.map(row =>
+    row.map(field => {
+      if (field.includes(",") || field.includes('"') || field.includes("\n") || field.includes("\r")) {
+        return `"${field.replace(/"/g, '""')}"`;
+      }
+      return field;
+    }).join(",")
+  ).join("\n");
+}
+
 export function sortRows(data: string[][], col: number, asc: boolean): string[][] {
   return [...data].sort((a, b) => {
     const av = a[col] ?? "", bv = b[col] ?? "";

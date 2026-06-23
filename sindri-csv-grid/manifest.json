@@ -3,7 +3,7 @@
   "id": "sindri.csv-grid",
   "type": "extension",
   "name": "CSV Grid",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "main": "dist/extension.js",
   "publisher": "sindri",
   "description": "Opens .csv and .tsv files as a sortable, scrollable grid in an editor tab. Reference implementation for sindri.ui.registerEditor (Surface B, ADR-0028).",
