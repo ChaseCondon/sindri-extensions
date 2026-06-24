@@ -1,4 +1,17 @@
+let _autoSaveEnabled = false;
+let _autoSaveDelay = 1500;
+
+function updateAutoSaveSettings() {
+  _autoSaveEnabled = sindri.config.get<boolean>("editor.autoSave") ?? false;
+  _autoSaveDelay = sindri.config.get<number>("editor.autoSaveDelay") ?? 1500;
+}
+
 export function activate(): void {
+  // Read initial autosave settings and react to changes.
+  updateAutoSaveSettings();
+  sindri.config.onChange("editor.autoSave", () => updateAutoSaveSettings());
+  sindri.config.onChange("editor.autoSaveDelay", () => updateAutoSaveSettings());
+
   sindri.ui.registerEditor(
     "sindri.csv-grid",
     [{ pattern: "*.csv" }, { pattern: "*.tsv" }],
@@ -30,9 +43,21 @@ export function activate(): void {
             try {
               await sindri.env.fs.write(document.uri, m.content);
               webview.isDirty = false;
-              console.log('[csv-grid] saved: ' + document.uri);
+              console.log(`[csv-grid] saved: ${document.uri}`);
             } catch (err) {
               console.error('[csv-grid] save failed: ' + String(err));
+            }
+            return;
+          }
+
+          if (m.type === 'autoSave' && m.content != null) {
+            if (!_autoSaveEnabled) return; // user has autosave off
+            try {
+              await sindri.env.fs.write(document.uri, m.content);
+              webview.isDirty = false;
+              console.log(`[csv-grid] auto-saved: ${document.uri}`);
+            } catch (err) {
+              console.error('[csv-grid] auto-save failed: ' + String(err));
             }
             return;
           }

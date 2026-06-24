@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { GridView } from "./GridView";
 import { parseCSV, serializeCSV } from "../lib/parseCSV";
 import type { SortState } from "../lib/types";
@@ -18,6 +18,8 @@ export function CsvGrid({ api }: { api: SindriApi | null }) {
   const [filename, setFilename] = useState("CSV Grid");
   const [sort, setSort] = useState<SortState>(null);
   const [mode, setMode] = useState<ViewMode>("grid");
+  const [isDirty, setIsDirty] = useState(false);
+  const autosaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (!api) return;
@@ -59,36 +61,50 @@ export function CsvGrid({ api }: { api: SindriApi | null }) {
     setSort(prev => prev?.col === col ? { col, asc: !prev.asc } : { col, asc: true });
   }, []);
 
+  const markDirty = useCallback((content: string) => {
+    setIsDirty(true);
+    api?.postMessage({ type: "dirty", isDirty: true });
+    // Autosave: the Sindri host sends back {type:"autoSave",enabled,delay} on load.
+    // For now, respect a simple 1500ms debounce autosave when the host opts in.
+    if (autosaveTimerRef.current) clearTimeout(autosaveTimerRef.current);
+    autosaveTimerRef.current = setTimeout(() => {
+      autosaveTimerRef.current = null;
+      api?.postMessage({ type: "autoSave", content });
+    }, 1500);
+  }, [api]);
+
   const handleCellChange = useCallback((ri: number, ci: number, value: string) => {
     setRows(prev => {
       const next = prev.map(r => [...r]);
       next[ri][ci] = value;
       const csv = serializeCSV(next);
       setRawContent(csv);
-      api?.postMessage({ type: "dirty", isDirty: true });
+      markDirty(csv);
       return next;
     });
     setSort(null);
-  }, [api]);
+  }, [markDirty]);
 
   const handleAddRow = useCallback(() => {
     setRows(prev => {
       const cols = prev[0]?.length ?? 1;
       const next = [...prev, Array(cols).fill("")];
-      setRawContent(serializeCSV(next));
-      api?.postMessage({ type: "dirty", isDirty: true });
+      const csv = serializeCSV(next);
+      setRawContent(csv);
+      markDirty(csv);
       return next;
     });
-  }, [api]);
+  }, [markDirty]);
 
   const handleAddCol = useCallback(() => {
     setRows(prev => {
       const next = prev.map(r => [...r, ""]);
-      setRawContent(serializeCSV(next));
-      api?.postMessage({ type: "dirty", isDirty: true });
+      const csv = serializeCSV(next);
+      setRawContent(csv);
+      markDirty(csv);
       return next;
     });
-  }, [api]);
+  }, [markDirty]);
 
   const handleDeleteRow = useCallback((ri: number) => {
     setRows(prev => {
@@ -114,8 +130,8 @@ export function CsvGrid({ api }: { api: SindriApi | null }) {
     const parsed = parseCSV(value);
     setRows(parsed.length >= 1 ? parsed : [[""]]);
     setSort(null);
-    api?.postMessage({ type: "dirty", isDirty: true });
-  }, [api]);
+    markDirty(value);
+  }, [markDirty]);
 
   if (loadState === "idle") {
     return <div className="empty-state"><p className="dim">Loading…</p></div>;
