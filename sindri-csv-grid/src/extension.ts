@@ -1,5 +1,11 @@
-function webviewHtml(): string {
-  return `<!DOCTYPE html>
+export function activate(): void {
+  sindri.ui.registerEditor(
+    "sindri.csv-grid",
+    [{ pattern: "*.csv" }, { pattern: "*.tsv" }],
+    {
+      async resolveCustomEditor(document: CustomDocument, webview: EditorWebview): Promise<void> {
+        console.log('[csv-grid] resolveCustomEditor: uri=' + document.uri);
+        webview.html = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -10,52 +16,60 @@ function webviewHtml(): string {
   <script src="sindri-resource://sindri.csv-grid/dist/webview.js"></script>
 </body>
 </html>`;
-}
-
-// Injected by the sindri host; parent directory of extension.js (i.e. dist/).
-declare const __sindri_bundle_dir: string;
-
-export function activate(): void {
-  // Read and log the version so you can always verify which build is running.
-  sindri.env.fs.read(__sindri_bundle_dir + '/../manifest.json')
-    .then((raw: string) => {
-      const version = (JSON.parse(raw) as { version: string }).version;
-      console.log(`[csv-grid v${version}] activated`);
-    })
-    .catch(() => console.log('[csv-grid] activated (version unknown)'));
-  sindri.ui.registerEditor(
-    "sindri.csv-grid",
-    [{ pattern: "*.csv" }, { pattern: "*.tsv" }],
-    {
-      async resolveCustomEditor(document: CustomDocument, webview: EditorWebview): Promise<void> {
-        console.log('[csv-grid] resolveCustomEditor: uri=' + document.uri);
-        webview.html = webviewHtml();
-        console.log('[csv-grid] webview.html set, length=' + webview.html.length);
 
         webview.onMessage(async (msg: unknown) => {
-          const m = msg as { type: string };
+          const m = msg as { type: string; isDirty?: boolean; content?: string };
           console.log('[csv-grid] message from webview: type=' + m.type);
-          if (m.type !== "ready") return;
 
-          if (!document.uri) {
-            console.warn('[csv-grid] no document.uri — sending noFile');
-            webview.postMessage({ type: "noFile" });
+          if (m.type === 'dirty') {
+            webview.isDirty = !!m.isDirty;
             return;
           }
 
-          try {
-            console.log('[csv-grid] reading file: ' + document.uri);
-            const content = await sindri.env.fs.read(document.uri);
-            console.log('[csv-grid] file read ok, length=' + content.length);
-            webview.postMessage({ type: "file", content, path: document.uri });
-          } catch (err) {
-            console.error('[csv-grid] failed to read file: ' + String(err));
-            webview.postMessage({ type: "noFile" });
+          if (m.type === 'save' && m.content != null) {
+            try {
+              await sindri.env.fs.write(document.uri, m.content);
+              webview.isDirty = false;
+              console.log('[csv-grid] saved: ' + document.uri);
+            } catch (err) {
+              console.error('[csv-grid] save failed: ' + String(err));
+            }
+            return;
+          }
+
+          if (m.type === 'ready') {
+            if (!document.uri) {
+              webview.postMessage({ type: 'noFile' });
+              return;
+            }
+            try {
+              console.log('[csv-grid] reading file: ' + document.uri);
+              const content = await sindri.env.fs.read(document.uri);
+              console.log('[csv-grid] file read ok, length=' + content.length);
+              webview.postMessage({ type: 'file', content, path: document.uri });
+            } catch (err) {
+              console.error('[csv-grid] failed to read file: ' + String(err));
+              webview.postMessage({ type: 'noFile' });
+            }
           }
         });
+
+        // Read manifest version for Extension Logs.
+        sindri.env.fs.read(sindri.env.workspaceRoot ?? '')
+          .catch(() => {})
+          .finally(() => {});
+        const dir = (globalThis as any).__sindri_bundle_dir as string | undefined;
+        if (dir) {
+          sindri.env.fs.read(dir + '/../manifest.json')
+            .then((raw: string) => {
+              const version = (JSON.parse(raw) as { version: string }).version;
+              console.log(`[csv-grid v${version}] activated`);
+            })
+            .catch(() => console.log('[csv-grid] activated (version unknown)'));
+        }
       },
     },
-    { priority: "default" },
+    { priority: 'default' },
   );
   console.log('[csv-grid] registerEditor returned');
 }

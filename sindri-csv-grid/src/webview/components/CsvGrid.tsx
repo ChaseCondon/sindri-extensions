@@ -30,6 +30,8 @@ export function CsvGrid({ api }: { api: SindriApi | null }) {
         setRows(parsed.length >= 1 ? parsed : [[""]]);
         setSort(null);
         setLoadState("loaded");
+        // File just loaded — clean state
+        api.postMessage({ type: "dirty", isDirty: false });
       } else if (msg.type === "noFile") {
         setLoadState("noFile");
         setRows([]);
@@ -37,6 +39,20 @@ export function CsvGrid({ api }: { api: SindriApi | null }) {
       }
     });
     api.postMessage({ type: "ready" });
+
+    // Cmd/Ctrl+S → save
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "s") {
+        e.preventDefault();
+        // rawContent is captured by closure; use functional update to get latest
+        setRawContent(prev => {
+          api.postMessage({ type: "save", content: prev });
+          return prev;
+        });
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [api]);
 
   const handleSort = useCallback((col: number) => {
@@ -47,28 +63,32 @@ export function CsvGrid({ api }: { api: SindriApi | null }) {
     setRows(prev => {
       const next = prev.map(r => [...r]);
       next[ri][ci] = value;
-      setRawContent(serializeCSV(next));
+      const csv = serializeCSV(next);
+      setRawContent(csv);
+      api?.postMessage({ type: "dirty", isDirty: true });
       return next;
     });
     setSort(null);
-  }, []);
+  }, [api]);
 
   const handleAddRow = useCallback(() => {
     setRows(prev => {
       const cols = prev[0]?.length ?? 1;
       const next = [...prev, Array(cols).fill("")];
       setRawContent(serializeCSV(next));
+      api?.postMessage({ type: "dirty", isDirty: true });
       return next;
     });
-  }, []);
+  }, [api]);
 
   const handleAddCol = useCallback(() => {
     setRows(prev => {
       const next = prev.map(r => [...r, ""]);
       setRawContent(serializeCSV(next));
+      api?.postMessage({ type: "dirty", isDirty: true });
       return next;
     });
-  }, []);
+  }, [api]);
 
   const handleDeleteRow = useCallback((ri: number) => {
     setRows(prev => {
@@ -94,7 +114,8 @@ export function CsvGrid({ api }: { api: SindriApi | null }) {
     const parsed = parseCSV(value);
     setRows(parsed.length >= 1 ? parsed : [[""]]);
     setSort(null);
-  }, []);
+    api?.postMessage({ type: "dirty", isDirty: true });
+  }, [api]);
 
   if (loadState === "idle") {
     return <div className="empty-state"><p className="dim">Loading…</p></div>;
