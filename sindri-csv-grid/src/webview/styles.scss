@@ -59,11 +59,6 @@ body {
   color: var(--sindri-text-dim, #888);
 }
 
-.toolbar-actions {
-  display: flex;
-  gap: 4px;
-}
-
 // ── Buttons ───────────────────────────────────────────────────────────────────
 
 .btn {
@@ -164,18 +159,11 @@ thead {
 th {
   padding: 0;
   text-align: left;
-  cursor: pointer;
   white-space: nowrap;
   border-bottom: 2px solid var(--sindri-border, #444);
 
   &:hover {
-    background: color-mix(in srgb, var(--sindri-accent, #0af) 12%, transparent);
-  }
-
-  .sort-icon {
-    font-size: 10px;
-    opacity: 0.4;
-    pointer-events: none;
+    background: color-mix(in srgb, var(--sindri-accent, #0af) 10%, transparent);
   }
 
   &.sorted .sort-icon {
@@ -184,20 +172,37 @@ th {
   }
 }
 
+// th inner flex row: [cell] [sort] [×]
+.th-content {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding-right: 4px;
+  gap: 2px;
+}
+
+.sort-icon {
+  font-size: 9px;
+  opacity: 0.35;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
 td {
   padding: 0;
   max-width: 280px;
   border-bottom: 1px solid color-mix(in srgb, var(--sindri-border, #333) 60%, transparent);
 }
 
-tr:hover td {
-  background: color-mix(in srgb, var(--sindri-accent, #0af) 6%, transparent);
+tr:hover td, tr:hover th {
+  background: color-mix(in srgb, var(--sindri-accent, #0af) 5%, transparent);
 }
 
 // ── Editable cells ────────────────────────────────────────────────────────────
 
 .cell-content {
   display: block;
+  flex: 1;
   padding: 4px 10px;
   min-width: 60px;
   outline: none;
@@ -220,4 +225,86 @@ tr:hover td {
   font-weight: 600;
   font-size: 11px;
   letter-spacing: 0.03em;
+}
+
+// ── Inline add / delete controls ──────────────────────────────────────────────
+
+.inline-btn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: 3px;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  background: transparent;
+  color: var(--sindri-text-dim, #888);
+  opacity: 0;
+  transition: opacity 0.1s, background 0.1s;
+  padding: 0;
+
+  tr:hover &,
+  th:hover &,
+  &:focus {
+    opacity: 1;
+  }
+
+  &:hover {
+    opacity: 1;
+    background: color-mix(in srgb, var(--sindri-border, #444) 80%, transparent);
+  }
+}
+
+.delete-btn {
+  &:hover { color: #e06c75; background: color-mix(in srgb, #e06c75 15%, transparent); }
+}
+
+.add-btn {
+  &:hover { color: var(--sindri-accent, #0af); background: color-mix(in srgb, var(--sindri-accent, #0af) 15%, transparent); }
+}
+
+// Add-column header cell
+.add-col-th {
+  padding: 0;
+  width: 28px;
+  border-bottom: 2px solid var(--sindri-border, #444);
+  text-align: center;
+
+  .inline-btn { opacity: 1; margin: auto; width: 20px; height: 20px; font-size: 14px; }
+}
+
+// Delete-row action cell (last column)
+.row-action-cell {
+  width: 24px;
+  padding: 0 2px;
+  text-align: center;
+}
+
+// Add-row row at the bottom
+.add-row-tr td {
+  border-bottom: none;
+  padding: 0;
+}
+
+.add-row-btn {
+  display: block;
+  width: 100%;
+  padding: 4px 12px;
+  background: transparent;
+  border: none;
+  border-top: 1px dashed color-mix(in srgb, var(--sindri-border, #444) 50%, transparent);
+  color: var(--sindri-text-dim, #888);
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+
+  &:hover {
+    background: color-mix(in srgb, var(--sindri-accent, #0af) 8%, transparent);
+    color: var(--sindri-accent, #0af);
+  }
 }

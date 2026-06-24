@@ -70,6 +70,25 @@ export function CsvGrid({ api }: { api: SindriApi | null }) {
     });
   }, []);
 
+  const handleDeleteRow = useCallback((ri: number) => {
+    setRows(prev => {
+      if (prev.length <= 2) return prev; // keep at least header + 1 data row
+      const next = prev.filter((_, i) => i !== ri);
+      setRawContent(serializeCSV(next));
+      return next;
+    });
+    setSort(null);
+  }, []);
+
+  const handleDeleteCol = useCallback((ci: number) => {
+    setRows(prev => {
+      if ((prev[0]?.length ?? 0) <= 1) return prev; // keep at least 1 column
+      const next = prev.map(r => r.filter((_, i) => i !== ci));
+      setRawContent(serializeCSV(next));
+      return next;
+    });
+  }, []);
+
   const handleRawChange = useCallback((value: string) => {
     setRawContent(value);
     const parsed = parseCSV(value);
@@ -98,10 +117,6 @@ export function CsvGrid({ api }: { api: SindriApi | null }) {
         <span className="toolbar-info">
           {dataRows.length} rows × {header.length} cols
         </span>
-        <div className="toolbar-actions">
-          <button className="btn btn-secondary" onClick={handleAddRow} title="Add row">+ Row</button>
-          <button className="btn btn-secondary" onClick={handleAddCol} title="Add column">+ Col</button>
-        </div>
         <div className="mode-toggle">
           <button className={`btn ${mode === "grid" ? "btn-primary" : "btn-secondary"}`} onClick={() => setMode("grid")}>Grid</button>
           <button className={`btn ${mode === "raw" ? "btn-primary" : "btn-secondary"}`} onClick={() => setMode("raw")}>Raw</button>
@@ -109,7 +124,16 @@ export function CsvGrid({ api }: { api: SindriApi | null }) {
       </div>
       {mode === "grid" ? (
         rows.length > 0
-          ? <GridView rows={rows} sort={sort} onSort={handleSort} onCellChange={handleCellChange} />
+          ? <GridView
+              rows={rows}
+              sort={sort}
+              onSort={handleSort}
+              onCellChange={handleCellChange}
+              onAddRow={handleAddRow}
+              onAddCol={handleAddCol}
+              onDeleteRow={handleDeleteRow}
+              onDeleteCol={handleDeleteCol}
+            />
           : <div className="empty-state"><p className="dim">Need at least a header row.</p></div>
       ) : (
         <div className="raw-area">
